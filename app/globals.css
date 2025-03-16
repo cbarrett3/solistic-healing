@@ -1,0 +1,96 @@
+@import "tailwindcss";
+
+@theme {
+  /* Base tokens */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-full: 9999px;
+  
+  /* Animation */
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-bounce: cubic-bezier(0.2, 0.8, 0.5, 1.2);
+  
+  /* Light mode (default) */
+  --color-background: oklch(0.99 0 0);
+  --color-foreground: oklch(0.2 0 0);
+  --color-muted: oklch(0.8 0 0);
+  --color-muted-foreground: oklch(0.4 0 0);
+  --color-primary: oklch(0.85 0.25 130); /* Lime green */
+  --color-primary-foreground: oklch(0.1 0 0); /* Near black for text on lime */
+  --color-secondary: oklch(0.95 0.04 130);
+  --color-secondary-foreground: oklch(0.3 0 0);
+  --color-accent: oklch(0.84 0.18 85); /* Amber/yellow for card bottom */
+  --color-accent-foreground: oklch(0.1 0 0);
+  --color-card: oklch(0.99 0 0); /* White */
+  --color-card-foreground: oklch(0.1 0 0);
+  --color-success: oklch(0.78 0.16 148.48);
+  --color-success-foreground: oklch(0.98 0 0);
+  --color-warning: oklch(0.82 0.16 85.9);
+  --color-warning-foreground: oklch(0.98 0 0);
+  --color-danger: oklch(0.7 0.19 25.75);
+  --color-danger-foreground: oklch(0.98 0 0);
+  --color-border: oklch(0.9 0 0);
+  
+  /* Typography */
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px color-mix(in oklab, var(--color-foreground) 5%, transparent);
+  --shadow-md: 0 2px 8px color-mix(in oklab, var(--color-foreground) 8%, transparent);
+  --shadow-lg: 0 4px 20px color-mix(in oklab, var(--color-foreground) 12%, transparent);
+}
+
+@layer utilities {
+  .animate-standard {
+    transition-timing-function: var(--ease-standard);
+  }
+  
+  .animate-bounce {
+    transition-timing-function: var(--ease-bounce);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  @theme {
+    /* Dark mode */
+    --color-background: oklch(0.05 0 0); /* Pure black background */
+    --color-foreground: oklch(0.98 0 0);
+    --color-muted: oklch(0.25 0 0);
+    --color-muted-foreground: oklch(0.75 0 0);
+    --color-primary: oklch(0.85 0.25 130); /* Lime green - same in dark mode */
+    --color-primary-foreground: oklch(0.1 0 0); /* Near black for text on lime */
+    --color-secondary: oklch(0.20 0.04 130);
+    --color-secondary-foreground: oklch(0.9 0 0);
+    --color-accent: oklch(0.75 0.18 85); /* Amber/yellow for card bottom */
+    --color-accent-foreground: oklch(0.1 0 0);
+    --color-card: oklch(0.99 0 0); /* Keep card white even in dark mode */
+    --color-card-foreground: oklch(0.1 0 0);
+    --color-success: oklch(0.58 0.16 148.48);
+    --color-success-foreground: oklch(0.98 0 0);
+    --color-warning: oklch(0.72 0.16 85.9);
+    --color-warning-foreground: oklch(0.12 0 0);
+    --color-danger: oklch(0.65 0.19 25.75);
+    --color-danger-foreground: oklch(0.98 0 0);
+    --color-border: oklch(0.3 0 0);
+    
+    /* Shadows in dark mode need different opacity/intensity */
+    --shadow-sm: 0 1px 2px color-mix(in oklab, var(--color-foreground) 10%, transparent);
+    --shadow-md: 0 2px 8px color-mix(in oklab, var(--color-foreground) 15%, transparent);
+    --shadow-lg: 0 4px 20px color-mix(in oklab, var(--color-foreground) 20%, transparent);
+  }
+}
+
+/* Base styles */
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-feature-settings: "ss01", "ss03", "cv01", "cv02", "cv03";
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: color-mix(in oklab, var(--color-primary) 40%, transparent);
+}
