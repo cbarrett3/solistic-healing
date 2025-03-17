@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Poppins, Montserrat } from "next/font/google";
 import "./globals.css";
+import ThemeScript from "./components/theme-script";
 
 // Load Montserrat for headings
 const montserrat = Montserrat({
@@ -31,6 +32,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${montserrat.variable} ${poppins.variable}`}>
+      <head>
+        <ThemeScript />
+      </head>
       <body>
         {children}
       </body>

@@ -2,13 +2,39 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSectionScroll } from "../hooks/use-section-scroll";
+import { motion } from "framer-motion";
+import SectionHeading from "./components/section-heading";
+import TherapistCard from "./components/therapist-card";
+import MissionSection from "./components/mission-section";
+import "./styles/about-us.css";
 
 export default function Home() {
   // State to track which icon is being hovered or pressed
   const [hoveredIcon, setHoveredIcon] = useState<number | null>(null);
   const [pressedIcon, setPressedIcon] = useState<number | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Initialize section scrolling
+  useSectionScroll({
+    sectionSelector: 'section[data-section]',
+    threshold: 150,
+    cooldown: 800
+  });
+
+  // Add effect to handle body overflow when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [mobileMenuOpen]);
 
   // Handler functions for icon interactions
   const handleIconMouseEnter = (index: number) => setHoveredIcon(index);
@@ -176,7 +202,7 @@ export default function Home() {
               </nav>
               
               {/* Contact Icons - Mobile */}
-              <div className="flex items-center space-x-4 mt-5 pt-4 border-t border-white/10">
+              <div className="flex items-center justify-end mt-5 pt-4 border-t border-white/10">
                 <button 
                   className="w-10 h-10 rounded-full border border-white/30 flex items-center justify-center transition-all duration-300 ease-in-out hover:border-primary active:scale-95 active:bg-primary/10 relative overflow-hidden cursor-pointer"
                   aria-label="Phone contact"
@@ -221,7 +247,7 @@ export default function Home() {
       </header>
 
       {/* Hero Section */}
-      <section className="h-screen w-full overflow-hidden relative flex items-center">
+      <section data-section className="h-screen w-full overflow-hidden relative flex items-center">
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <Image 
@@ -353,8 +379,75 @@ export default function Home() {
         </div>
       </section>
 
+      {/* About Us Section */}
+      <section data-section className="w-full py-8 md:py-12 about-us-section flex items-center min-h-[600px] lg:min-h-[650px] xl:min-h-[700px] 2xl:min-h-[750px]">
+        <div className="container mx-auto px-4 about-us-content">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 max-w-screen-xl mx-auto about-us-grid">
+            {/* Left Column */}
+            <div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                viewport={{ once: true }}
+              >
+                <SectionHeading 
+                  title="Transforming Lives Through Care" 
+                />
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                viewport={{ once: true }}
+                className="mt-5"
+              >
+                <TherapistCard
+                  name="Eric Peterson"
+                  title="Therapist, Solistic Healing"
+                  bio={[
+                    "I received my M.A in Counseling and Psychological Services from Saint Mary's University of Minnesota with a Graduate Certificate in Addiction Studies.",
+                    "My approach to healing is informed by cognitive-behavioral therapy, transpersonal psychology, person-centered therapy, & somatic and mindfulness-based therapies."
+                  ]}
+                  imageSrc="/eric.jpeg"
+                />
+              </motion.div>
+            </div>
+            
+            {/* Right Column */}
+            <div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                viewport={{ once: true }}
+              >
+                <MissionSection
+                  title="Our Mission & Approach"
+                  points={[
+                    {
+                      title: "Holistic Healing",
+                      description: "We believe in treating the whole person, not just symptoms. Our approach integrates mind, body, and spirit for complete wellness."
+                    },
+                    {
+                      title: "Evidence-Based Practices",
+                      description: "Our therapeutic methods are grounded in research and proven techniques, ensuring effective and reliable care."
+                    },
+                    {
+                      title: "Personalized Care",
+                      description: "We recognize that each individual's journey is unique. Our treatment plans are tailored to your specific needs and goals."
+                    }
+                  ]}
+                />
+              </motion.div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Ketamine Education Section */}
-      <section className="w-full py-16 md:py-24 bg-black/30 backdrop-blur-md">
+      <section data-section className="w-full py-16 md:py-24 bg-black/30 backdrop-blur-md">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center">
             <div className="w-full md:w-1/2 mb-8 md:mb-0">
@@ -394,7 +487,7 @@ export default function Home() {
       </section>
 
       {/* How KAP Works Section */}
-      <section className="w-full py-16 md:py-24 bg-background">
+      <section data-section className="w-full py-16 md:py-24 bg-background">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-light text-foreground mb-4 text-center">How Ketamine-Assisted Psychotherapy Works</h2>
@@ -434,7 +527,7 @@ export default function Home() {
       </section>
 
       {/* Services Section */}
-      <section className="w-full py-16 md:py-24 bg-background">
+      <section data-section className="w-full py-16 md:py-24 bg-background">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-light text-foreground mb-3">Our Services</h2>
@@ -475,7 +568,7 @@ export default function Home() {
             <div className="bg-white/5 backdrop-blur-sm p-6 rounded-lg border border-white/10 hover:border-primary/30 transition-all duration-300 group cursor-pointer">
               <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors duration-300">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17l-2.25 2.25l6.5-6.5m-4.5 4.5l6.5 6.5" />
                 </svg>
               </div>
               <h3 className="text-xl font-medium text-foreground mb-2 group-hover:text-primary transition-colors duration-300">Psychedelic Integration</h3>
@@ -494,7 +587,7 @@ export default function Home() {
       </section>
 
       {/* Contact CTA Section */}
-      <section className="w-full py-16 md:py-24 bg-background">
+      <section data-section className="w-full py-16 md:py-24 bg-background">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl md:text-4xl font-light text-foreground mb-4">Begin Your Healing Journey Today</h2>
@@ -511,7 +604,7 @@ export default function Home() {
               </div>
               <div className="flex items-center gap-2 text-foreground">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2" />
                 </svg>
                 <span>ericpeterson@solistichealing.org</span>
               </div>

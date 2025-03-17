@@ -43,6 +43,27 @@
   --shadow-lg: 0 4px 20px color-mix(in oklab, var(--color-foreground) 12%, transparent);
 }
 
+.dark {
+  --color-background: oklch(0.1 0 0);
+  --color-foreground: oklch(0.98 0 0);
+  --color-muted: oklch(0.3 0 0);
+  --color-muted-foreground: oklch(0.7 0 0);
+  --color-primary: oklch(0.75 0.2 130); /* Darker lime green */
+  --color-primary-foreground: oklch(0.98 0 0); /* White for text on lime */
+  --color-secondary: oklch(0.2 0.04 130);
+  --color-secondary-foreground: oklch(0.9 0 0);
+  --color-accent: oklch(0.7 0.15 85); /* Darker amber/yellow */
+  --color-accent-foreground: oklch(0.98 0 0);
+  --color-card: oklch(0.15 0 0); /* Dark gray */
+  --color-card-foreground: oklch(0.9 0 0);
+  --color-border: oklch(0.3 0 0);
+  
+  /* Shadows for dark mode */
+  --shadow-sm: 0 1px 2px color-mix(in oklab, black 20%, transparent);
+  --shadow-md: 0 2px 8px color-mix(in oklab, black 30%, transparent);
+  --shadow-lg: 0 4px 20px color-mix(in oklab, black 40%, transparent);
+}
+
 @layer utilities {
   .animate-standard {
     transition-timing-function: var(--ease-standard);
@@ -68,34 +89,8 @@
   animation: slideDown 0.3s ease-out forwards;
 }
 
-@media (prefers-color-scheme: dark) {
-  @theme {
-    /* Dark mode */
-    --color-background: oklch(0.05 0 0); /* Pure black background */
-    --color-foreground: oklch(0.98 0 0);
-    --color-muted: oklch(0.25 0 0);
-    --color-muted-foreground: oklch(0.75 0 0);
-    --color-primary: oklch(0.85 0.25 130); /* Lime green - same in dark mode */
-    --color-primary-foreground: oklch(0.1 0 0); /* Near black for text on lime */
-    --color-secondary: oklch(0.20 0.04 130);
-    --color-secondary-foreground: oklch(0.9 0 0);
-    --color-accent: oklch(0.75 0.18 85); /* Amber/yellow for card bottom */
-    --color-accent-foreground: oklch(0.1 0 0);
-    --color-card: oklch(0.99 0 0); /* Keep card white even in dark mode */
-    --color-card-foreground: oklch(0.1 0 0);
-    --color-success: oklch(0.58 0.16 148.48);
-    --color-success-foreground: oklch(0.98 0 0);
-    --color-warning: oklch(0.72 0.16 85.9);
-    --color-warning-foreground: oklch(0.12 0 0);
-    --color-danger: oklch(0.65 0.19 25.75);
-    --color-danger-foreground: oklch(0.98 0 0);
-    --color-border: oklch(0.3 0 0);
-    
-    /* Shadows in dark mode need different opacity/intensity */
-    --shadow-sm: 0 1px 2px color-mix(in oklab, var(--color-foreground) 10%, transparent);
-    --shadow-md: 0 2px 8px color-mix(in oklab, var(--color-foreground) 15%, transparent);
-    --shadow-lg: 0 4px 20px color-mix(in oklab, var(--color-foreground) 20%, transparent);
-  }
+::selection {
+  background: color-mix(in oklab, var(--color-primary) 40%, transparent);
 }
 
 @layer base {
@@ -125,8 +120,4 @@
   html {
     font-size: clamp(15px, 0.9375rem + 0.2vw, 18px);
   }
-}
-
-::selection {
-  background: color-mix(in oklab, var(--color-primary) 40%, transparent);
 }
