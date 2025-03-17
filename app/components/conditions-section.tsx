@@ -5,7 +5,6 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import ConditionCard from './condition-card';
-import '../styles/conditions.css';
 
 // Define the conditions data
 const conditions = [
