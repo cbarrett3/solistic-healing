@@ -3,24 +3,40 @@
   --conditions-bg: oklch(98% 0.01 240);
   --conditions-text-primary: oklch(30% 0.02 240);
   --conditions-text-secondary: oklch(40% 0.02 240);
-  --conditions-accent: oklch(60% 0.18 140);
+  --conditions-accent: rgb(139, 195, 74);
+  --conditions-accent-light: color-mix(in oklch, rgb(139, 195, 74), white 40%);
+  --conditions-accent-dark: color-mix(in oklch, rgb(139, 195, 74), black 30%);
   --conditions-card-bg: oklch(97% 0.01 240 / 0.7);
-  --conditions-card-border: oklch(90% 0.02 240);
+  --conditions-card-border: rgb(139, 195, 74 / 0.4);
   --conditions-card-shadow: oklch(20% 0.02 240 / 0.05);
-  --conditions-image-filter: brightness(1.05) contrast(1.05);
-  --conditions-image-border: oklch(90% 0.02 240 / 0.6);
+  --conditions-image-border: rgb(139, 195, 74 / 0.6);
+  
+  /* Refined artistic filter variables */
+  --image-filter-normal: contrast(1.1) brightness(1.05) saturate(1.1);
+  --image-filter-hover: contrast(1.15) brightness(1.1) saturate(1.2);
+  
+  /* Subtle vignette and warm overlay */
+  --image-overlay-blend: radial-gradient(circle at center, transparent 40%, rgba(0, 0, 0, 0.15) 100%);
+  --image-overlay-blend-hover: radial-gradient(circle at center, transparent 40%, rgba(0, 0, 0, 0.2) 100%);
+  
+  /* Dark mode variants */
+  --image-filter-dark: contrast(1.15) brightness(0.95) saturate(1.05);
+  --image-filter-dark-hover: contrast(1.2) brightness(1) saturate(1.15);
+  --image-overlay-blend-dark: radial-gradient(circle at center, transparent 40%, rgba(0, 0, 0, 0.1) 100%);
+  --image-overlay-blend-dark-hover: radial-gradient(circle at center, transparent 40%, rgba(0, 0, 0, 0.15) 100%);
 }
 
 .dark .conditions-section {
   --conditions-bg: oklch(15% 0.02 240);
   --conditions-text-primary: oklch(90% 0.02 240);
   --conditions-text-secondary: oklch(80% 0.02 240);
-  --conditions-accent: oklch(70% 0.18 140);
+  --conditions-accent: rgb(139, 195, 74);
+  --conditions-accent-light: color-mix(in oklch, rgb(139, 195, 74), white 20%);
+  --conditions-accent-dark: color-mix(in oklch, rgb(139, 195, 74), black 40%);
   --conditions-card-bg: oklch(20% 0.02 240 / 0.7);
-  --conditions-card-border: oklch(25% 0.02 240);
+  --conditions-card-border: rgb(139, 195, 74 / 0.4);
   --conditions-card-shadow: oklch(10% 0.02 240 / 0.2);
-  --conditions-image-filter: brightness(0.95) contrast(1.1) saturate(1.05);
-  --conditions-image-border: oklch(25% 0.02 240 / 0.6);
+  --conditions-image-border: rgb(139, 195, 74 / 0.6);
 }
 
 .conditions-section {
@@ -28,6 +44,8 @@
   color: var(--conditions-text-primary);
   position: relative;
   overflow: hidden;
+  display: flex;
+  align-items: center;
 }
 
 .conditions-section::before {
@@ -44,13 +62,34 @@
 .condition-card {
   background-color: var(--conditions-card-bg);
   border: 1px solid var(--conditions-card-border);
-  box-shadow: 0 4px 12px var(--conditions-card-shadow);
+  box-shadow: 0 4px 12px var(--conditions-card-shadow),
+              0 0 0 1px var(--conditions-card-border);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   transition: all 0.3s ease;
   height: 100%;
   display: flex;
   flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.condition-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(to bottom, var(--conditions-accent), var(--conditions-accent-dark));
+  opacity: 0.8;
+}
+
+.condition-card:hover {
+  border-color: var(--conditions-accent);
+  box-shadow: 0 8px 20px var(--conditions-card-shadow),
+              0 0 0 1px var(--conditions-accent);
+  transform: translateY(-2px);
 }
 
 .condition-card p {
@@ -68,39 +107,73 @@
 }
 
 .learn-more-btn:hover {
-  background-color: color-mix(in oklch, var(--conditions-accent), white 10%);
+  background-color: var(--conditions-accent-light);
   box-shadow: 0 4px 12px color-mix(in oklch, var(--conditions-accent), black 40%, 0.3);
 }
 
 .condition-image {
+  position: relative;
   display: flex;
   height: 100%;
 }
 
+.condition-image::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--image-overlay-blend);
+  z-index: 15;
+  mix-blend-mode: normal;
+  transition: background 0.8s ease;
+  pointer-events: none;
+}
+
+.condition-image:hover::before {
+  background: var(--image-overlay-blend-hover);
+}
+
+.dark .condition-image::before {
+  background: var(--image-overlay-blend-dark);
+}
+
+.dark .condition-image:hover::before {
+  background: var(--image-overlay-blend-dark-hover);
+}
+
 .condition-image img {
-  filter: var(--conditions-image-filter);
-  transition: filter 0.5s ease;
+  filter: var(--image-filter-normal);
+  transition: filter 0.8s ease, transform 0.7s ease;
+  will-change: filter, transform;
 }
 
 .condition-image:hover img {
-  filter: var(--conditions-image-filter) saturate(1.1);
+  filter: var(--image-filter-hover);
+}
+
+.dark .condition-image img {
+  filter: var(--image-filter-dark);
+}
+
+.dark .condition-image:hover img {
+  filter: var(--image-filter-dark-hover);
 }
 
 /* Picture frame styling */
 .condition-image-frame {
   position: relative;
-  border: 4px solid var(--conditions-card-bg);
+  border: 2px solid var(--conditions-accent);
   box-shadow: 
-    0 0 0 1px var(--conditions-card-border),
+    0 0 0 1px var(--conditions-accent-dark),
     0 8px 16px var(--conditions-card-shadow);
   transition: all 0.3s ease;
   height: 100%;
+  min-height: 400px;
 }
 
 .condition-image-frame::before {
   content: '';
   position: absolute;
-  inset: -2px;
+  inset: -1px;
   border: 1px solid var(--conditions-image-border);
   z-index: 20;
   pointer-events: none;
@@ -109,17 +182,17 @@
 .condition-image-frame::after {
   content: '';
   position: absolute;
-  inset: -4px;
+  inset: -3px;
   border: 1px solid var(--conditions-accent);
-  opacity: 0.2;
+  opacity: 0.3;
   z-index: 20;
   pointer-events: none;
 }
 
 .dark .condition-image-frame {
-  border-color: var(--conditions-card-bg);
+  border-color: var(--conditions-accent);
   box-shadow: 
-    0 0 0 1px var(--conditions-card-border),
+    0 0 0 1px var(--conditions-accent-dark),
     0 8px 16px var(--conditions-card-shadow);
 }
 
@@ -141,7 +214,7 @@
   }
   
   .condition-image-frame {
-    min-height: 240px;
+    min-height: 300px;
   }
 }
 
@@ -151,12 +224,16 @@
   }
   
   .condition-image-frame {
-    min-height: 280px;
+    min-height: 350px;
   }
 }
 
 @media (min-width: 1024px) {
   .condition-card {
     min-height: 180px;
+  }
+  
+  .condition-image-frame {
+    min-height: 450px;
   }
 }

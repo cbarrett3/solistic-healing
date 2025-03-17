@@ -54,9 +54,9 @@ export default function ConditionsSection() {
   }, []);
   
   return (
-    <section className="conditions-section py-10 sm:py-12 md:py-16 lg:py-20 relative" data-section="conditions">
+    <section className="conditions-section min-h-screen w-full flex items-center py-10 sm:py-12 md:py-16 lg:py-20 relative" data-section="conditions">
       <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-10 relative z-10">
-        <div className="flex flex-col lg:flex-row gap-6 md:gap-8">
+        <div className="flex flex-col lg:flex-row gap-6 md:gap-8 h-full">
           {/* Left Column - Header and Conditions Cards */}
           <div className="w-full lg:w-2/3 order-2 lg:order-1">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6">
@@ -163,6 +163,10 @@ export default function ConditionsSection() {
           </div>
         </div>
       </div>
+      
+      {/* Background Elements */}
+      <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-primary/5 rounded-bl-[100px] -z-10 blur-3xl"></div>
+      <div className="absolute bottom-0 left-0 w-1/2 h-1/3 bg-primary/5 rounded-tr-[100px] -z-10 blur-3xl"></div>
     </section>
   );
 }
