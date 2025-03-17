@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Poppins, Montserrat } from "next/font/google";
 import "./globals.css";
-import ThemeScript from "./components/theme-script";
+import { ThemeScript } from "./components/utils";
 
 // Load Montserrat for headings
 const montserrat = Montserrat({

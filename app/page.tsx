@@ -4,13 +4,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import SectionHeading from "./components/section-heading";
-import TherapistCard from "./components/therapist-card";
-import MissionSection from "./components/mission-section";
-import ConditionsSection from "./components/conditions-section";
-import MediaShowcase from "./components/media-showcase";
-import PricingSection from "./components/pricing-section";
-import Navbar from "./components/navbar";
+
+// Import from organized component directories
+import { Navbar } from "./components/layout";
+import { SectionHeading, TherapistCard } from "./components/ui";
+import { 
+  MissionSection, 
+  ConditionsSection, 
+  MediaShowcase, 
+  PricingSection 
+} from "./components/sections";
 
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -35,7 +38,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen relative">
-      {/* Navigation Bar - Now using the Navbar component */}
+      {/* Navigation Bar */}
       <Navbar onMobileMenuToggle={handleMobileMenuToggle} />
 
       {/* Hero Section */}
