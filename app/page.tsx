@@ -12,7 +12,8 @@ import {
   MissionSection, 
   ConditionsSection, 
   MediaShowcase, 
-  PricingSection 
+  PricingSection,
+  AutoScrollPosts
 } from "./components/sections";
 
 export default function Home() {
@@ -292,6 +293,9 @@ export default function Home() {
       
       {/* Media Showcase Section */}
       <MediaShowcase />
+      
+      {/* Blog Showcase Section */}
+      <AutoScrollPosts />
       
       {/* Pricing Section */}
       <PricingSection />
