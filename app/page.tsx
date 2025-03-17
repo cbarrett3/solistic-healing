@@ -9,12 +9,12 @@ import SectionHeading from "./components/section-heading";
 import TherapistCard from "./components/therapist-card";
 import MissionSection from "./components/mission-section";
 import ConditionsSection from "./components/conditions-section";
+import PricingSection from "./components/pricing-section";
+import Navbar from "./components/navbar";
 
 export default function Home() {
-  // State to track which icon is being hovered or pressed
-  const [hoveredIcon, setHoveredIcon] = useState<number | null>(null);
-  const [pressedIcon, setPressedIcon] = useState<number | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [videoPlaying, setVideoPlaying] = useState(false);
 
   // Initialize section scrolling
   useSectionScroll({
@@ -36,215 +36,20 @@ export default function Home() {
     };
   }, [mobileMenuOpen]);
 
-  // Handler functions for icon interactions
-  const handleIconMouseEnter = (index: number) => setHoveredIcon(index);
-  const handleIconMouseLeave = () => setHoveredIcon(null);
-  const handleIconMouseDown = (index: number) => setPressedIcon(index);
-  const handleIconMouseUp = () => setPressedIcon(null);
-  const toggleMobileMenu = () => setMobileMenuOpen(!mobileMenuOpen);
+  // Handle mobile menu toggle from Navbar component
+  const handleMobileMenuToggle = (isOpen: boolean) => {
+    setMobileMenuOpen(isOpen);
+  };
+
+  // Handle video play toggle
+  const toggleVideo = () => {
+    setVideoPlaying(!videoPlaying);
+  };
 
   return (
     <div className="min-h-screen relative">
-      {/* Navigation Bar */}
-      <header className="absolute top-0 left-0 right-0 z-40">
-        <div className="container mx-auto px-5 sm:px-8 md:px-10 py-4 sm:py-5 md:py-6">
-          <div className="flex items-center justify-between">
-            {/* Logo and brand */}
-            <div className="flex items-center group">
-              <div className="mr-3 md:mr-4 transition-transform duration-500 ease-out group-hover:rotate-[360deg]">
-                <div className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center">
-                  {/* Sun icon more similar to reference */}
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-8 h-8 sm:w-9 sm:h-9 text-primary transition-all duration-300 group-hover:drop-shadow-[0_0_8px_rgba(var(--color-primary-rgb)/0.8)]">
-                    <path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z" strokeWidth="0.5" fill="currentColor" />
-                    <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" strokeWidth="1" />
-                  </svg>
-                </div>
-              </div>
-              <h1 className="text-xl sm:text-2xl font-light tracking-[0.25em] sm:tracking-[0.3em] text-white uppercase relative group-hover:text-primary transition-colors duration-300 cursor-pointer">
-                SOLISTIC HEALING
-                <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-primary transition-all duration-500 ease-out group-hover:w-full"></span>
-              </h1>
-            </div>
-
-            {/* Mobile Menu Button */}
-            <button 
-              className="lg:hidden w-12 h-12 flex items-center justify-center text-white focus:outline-none rounded-full relative overflow-hidden transition-all duration-300 hover:text-primary active:scale-95 before:absolute before:inset-0 before:bg-white/0 before:hover:bg-white/10 before:transition-all before:duration-300 before:rounded-full before:scale-0 hover:before:scale-100 before:origin-center cursor-pointer"
-              onClick={toggleMobileMenu}
-              aria-label="Toggle mobile menu"
-            >
-              {mobileMenuOpen ? (
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 transition-transform duration-300 rotate-0 hover:rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 transition-all duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-              )}
-            </button>
-
-            {/* Main Navigation - Desktop */}
-            <nav className="hidden lg:flex items-center">
-              <Link href="/" className="text-sm uppercase tracking-[0.2em] text-white hover:text-primary px-5 font-light relative group cursor-pointer">
-                HOME
-                <span className="absolute -bottom-1 left-1/2 w-0 h-[1px] bg-primary transition-all duration-300 ease-out group-hover:w-[70%] group-hover:left-[15%]"></span>
-              </Link>
-              <Link href="/about" className="text-sm uppercase tracking-[0.2em] text-white hover:text-primary px-5 font-light relative group cursor-pointer">
-                ABOUT US
-                <span className="absolute -bottom-1 left-1/2 w-0 h-[1px] bg-primary transition-all duration-300 ease-out group-hover:w-[70%] group-hover:left-[15%]"></span>
-              </Link>
-              <Link href="/services" className="text-sm uppercase tracking-[0.2em] text-white hover:text-primary px-5 font-light relative group cursor-pointer">
-                SERVICES
-                <span className="absolute -bottom-1 left-1/2 w-0 h-[1px] bg-primary transition-all duration-300 ease-out group-hover:w-[70%] group-hover:left-[15%]"></span>
-              </Link>
-              <Link href="/page" className="text-sm uppercase tracking-[0.2em] text-white hover:text-primary px-5 font-light relative group cursor-pointer">
-                PAGE
-                <span className="absolute -bottom-1 left-1/2 w-0 h-[1px] bg-primary transition-all duration-300 ease-out group-hover:w-[70%] group-hover:left-[15%]"></span>
-              </Link>
-              <Link href="/contact" className="text-sm uppercase tracking-[0.2em] text-white hover:text-primary px-5 font-light relative group cursor-pointer">
-                CONTACT US
-                <span className="absolute -bottom-1 left-1/2 w-0 h-[1px] bg-primary transition-all duration-300 ease-out group-hover:w-[70%] group-hover:left-[15%]"></span>
-              </Link>
-              <span className="text-white/30 mx-4">|</span>
-            </nav>
-
-            {/* Contact Icons - Desktop */}
-            <div className="hidden lg:flex items-center space-x-4">
-              {/* Phone Icon Button */}
-              <button 
-                className="w-10 h-10 rounded-full border border-white/30 
-                  flex items-center justify-center transition-all duration-300 ease-in-out
-                  hover:border-primary hover:scale-105 active:scale-95 hover:bg-primary/10
-                  hover:shadow-[0_0_15px_rgba(var(--color-primary-rgb)/0.5)] relative overflow-hidden
-                  after:absolute after:inset-0 after:bg-primary/0 after:hover:bg-primary/5 
-                  after:transition-all after:duration-500 after:rounded-full after:scale-0 
-                  hover:after:scale-150 after:origin-center cursor-pointer"
-                onMouseEnter={() => handleIconMouseEnter(0)}
-                onMouseLeave={handleIconMouseLeave}
-                onMouseDown={() => handleIconMouseDown(0)}
-                onMouseUp={handleIconMouseUp}
-                onTouchStart={() => handleIconMouseDown(0)}
-                onTouchEnd={handleIconMouseUp}
-                aria-label="Phone contact"
-              >
-                <svg 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  className="h-4 w-4 text-white transition-all duration-300 group-hover:text-primary relative z-10" 
-                  viewBox="0 0 24 24" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  strokeWidth="1.5" 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round"
-                >
-                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                </svg>
-              </button>
-              
-              {/* Email Icon Button */}
-              <button 
-                className="w-10 h-10 rounded-full border border-white/30 
-                  flex items-center justify-center transition-all duration-300 ease-in-out
-                  hover:border-primary hover:scale-105 active:scale-95 hover:bg-primary/10
-                  hover:shadow-[0_0_15px_rgba(var(--color-primary-rgb)/0.5)] relative overflow-hidden
-                  after:absolute after:inset-0 after:bg-primary/0 after:hover:bg-primary/5 
-                  after:transition-all after:duration-500 after:rounded-full after:scale-0 
-                  hover:after:scale-150 after:origin-center cursor-pointer"
-                onMouseEnter={() => handleIconMouseEnter(1)}
-                onMouseLeave={handleIconMouseLeave}
-                onMouseDown={() => handleIconMouseDown(1)}
-                onMouseUp={handleIconMouseUp}
-                onTouchStart={() => handleIconMouseDown(1)}
-                onTouchEnd={handleIconMouseUp}
-                aria-label="Email contact"
-              >
-                <svg 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  className="h-4 w-4 text-white transition-all duration-300 group-hover:text-primary relative z-10" 
-                  viewBox="0 0 24 24" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  strokeWidth="1.5" 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round"
-                >
-                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                  <polyline points="22,6 12,13 2,6"></polyline>
-                </svg>
-              </button>
-            </div>
-          </div>
-
-          {/* Mobile Menu - Slide Down */}
-          {mobileMenuOpen && (
-            <div className="lg:hidden mt-4 bg-black/80 backdrop-blur-sm rounded-xl p-5 animate-slideDown">
-              <nav className="flex flex-col space-y-4">
-                <Link href="/" className="text-sm uppercase tracking-[0.2em] text-white hover:text-primary py-2 font-light relative group overflow-hidden cursor-pointer">
-                  <span className="relative z-10 transition-transform duration-300 group-active:scale-95">HOME</span>
-                  <span className="absolute inset-0 w-full h-full bg-primary/0 group-hover:bg-primary/10 transform -skew-x-12 -translate-x-full group-hover:translate-x-0 transition-all duration-300 rounded"></span>
-                </Link>
-                <Link href="/about" className="text-sm uppercase tracking-[0.2em] text-white hover:text-primary py-2 font-light relative group overflow-hidden cursor-pointer">
-                  <span className="relative z-10 transition-transform duration-300 group-active:scale-95">ABOUT US</span>
-                  <span className="absolute inset-0 w-full h-full bg-primary/0 group-hover:bg-primary/10 transform -skew-x-12 -translate-x-full group-hover:translate-x-0 transition-all duration-300 rounded"></span>
-                </Link>
-                <Link href="/services" className="text-sm uppercase tracking-[0.2em] text-white hover:text-primary py-2 font-light relative group overflow-hidden cursor-pointer">
-                  <span className="relative z-10 transition-transform duration-300 group-active:scale-95">SERVICES</span>
-                  <span className="absolute inset-0 w-full h-full bg-primary/0 group-hover:bg-primary/10 transform -skew-x-12 -translate-x-full group-hover:translate-x-0 transition-all duration-300 rounded"></span>
-                </Link>
-                <Link href="/page" className="text-sm uppercase tracking-[0.2em] text-white hover:text-primary py-2 font-light relative group overflow-hidden cursor-pointer">
-                  <span className="relative z-10 transition-transform duration-300 group-active:scale-95">PAGE</span>
-                  <span className="absolute inset-0 w-full h-full bg-primary/0 group-hover:bg-primary/10 transform -skew-x-12 -translate-x-full group-hover:translate-x-0 transition-all duration-300 rounded"></span>
-                </Link>
-                <Link href="/contact" className="text-sm uppercase tracking-[0.2em] text-white hover:text-primary py-2 font-light relative group overflow-hidden cursor-pointer">
-                  <span className="relative z-10 transition-transform duration-300 group-active:scale-95">CONTACT US</span>
-                  <span className="absolute inset-0 w-full h-full bg-primary/0 group-hover:bg-primary/10 transform -skew-x-12 -translate-x-full group-hover:translate-x-0 transition-all duration-300 rounded"></span>
-                </Link>
-              </nav>
-              
-              {/* Contact Icons - Mobile */}
-              <div className="flex items-center justify-end mt-5 pt-4 border-t border-white/10">
-                <button 
-                  className="w-10 h-10 rounded-full border border-white/30 flex items-center justify-center transition-all duration-300 ease-in-out hover:border-primary active:scale-95 active:bg-primary/10 relative overflow-hidden cursor-pointer"
-                  aria-label="Phone contact"
-                >
-                  <span className="absolute inset-0 bg-primary/0 hover:bg-primary/10 transform scale-0 hover:scale-100 transition-transform duration-500 rounded-full"></span>
-                  <svg 
-                    xmlns="http://www.w3.org/2000/svg" 
-                    className="h-4 w-4 text-white relative z-10" 
-                    viewBox="0 0 24 24" 
-                    fill="none" 
-                    stroke="currentColor" 
-                    strokeWidth="1.5" 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round"
-                  >
-                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                  </svg>
-                </button>
-                <button 
-                  className="w-10 h-10 rounded-full border border-white/30 flex items-center justify-center transition-all duration-300 ease-in-out hover:border-primary active:scale-95 active:bg-primary/10 relative overflow-hidden cursor-pointer"
-                  aria-label="Email contact"
-                >
-                  <span className="absolute inset-0 bg-primary/0 hover:bg-primary/10 transform scale-0 hover:scale-100 transition-transform duration-500 rounded-full"></span>
-                  <svg 
-                    xmlns="http://www.w3.org/2000/svg" 
-                    className="h-4 w-4 text-white relative z-10" 
-                    viewBox="0 0 24 24" 
-                    fill="none" 
-                    stroke="currentColor" 
-                    strokeWidth="1.5" 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round"
-                  >
-                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                    <polyline points="22,6 12,13 2,6"></polyline>
-                  </svg>
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
-      </header>
+      {/* Navigation Bar - Now using the Navbar component */}
+      <Navbar onMobileMenuToggle={handleMobileMenuToggle} />
 
       {/* Hero Section */}
       <section data-section className="h-screen w-full overflow-hidden relative flex items-center">
@@ -448,42 +253,61 @@ export default function Home() {
 
       {/* Conditions We Treat Section */}
       <ConditionsSection />
-
+      
+      {/* Pricing Section */}
+      <PricingSection />
+      
       {/* Ketamine Education Section */}
       <section data-section className="w-full py-16 md:py-24 bg-black/30 backdrop-blur-md">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center">
             <div className="w-full md:w-1/2 mb-8 md:mb-0">
               <div className="relative w-full h-[300px] md:h-[400px] overflow-hidden rounded-lg">
-                <Image 
-                  src="https://images.unsplash.com/photo-1501854140801-50d01698950b?q=80&w=1920&auto=format&fit=crop"
-                  alt="Nature background"
-                  fill
-                  className="object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent"></div>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-16 h-16 rounded-full bg-primary/90 flex items-center justify-center cursor-pointer hover:bg-primary transition-colors duration-300 hover:scale-110 transform">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
+                {videoPlaying ? (
+                  <iframe 
+                    src="https://www.youtube.com/embed/_uLNBoyzA8I?autoplay=1" 
+                    title="Ketamine-Assisted Psychotherapy (KAP)" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowFullScreen
+                    className="absolute inset-0 w-full h-full"
+                  ></iframe>
+                ) : (
+                  <div className="relative w-full h-full bg-neutral-900 flex items-center justify-center">
+                    <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent"></div>
+                    <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
+                      <div className="text-center px-4 mb-6">
+                        <h3 className="text-xl font-medium mb-2">Ketamine-Assisted Psychotherapy</h3>
+                        <p className="text-sm text-white/70">Click to watch the video</p>
+                      </div>
+                      <div 
+                        onClick={toggleVideo}
+                        className="w-16 h-16 rounded-full bg-primary/90 flex items-center justify-center cursor-pointer hover:bg-primary transition-colors duration-300 hover:scale-110 transform"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
             <div className="w-full md:w-1/2 md:pl-12">
-              <h2 className="text-3xl md:text-4xl font-light text-white mb-4">What is Ketamine?</h2>
+              <h2 className="text-3xl md:text-4xl font-light text-white mb-4">Understanding KAP</h2>
               <div className="w-[60px] h-[1px] bg-primary mb-6"></div>
               <p className="text-white/80 mb-6 leading-relaxed">
-                Ketamine is a medication that has long been used safely as an anesthetic and analgesic agent. It is now increasingly applied clinically as an off-label treatment for various chronic treatment-resistant mental health conditions, such as depression, anxiety disorders, PTSD, and OCD.
+                Ketamine-Assisted Psychotherapy (KAP) combines the therapeutic effects of ketamine with professional psychotherapy to create a unique healing experience for treatment-resistant conditions.
               </p>
               <p className="text-white/80 mb-6 leading-relaxed">
-                Ketamine works by allowing people to take a break from their everyday normal thinking. People tend to have a more relaxed mind with a reduction in negative thought patterns, allowing for new insights and behavioral changes.
+                KAP works by allowing people to take a break from their everyday thinking patterns. The ketamine experience creates a window of neuroplasticity, helping patients gain new insights and make meaningful behavioral changes with the guidance of a trained therapist.
               </p>
-              <Link href="/resources" className="inline-block text-primary border border-primary px-6 py-2 rounded-full text-sm hover:bg-primary hover:text-black transition-all duration-300 cursor-pointer">
-                Learn More
-              </Link>
+              <button 
+                onClick={toggleVideo}
+                className="inline-block text-primary border border-primary px-6 py-2 rounded-full text-sm hover:bg-primary hover:text-black transition-all duration-300 cursor-pointer"
+              >
+                {videoPlaying ? "Hide Video" : "Learn About KAP"}
+              </button>
             </div>
           </div>
         </div>
@@ -545,7 +369,7 @@ export default function Home() {
             <div className="bg-white/5 backdrop-blur-sm p-6 rounded-lg border border-white/10 hover:border-primary/30 transition-all duration-300 group cursor-pointer">
               <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors duration-300">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 11l-2.25 2.25l6.5-6.5m-4.5 4.5l6.5 6.5" />
                 </svg>
               </div>
               <h3 className="text-xl font-medium text-foreground mb-2 group-hover:text-primary transition-colors duration-300">Ketamine-Assisted Psychotherapy</h3>
@@ -571,7 +395,7 @@ export default function Home() {
             <div className="bg-white/5 backdrop-blur-sm p-6 rounded-lg border border-white/10 hover:border-primary/30 transition-all duration-300 group cursor-pointer">
               <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors duration-300">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17l-2.25 2.25l6.5-6.5m-4.5 4.5l6.5 6.5" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 11l-2.25 2.25l6.5-6.5m-4.5 4.5l6.5 6.5" />
                 </svg>
               </div>
               <h3 className="text-xl font-medium text-foreground mb-2 group-hover:text-primary transition-colors duration-300">Psychedelic Integration</h3>

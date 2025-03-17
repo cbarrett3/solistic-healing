@@ -5,11 +5,18 @@ import { motion } from 'framer-motion';
 interface SectionHeadingProps {
   title: string;
   subtitle?: string;
+  align?: 'left' | 'center' | 'right';
 }
 
-export default function SectionHeading({ title, subtitle }: SectionHeadingProps) {
+export default function SectionHeading({ title, subtitle, align = 'left' }: SectionHeadingProps) {
+  const alignmentClasses = {
+    left: 'text-left',
+    center: 'text-center mx-auto',
+    right: 'text-right ml-auto'
+  };
+
   return (
-    <div className="relative">
+    <div className={`relative ${alignmentClasses[align]}`}>
       <motion.h2 
         className="text-3xl sm:text-4xl font-light text-theme-primary leading-tight relative inline-block"
         initial={{ opacity: 0.9 }}
@@ -28,7 +35,7 @@ export default function SectionHeading({ title, subtitle }: SectionHeadingProps)
       
       {subtitle && (
         <motion.p 
-          className="mt-2 text-theme-secondary text-sm max-w-md"
+          className={`mt-2 text-theme-secondary text-sm ${align === 'center' ? 'max-w-2xl mx-auto' : 'max-w-md'}`}
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 0.5 }}
