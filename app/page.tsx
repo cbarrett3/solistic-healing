@@ -251,7 +251,7 @@ export default function Home() {
                     "I received my M.A in Counseling and Psychological Services from Saint Mary's University of Minnesota with a Graduate Certificate in Addiction Studies.",
                     "My approach to healing is informed by cognitive-behavioral therapy, transpersonal psychology, person-centered therapy, & somatic and mindfulness-based therapies."
                   ]}
-                  imageSrc="/eric.jpeg"
+                  imageSrc="/eric-cutout.png"
                 />
               </motion.div>
             </div>

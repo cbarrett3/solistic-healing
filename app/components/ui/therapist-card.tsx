@@ -16,64 +16,62 @@ export default function TherapistCard({ name, title, bio, imageSrc }: TherapistC
   
   return (
     <motion.div 
-      className="about-card rounded-lg overflow-hidden backdrop-blur-sm transition-all duration-300 group"
+      className="about-card bg-card/30 backdrop-blur-md rounded-xl overflow-hidden shadow-lg border border-border/10 transition-all duration-300"
       initial={{ opacity: 0.95 }}
       whileHover={{ 
         opacity: 1,
         scale: 1.01,
+        boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
       }}
       transition={{ duration: 0.3 }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="flex flex-col md:flex-row">
-        <motion.div 
-          className="md:w-2/5 lg:w-1/3 relative h-[180px] md:h-auto overflow-hidden"
-          animate={{ 
-            scale: isHovered ? 1.03 : 1
-          }}
-          transition={{ duration: 0.4 }}
-        >
-          <Image 
-            src={imageSrc}
-            alt={name}
-            width={300}
-            height={400}
-            className="object-cover w-full h-full transition-all duration-700 hover:scale-105 therapist-image-filter"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
-        </motion.div>
-        
-        <div className="p-5 md:p-6 flex-1">
-          <motion.div
-            initial={{ width: '0%' }}
-            animate={{ width: isHovered ? '40%' : '0%' }}
-            transition={{ duration: 0.5 }}
-            className="h-0.5 bg-primary absolute top-0 left-0"
-          />
-          
-          <h3 className="text-lg text-theme-primary font-medium mb-2 group-hover:text-primary transition-colors duration-300">
-            Welcome Message from Our Therapist
+      {/* Compact layout with better space utilization */}
+      <div className="p-4 sm:p-6">
+        {/* Header section with title */}
+        <div className="mb-4 sm:mb-6">
+          <h3 className="text-lg sm:text-xl md:text-2xl font-light text-foreground">
+            Welcome Message from <span className="text-primary font-medium">Our Therapist</span>
           </h3>
+          <div className="h-0.5 w-12 sm:w-16 bg-primary mt-2"></div>
+        </div>
+        
+        {/* Main content area with image and text side by side */}
+        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+          {/* Image container - compact and properly sized */}
+          <div className="relative w-full sm:w-1/3 flex-shrink-0">
+            <div className="aspect-[4/5] relative rounded-lg overflow-hidden bg-gradient-to-br from-background/80 via-background/50 to-primary/5">
+              <motion.div
+                animate={{ y: isHovered ? -5 : 0 }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
+                className="absolute inset-0 flex items-center justify-center"
+              >
+                <Image 
+                  src={imageSrc}
+                  alt={name}
+                  width={300}
+                  height={400}
+                  className="object-cover h-full w-full filter brightness-105 contrast-105 saturate-[1.05]"
+                  priority
+                />
+              </motion.div>
+              
+              {/* Name overlay at bottom of image */}
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-background/90 to-transparent p-3">
+                <div className="text-primary font-medium text-sm">{name}</div>
+                <div className="text-muted-foreground text-xs">{title}</div>
+              </div>
+            </div>
+          </div>
           
-          {bio.map((paragraph, index) => (
-            <p key={index} className="text-theme-secondary mb-2 text-sm leading-relaxed line-clamp-2 lg:line-clamp-2 pr-4">
-              {paragraph}
-            </p>
-          ))}
-          
-          <div className="text-primary text-sm font-medium mt-3 flex items-center pr-6">
-            <motion.span
-              animate={{ 
-                x: isHovered ? [0, 2, 0] : 0
-              }}
-              transition={{ repeat: isHovered ? Infinity : 0, duration: 1 }}
-              className="inline-block mr-2"
-            >
-              {name}
-            </motion.span>
-            <br />
-            <span className="text-theme-tertiary font-normal block mt-1">{title}</span>
+          {/* Text content - optimized for readability */}
+          <div className="flex-1 space-y-3">
+            {bio.map((paragraph, index) => (
+              <p key={index} className="text-xs sm:text-sm md:text-base text-muted-foreground leading-relaxed">
+                {paragraph}
+              </p>
+            ))}
           </div>
         </div>
       </div>
