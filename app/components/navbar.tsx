@@ -44,6 +44,20 @@ export default function Navbar({ onMobileMenuToggle }: NavbarProps) {
   const handleIconMouseDown = (index: number) => setPressedIcon(index);
   const handleIconMouseUp = () => setPressedIcon(null);
 
+  // Handle link click to prevent default behavior
+  const handleLinkClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    // No scrolling behavior - just update the URL
+    const href = (e.currentTarget as HTMLAnchorElement).getAttribute('href');
+    if (href) {
+      window.history.pushState({}, '', href);
+    }
+    // Close mobile menu if open
+    if (mobileMenuOpen) {
+      toggleMobileMenu();
+    }
+  };
+
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
       scrolled ? 'bg-background/90 backdrop-blur-sm shadow-sm' : 'bg-transparent'
@@ -95,20 +109,36 @@ export default function Navbar({ onMobileMenuToggle }: NavbarProps) {
                 onMouseLeave={handleIconMouseLeave}
                 onMouseDown={() => handleIconMouseDown(index)}
                 onMouseUp={handleIconMouseUp}
+                onClick={handleLinkClick}
               >
                 {item}
                 <motion.span
                   className="absolute -bottom-1 left-0 h-[1px] bg-primary"
                   initial={{ width: 0 }}
-                  animate={{ 
-                    width: hoveredIcon === index ? '100%' : 0,
-                    scaleX: pressedIcon === index ? 0.9 : 1 
-                  }}
+                  animate={{ width: hoveredIcon === index ? '100%' : 0 }}
                   transition={{ duration: 0.3 }}
-                ></motion.span>
+                />
               </Link>
             ))}
           </nav>
+
+          {/* Mobile Navigation */}
+          {mobileMenuOpen && (
+            <div className="fixed inset-0 top-16 bg-background/95 backdrop-blur-sm z-40 sm:hidden">
+              <nav className="flex flex-col items-center justify-center h-full">
+                {['Home', 'About', 'Services', 'Pricing', 'Contact'].map((item, index) => (
+                  <Link
+                    key={index}
+                    href={`#${item.toLowerCase()}`}
+                    className="text-lg font-light uppercase tracking-wider text-foreground hover:text-primary my-4 transition-colors duration-300"
+                    onClick={handleLinkClick}
+                  >
+                    {item}
+                  </Link>
+                ))}
+              </nav>
+            </div>
+          )}
         </div>
       </div>
 
@@ -125,7 +155,7 @@ export default function Navbar({ onMobileMenuToggle }: NavbarProps) {
                 <Link
                   href={`#${item.toLowerCase()}`}
                   className="block text-foreground hover:text-primary transition-colors duration-300 uppercase text-sm tracking-wider"
-                  onClick={toggleMobileMenu}
+                  onClick={handleLinkClick}
                 >
                   {item}
                 </Link>

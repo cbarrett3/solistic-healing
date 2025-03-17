@@ -3,7 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { useSectionScroll } from "../hooks/use-section-scroll";
 import { motion } from "framer-motion";
 import SectionHeading from "./components/section-heading";
 import TherapistCard from "./components/therapist-card";
@@ -14,13 +13,6 @@ import Navbar from "./components/navbar";
 
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  // Initialize section scrolling
-  useSectionScroll({
-    sectionSelector: 'section[data-section]',
-    threshold: 150,
-    cooldown: 800
-  });
 
   // Add effect to handle body overflow when mobile menu is open
   useEffect(() => {
