@@ -14,7 +14,6 @@ import Navbar from "./components/navbar";
 
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [videoPlaying, setVideoPlaying] = useState(false);
 
   // Initialize section scrolling
   useSectionScroll({
@@ -39,11 +38,6 @@ export default function Home() {
   // Handle mobile menu toggle from Navbar component
   const handleMobileMenuToggle = (isOpen: boolean) => {
     setMobileMenuOpen(isOpen);
-  };
-
-  // Handle video play toggle
-  const toggleVideo = () => {
-    setVideoPlaying(!videoPlaying);
   };
 
   return (
@@ -78,18 +72,18 @@ export default function Home() {
               {/* Main content */}
               <div className="ml-0 sm:ml-6 max-w-[600px] mt-3">
                 <h2 className="text-4xl sm:text-5xl md:text-6xl font-light leading-[1.1] text-white mb-4">
-                  Your Path to<br />
-                  Mental Wellness<br />
-                  Starts Here
+                  <span className="block text-primary">Transformative</span>
+                  <span className="block">Ketamine-Assisted</span>
+                  <span className="block">Psychotherapy</span>
                 </h2>
                 <div className="w-[80px] sm:w-[100px] h-[1px] bg-white/40 my-3"></div>
                 <p className="text-white/90 max-w-[500px] mb-5 text-base font-light leading-relaxed">
                   Offering individual psychotherapy, ketamine-assisted psychotherapy, and psychedelic integration services to help you find healing, purpose, and a renewed sense of self.
                 </p>
-                <button className="bg-primary text-black uppercase font-medium px-8 py-3 rounded-full text-sm tracking-[0.15em] relative overflow-hidden group transition-all duration-300 hover:shadow-[0_0_20px_rgba(var(--color-primary-rgb)/0.7)] active:scale-95 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-black/20 cursor-pointer">
+                <button className="bg-primary text-black uppercase font-medium px-8 py-3 rounded-full text-sm tracking-[0.15em] relative overflow-hidden transition-all duration-300 hover:shadow-[0_0_20px_rgba(var(--color-primary-rgb)/0.7)] active:scale-95 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-black/20 cursor-pointer">
                   <span className="relative z-10">LEARN MORE</span>
                   <span className="absolute inset-0 bg-white/0 group-hover:bg-white/20 transition-colors duration-300"></span>
-                  <span className="absolute bottom-0 left-0 w-full h-0 bg-black/10 group-hover:h-full transition-all duration-300 ease-in-out"></span>
+                  <span className="absolute bottom-0 left-0 w-full h-0 bg-black/10 group-hover:w-full transition-all duration-300 ease-in-out"></span>
                 </button>
                 
                 <div className="mt-8">
@@ -107,18 +101,27 @@ export default function Home() {
                 <div className="mr-4 text-sm text-white text-right tracking-wide font-light">
                   Watch Our Story
                 </div>
-                <div className="relative">
-                  <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white/80 hover:border-primary group transition-all duration-300 cursor-pointer shadow-lg hover:shadow-[0_0_15px_rgba(var(--color-primary-rgb)/0.6)] active:scale-95">
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 z-10"></div>
-                    <Image 
-                      src="https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=100&auto=format&fit=crop"
-                      alt="Profile"
-                      width={56}
-                      height={56}
-                      className="object-cover transition-transform duration-500 group-hover:scale-110"
-                    />
+                <a 
+                  href="https://www.youtube.com/watch?v=_uLNBoyzA8I" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="relative group"
+                >
+                  <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-white/80 hover:border-primary group-hover:border-primary transition-all duration-300 cursor-pointer shadow-lg hover:shadow-[0_0_15px_rgba(var(--color-primary-rgb)/0.6)] active:scale-95">
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 z-10 rounded-full"></div>
+                    <div className="absolute inset-0 flex items-center justify-center z-20">
+                      <div className="w-6 h-6 bg-black/50 rounded-full flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M8 5v14l11-7z" />
+                        </svg>
+                      </div>
+                    </div>
+                    <div 
+                      className="w-full h-full bg-cover bg-center"
+                      style={{ backgroundImage: "url('https://i.ytimg.com/vi/_uLNBoyzA8I/hqdefault.jpg')" }}
+                    ></div>
                   </div>
-                </div>
+                </a>
               </div>
               
               {/* Services Card - Desktop Only */}
@@ -149,6 +152,46 @@ export default function Home() {
                 </div>
               </div>
             </div>
+            
+            {/* Mobile-only Watch Story Element - Positioned at bottom of screen */}
+            <div className="flex md:hidden items-center justify-end fixed bottom-10 right-4 z-10">
+              <div className="mr-3 text-sm text-white text-right tracking-wide font-light drop-shadow-md">
+                Watch Our Story
+              </div>
+              <a 
+                href="https://www.youtube.com/watch?v=_uLNBoyzA8I" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="relative group"
+              >
+                <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-white/80 hover:border-primary group-hover:border-primary transition-all duration-300 cursor-pointer shadow-lg hover:shadow-[0_0_15px_rgba(var(--color-primary-rgb)/0.6)] active:scale-95">
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 z-10 rounded-full"></div>
+                  <div className="absolute inset-0 flex items-center justify-center z-20">
+                    <div className="w-6 h-6 bg-black/50 rounded-full flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                    </div>
+                  </div>
+                  <div 
+                    className="w-full h-full bg-cover bg-center"
+                    style={{ backgroundImage: "url('https://i.ytimg.com/vi/_uLNBoyzA8I/hqdefault.jpg')" }}
+                  ></div>
+                </div>
+              </a>
+            </div>
+            
+            {/* Mobile Services Button - Shows a modal or navigates to services page */}
+            <div className="md:hidden fixed bottom-10 left-4 z-10">
+              <Link href="/services" className="bg-white text-black rounded-full px-5 py-3 flex items-center shadow-lg group relative overflow-hidden transition-all duration-300 active:scale-95 hover:shadow-[0_0_15px_rgba(255,255,255,0.4)] cursor-pointer">
+                <span className="font-medium text-sm relative z-10">View Services</span>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-2 relative z-10 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+                <span className="absolute inset-0 bg-primary/0 group-hover:bg-primary/90 transition-all duration-300"></span>
+                <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-primary group-hover:w-full transition-all duration-300 ease-out"></span>
+              </Link>
+            </div>
           </div>
           
           {/* Mobile-only Watch Story Element - Positioned at bottom of screen */}
@@ -156,30 +199,27 @@ export default function Home() {
             <div className="mr-3 text-sm text-white text-right tracking-wide font-light drop-shadow-md">
               Watch Our Story
             </div>
-            <div className="relative">
-              <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-white/80 hover:border-primary group transition-all duration-300 cursor-pointer shadow-lg hover:shadow-[0_0_15px_rgba(var(--color-primary-rgb)/0.6)] active:scale-95">
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 z-10"></div>
-                <Image 
-                  src="https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=100&auto=format&fit=crop"
-                  alt="Profile"
-                  width={48}
-                  height={48}
-                  className="object-cover transition-transform duration-500 group-hover:scale-110"
-                />
+            <a 
+              href="https://www.youtube.com/watch?v=_uLNBoyzA8I" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="relative group"
+            >
+              <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-white/80 hover:border-primary group-hover:border-primary transition-all duration-300 cursor-pointer shadow-lg hover:shadow-[0_0_15px_rgba(var(--color-primary-rgb)/0.6)] active:scale-95">
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 z-10 rounded-full"></div>
+                <div className="absolute inset-0 flex items-center justify-center z-20">
+                  <div className="w-6 h-6 bg-black/50 rounded-full flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </div>
+                </div>
+                <div 
+                  className="w-full h-full bg-cover bg-center"
+                  style={{ backgroundImage: "url('https://i.ytimg.com/vi/_uLNBoyzA8I/hqdefault.jpg')" }}
+                ></div>
               </div>
-            </div>
-          </div>
-          
-          {/* Mobile Services Button - Shows a modal or navigates to services page */}
-          <div className="md:hidden fixed bottom-10 left-4 z-10">
-            <Link href="/services" className="bg-white text-black rounded-full px-5 py-3 flex items-center shadow-lg group relative overflow-hidden transition-all duration-300 active:scale-95 hover:shadow-[0_0_15px_rgba(255,255,255,0.4)] cursor-pointer">
-              <span className="font-medium text-sm relative z-10">View Services</span>
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-2 relative z-10 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-              <span className="absolute inset-0 bg-primary/0 group-hover:bg-primary/90 transition-all duration-300"></span>
-              <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-primary group-hover:w-full transition-all duration-300 ease-out"></span>
-            </Link>
+            </a>
           </div>
         </div>
       </section>
@@ -263,34 +303,26 @@ export default function Home() {
           <div className="flex flex-col md:flex-row items-center">
             <div className="w-full md:w-1/2 mb-8 md:mb-0">
               <div className="relative w-full h-[300px] md:h-[400px] overflow-hidden rounded-lg">
-                {videoPlaying ? (
-                  <iframe 
-                    src="https://www.youtube.com/embed/_uLNBoyzA8I?autoplay=1" 
-                    title="Ketamine-Assisted Psychotherapy (KAP)" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                    allowFullScreen
-                    className="absolute inset-0 w-full h-full"
-                  ></iframe>
-                ) : (
-                  <div className="relative w-full h-full bg-neutral-900 flex items-center justify-center">
-                    <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent"></div>
-                    <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
-                      <div className="text-center px-4 mb-6">
-                        <h3 className="text-xl font-medium mb-2">Ketamine-Assisted Psychotherapy</h3>
-                        <p className="text-sm text-white/70">Click to watch the video</p>
-                      </div>
-                      <div 
-                        onClick={toggleVideo}
-                        className="w-16 h-16 rounded-full bg-primary/90 flex items-center justify-center cursor-pointer hover:bg-primary transition-colors duration-300 hover:scale-110 transform"
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                      </div>
+                <div className="relative w-full h-full bg-neutral-900 flex items-center justify-center">
+                  <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent"></div>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
+                    <div className="text-center px-4 mb-6">
+                      <h3 className="text-xl font-medium mb-2">Ketamine-Assisted Psychotherapy</h3>
+                      <p className="text-sm text-white/70">Click to watch our story</p>
                     </div>
+                    <a 
+                      href="https://www.youtube.com/watch?v=_uLNBoyzA8I" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="w-16 h-16 rounded-full bg-primary/90 flex items-center justify-center cursor-pointer hover:bg-primary transition-colors duration-300 hover:scale-110 transform"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </a>
                   </div>
-                )}
+                </div>
               </div>
             </div>
             <div className="w-full md:w-1/2 md:pl-12">
@@ -302,12 +334,14 @@ export default function Home() {
               <p className="text-white/80 mb-6 leading-relaxed">
                 KAP works by allowing people to take a break from their everyday thinking patterns. The ketamine experience creates a window of neuroplasticity, helping patients gain new insights and make meaningful behavioral changes with the guidance of a trained therapist.
               </p>
-              <button 
-                onClick={toggleVideo}
+              <a 
+                href="https://www.youtube.com/watch?v=_uLNBoyzA8I" 
+                target="_blank" 
+                rel="noopener noreferrer"
                 className="inline-block text-primary border border-primary px-6 py-2 rounded-full text-sm hover:bg-primary hover:text-black transition-all duration-300 cursor-pointer"
               >
-                {videoPlaying ? "Hide Video" : "Learn About KAP"}
-              </button>
+                Watch Our Story
+              </a>
             </div>
           </div>
         </div>
@@ -444,7 +478,7 @@ export default function Home() {
               </div>
             </div>
             <div className="mt-8">
-              <Link href="/contact" className="bg-primary text-black uppercase font-medium px-8 py-3 rounded-full text-sm tracking-[0.15em] relative overflow-hidden group transition-all duration-300 hover:shadow-[0_0_20px_rgba(var(--color-primary-rgb)/0.7)] active:scale-95 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-black/20 cursor-pointer">
+              <Link href="/contact" className="bg-primary text-black uppercase font-medium px-8 py-3 rounded-full text-sm tracking-[0.15em] relative overflow-hidden transition-all duration-300 hover:shadow-[0_0_20px_rgba(var(--color-primary-rgb)/0.7)] active:scale-95 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-black/20 cursor-pointer">
                 <span className="relative z-10">CONTACT US</span>
                 <span className="absolute inset-0 bg-white/0 group-hover:bg-white/20 transition-colors duration-300"></span>
                 <span className="absolute bottom-0 left-0 w-full h-0 bg-black/10 group-hover:h-full transition-all duration-300 ease-in-out"></span>
