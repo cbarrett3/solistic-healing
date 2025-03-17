@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 import SectionHeading from "./components/section-heading";
 import TherapistCard from "./components/therapist-card";
 import MissionSection from "./components/mission-section";
+import ConditionsSection from "./components/conditions-section";
 import "./styles/about-us.css";
 
 export default function Home() {
@@ -445,6 +446,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Conditions We Treat Section */}
+      <ConditionsSection />
 
       {/* Ketamine Education Section */}
       <section data-section className="w-full py-16 md:py-24 bg-black/30 backdrop-blur-md">

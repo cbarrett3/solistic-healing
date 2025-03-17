@@ -1,0 +1,162 @@
+/* Conditions Section Styling */
+.conditions-section {
+  --conditions-bg: oklch(98% 0.01 240);
+  --conditions-text-primary: oklch(30% 0.02 240);
+  --conditions-text-secondary: oklch(40% 0.02 240);
+  --conditions-accent: oklch(60% 0.18 140);
+  --conditions-card-bg: oklch(97% 0.01 240 / 0.7);
+  --conditions-card-border: oklch(90% 0.02 240);
+  --conditions-card-shadow: oklch(20% 0.02 240 / 0.05);
+  --conditions-image-filter: brightness(1.05) contrast(1.05);
+  --conditions-image-border: oklch(90% 0.02 240 / 0.6);
+}
+
+.dark .conditions-section {
+  --conditions-bg: oklch(15% 0.02 240);
+  --conditions-text-primary: oklch(90% 0.02 240);
+  --conditions-text-secondary: oklch(80% 0.02 240);
+  --conditions-accent: oklch(70% 0.18 140);
+  --conditions-card-bg: oklch(20% 0.02 240 / 0.7);
+  --conditions-card-border: oklch(25% 0.02 240);
+  --conditions-card-shadow: oklch(10% 0.02 240 / 0.2);
+  --conditions-image-filter: brightness(0.95) contrast(1.1) saturate(1.05);
+  --conditions-image-border: oklch(25% 0.02 240 / 0.6);
+}
+
+.conditions-section {
+  background-color: var(--conditions-bg);
+  color: var(--conditions-text-primary);
+  position: relative;
+  overflow: hidden;
+}
+
+.conditions-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 70% 30%, color-mix(in oklch, var(--conditions-accent) 5%, transparent), transparent 60%);
+  z-index: 0;
+}
+
+.condition-card {
+  background-color: var(--conditions-card-bg);
+  border: 1px solid var(--conditions-card-border);
+  box-shadow: 0 4px 12px var(--conditions-card-shadow);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.condition-card p {
+  color: var(--conditions-text-secondary);
+}
+
+.condition-indicator {
+  background-color: var(--conditions-accent);
+}
+
+.learn-more-btn {
+  background-color: var(--conditions-accent);
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.learn-more-btn:hover {
+  background-color: color-mix(in oklch, var(--conditions-accent), white 10%);
+  box-shadow: 0 4px 12px color-mix(in oklch, var(--conditions-accent), black 40%, 0.3);
+}
+
+.condition-image {
+  display: flex;
+  height: 100%;
+}
+
+.condition-image img {
+  filter: var(--conditions-image-filter);
+  transition: filter 0.5s ease;
+}
+
+.condition-image:hover img {
+  filter: var(--conditions-image-filter) saturate(1.1);
+}
+
+/* Picture frame styling */
+.condition-image-frame {
+  position: relative;
+  border: 4px solid var(--conditions-card-bg);
+  box-shadow: 
+    0 0 0 1px var(--conditions-card-border),
+    0 8px 16px var(--conditions-card-shadow);
+  transition: all 0.3s ease;
+  height: 100%;
+}
+
+.condition-image-frame::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border: 1px solid var(--conditions-image-border);
+  z-index: 20;
+  pointer-events: none;
+}
+
+.condition-image-frame::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border: 1px solid var(--conditions-accent);
+  opacity: 0.2;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.dark .condition-image-frame {
+  border-color: var(--conditions-card-bg);
+  box-shadow: 
+    0 0 0 1px var(--conditions-card-border),
+    0 8px 16px var(--conditions-card-shadow);
+}
+
+/* Responsive adjustments */
+@container (min-width: 400px) {
+  .condition-card {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .condition-card {
+    min-height: 140px;
+  }
+  
+  .condition-card p {
+    max-height: 4.5rem;
+    overflow: hidden;
+  }
+  
+  .condition-image-frame {
+    min-height: 240px;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1023px) {
+  .condition-card {
+    min-height: 160px;
+  }
+  
+  .condition-image-frame {
+    min-height: 280px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .condition-card {
+    min-height: 180px;
+  }
+}
