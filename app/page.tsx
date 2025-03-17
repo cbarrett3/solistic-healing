@@ -8,6 +8,7 @@ import SectionHeading from "./components/section-heading";
 import TherapistCard from "./components/therapist-card";
 import MissionSection from "./components/mission-section";
 import ConditionsSection from "./components/conditions-section";
+import MediaShowcase from "./components/media-showcase";
 import PricingSection from "./components/pricing-section";
 import Navbar from "./components/navbar";
 
@@ -285,6 +286,9 @@ export default function Home() {
 
       {/* Conditions We Treat Section */}
       <ConditionsSection />
+      
+      {/* Media Showcase Section */}
+      <MediaShowcase />
       
       {/* Pricing Section */}
       <PricingSection />

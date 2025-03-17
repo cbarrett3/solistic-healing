@@ -38,12 +38,6 @@ export default function Navbar({ onMobileMenuToggle }: NavbarProps) {
     };
   }, [scrolled]);
 
-  // Handler functions for icon interactions
-  const handleIconMouseEnter = (index: number) => setHoveredIcon(index);
-  const handleIconMouseLeave = () => setHoveredIcon(null);
-  const handleIconMouseDown = (index: number) => setPressedIcon(index);
-  const handleIconMouseUp = () => setPressedIcon(null);
-
   // Handle link click to prevent default behavior
   const handleLinkClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -57,6 +51,15 @@ export default function Navbar({ onMobileMenuToggle }: NavbarProps) {
       toggleMobileMenu();
     }
   };
+
+  // Handler functions for icon interactions
+  const handleIconMouseEnter = (index: number) => setHoveredIcon(index);
+  const handleIconMouseLeave = () => setHoveredIcon(null);
+  const handleIconMouseDown = (index: number) => setPressedIcon(index);
+  const handleIconMouseUp = () => setPressedIcon(null);
+
+  // Navigation items array
+  const navItems = ['Home', 'About', 'Services', 'Media', 'Pricing', 'Contact'];
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -98,7 +101,7 @@ export default function Navbar({ onMobileMenuToggle }: NavbarProps) {
 
           {/* Desktop Navigation */}
           <nav className="hidden sm:flex items-center space-x-8">
-            {['Home', 'About', 'Services', 'Pricing', 'Contact'].map((item, index) => (
+            {navItems.map((item, index) => (
               <Link
                 key={index}
                 href={`#${item.toLowerCase()}`}
@@ -126,7 +129,7 @@ export default function Navbar({ onMobileMenuToggle }: NavbarProps) {
           {mobileMenuOpen && (
             <div className="fixed inset-0 top-16 bg-background/95 backdrop-blur-sm z-40 sm:hidden">
               <nav className="flex flex-col items-center justify-center h-full">
-                {['Home', 'About', 'Services', 'Pricing', 'Contact'].map((item, index) => (
+                {navItems.map((item, index) => (
                   <Link
                     key={index}
                     href={`#${item.toLowerCase()}`}
@@ -150,7 +153,7 @@ export default function Navbar({ onMobileMenuToggle }: NavbarProps) {
       >
         <nav className="container mx-auto px-5 py-4">
           <ul className="flex flex-col space-y-4">
-            {['Home', 'About', 'Services', 'Pricing', 'Contact'].map((item, index) => (
+            {navItems.map((item, index) => (
               <li key={index}>
                 <Link
                   href={`#${item.toLowerCase()}`}
