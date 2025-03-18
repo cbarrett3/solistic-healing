@@ -167,7 +167,11 @@ export default function ConditionsSection() {
                   }}
                   priority
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent z-10"></div>
+                
+                {/* Gradient overlay matching Eric's image */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent"></div>
+                
+                {/* Hover color overlay */}
                 <div 
                   className="absolute inset-0"
                   style={{
@@ -176,16 +180,13 @@ export default function ConditionsSection() {
                   }}
                 />
                 
-                <motion.div 
-                  className="absolute bottom-2 left-2 right-2 z-20"
-                  initial={{ y: 10, opacity: 0.8 }}
-                  whileHover={{ y: 0, opacity: 1 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <p className="text-white text-[10px] sm:text-xs bg-black/30 backdrop-blur-sm p-1.5 rounded-lg border border-white/10 shadow-lg">
-                    Our holistic approach combines evidence-based therapies.
-                  </p>
-                </motion.div>
+                {/* Text overlay with engaging quote */}
+                <div className="absolute bottom-0 left-0 right-0 p-4 pb-5 bg-gradient-to-t from-black/80 to-transparent">
+                  <div className="text-white font-light text-xs sm:text-sm italic">
+                    "Healing is not an overnight process. It is a daily cleansing of pain, a daily healing of your life."
+                  </div>
+                  <div className="text-primary/90 text-xs mt-1 font-medium">— Leon Brown</div>
+                </div>
               </div>
             </div>
           </div>
