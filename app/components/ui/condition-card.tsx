@@ -14,28 +14,27 @@ export default function ConditionCard({ title, description, index }: ConditionCa
   const [isHovered, setIsHovered] = useState(false);
   
   return (
-    <div className="group h-full relative">
-      {/* Hover effect container - maintains size */}
-      <div className="absolute inset-0 transition-transform duration-300 group-hover:-translate-y-4 pointer-events-none"></div>
-      
-      <motion.div 
-        className="condition-card rounded-lg p-3 sm:p-4 h-full transition-all duration-300 relative flex flex-col"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: index * 0.1 }}
+    <motion.div 
+      className="h-full"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+    >
+      <div 
+        className={`
+          h-full rounded-xl p-4 flex flex-col relative
+          border border-solid transition-all duration-300
+          ${isHovered ? 'border-primary/30 shadow-lg -translate-y-2 bg-card/40' : 'border-white/10 bg-card/20'}
+        `}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        style={{
-          transform: 'translate3d(0, 0, 0)',
-          transformStyle: 'preserve-3d'
-        }}
       >
-        <div className="flex items-center mb-2">
+        <div className="flex items-center mb-3">
           <motion.div
-            className="condition-indicator w-1.5 h-1.5 rounded-full mr-2"
+            className="w-2 h-2 rounded-full mr-2.5 bg-primary"
             animate={{ 
-              scale: isHovered ? [1, 1.5, 1] : 1,
-              boxShadow: isHovered ? "0 0 10px var(--conditions-accent)" : "0 0 0px transparent"
+              scale: isHovered ? [1, 1.2, 1] : 1,
+              opacity: isHovered ? 1 : 0.7
             }}
             transition={{ 
               duration: 1.5, 
@@ -43,53 +42,42 @@ export default function ConditionCard({ title, description, index }: ConditionCa
               repeatType: "reverse" 
             }}
           />
-          <motion.h4 
-            className="text-base sm:text-lg font-medium relative"
-            animate={{
-              color: isHovered ? "var(--conditions-accent)" : "var(--conditions-text-primary)"
-            }}
-            transition={{ duration: 0.3 }}
+          <h4 
+            className={`text-base sm:text-lg font-medium relative transition-colors duration-300 ${
+              isHovered ? 'text-primary' : ''
+            }`}
           >
             {title}
             <motion.span 
-              className="absolute -bottom-1 left-0 h-0.5 bg-primary/70"
+              className="absolute -bottom-1 left-0 h-0.5 bg-primary"
               initial={{ width: "0%" }}
               animate={{ width: isHovered ? "100%" : "0%" }}
               transition={{ duration: 0.4 }}
             />
-          </motion.h4>
+          </h4>
         </div>
         
-        <div className="pl-3 pr-1 flex-grow flex flex-col">
-          <p className="text-xs sm:text-sm leading-relaxed line-clamp-4 sm:line-clamp-none flex-grow">
+        <div className="flex-grow flex flex-col">
+          <p className="text-xs sm:text-sm leading-relaxed line-clamp-4 sm:line-clamp-none flex-grow text-muted-foreground">
             {description}
           </p>
           
-          {/* Fixed-height container for the Learn More button */}
-          <div className="h-5 mt-2 text-xs text-right">
-            <motion.span 
-              className="text-primary underline cursor-pointer inline-block"
+          {/* Learn More button */}
+          <div className="h-6 mt-3 text-xs">
+            <motion.div 
+              className="inline-flex items-center text-primary cursor-pointer"
               initial={{ opacity: 0 }}
               animate={{ opacity: isHovered ? 1 : 0 }}
               transition={{ duration: 0.3 }}
             >
-              Learn more
-            </motion.span>
+              <span className="mr-1">Learn more</span>
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </motion.div>
           </div>
         </div>
-        
-        {/* Shadow and border effect on hover */}
-        <motion.div 
-          className="absolute inset-0 rounded-lg pointer-events-none"
-          initial={{ boxShadow: "0 0 0 0 rgba(0,0,0,0), 0 0 0 0 rgba(0,0,0,0)" }}
-          animate={{ 
-            boxShadow: isHovered 
-              ? "0 12px 24px rgba(0, 0, 0, 0.1), 0 0 0 2px var(--conditions-accent)" 
-              : "0 0 0 0 rgba(0,0,0,0), 0 0 0 0 rgba(0,0,0,0)" 
-          }}
-          transition={{ duration: 0.3 }}
-        />
-      </motion.div>
-    </div>
+      </div>
+    </motion.div>
   );
 }
