@@ -226,7 +226,7 @@ export default function Home() {
         <div className="container mx-auto px-4 about-us-content">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 max-w-screen-xl mx-auto about-us-grid">
             {/* Left Column */}
-            <div>
+            <div className="flex flex-col h-full">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -243,7 +243,7 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
                 viewport={{ once: true }}
-                className="mt-5"
+                className="mt-5 flex-1 flex flex-col"
               >
                 <TherapistCard
                   name="Eric Peterson"
@@ -258,27 +258,28 @@ export default function Home() {
             </div>
             
             {/* Right Column */}
-            <div>
+            <div className="flex flex-col h-full">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.1 }}
                 viewport={{ once: true }}
+                className="flex-1 flex flex-col h-full"
               >
                 <MissionSection
                   title="Our Mission & Approach"
                   points={[
                     {
                       title: "Holistic Healing",
-                      description: "We believe in treating the whole person, not just symptoms. Our approach integrates mind, body, and spirit for complete wellness."
+                      description: "We believe in treating the whole person, not just symptoms. Our approach integrates mind, body, and spirit for complete wellness, addressing the interconnected nature of psychological, physical, and emotional health to create lasting transformation."
                     },
                     {
                       title: "Evidence-Based Practices",
-                      description: "Our therapeutic methods are grounded in research and proven techniques, ensuring effective and reliable care."
+                      description: "Our therapeutic methods are grounded in rigorous research and proven techniques, ensuring effective and reliable care. We continuously update our approaches based on the latest advancements in neuroscience, psychology, and integrative medicine to provide optimal outcomes."
                     },
                     {
                       title: "Personalized Care",
-                      description: "We recognize that each individual's journey is unique. Our treatment plans are tailored to your specific needs and goals."
+                      description: "We recognize that each individual's journey is unique. Our treatment plans are carefully tailored to your specific needs, goals, and circumstances, honoring your personal history and creating a collaborative healing partnership that respects your autonomy and lived experience."
                     }
                   ]}
                 />
