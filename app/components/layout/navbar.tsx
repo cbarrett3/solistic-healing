@@ -61,16 +61,33 @@ export default function Navbar({ onMobileMenuToggle }: NavbarProps) {
         const width = window.innerWidth;
         let dynamicOffset = -20; // Default offset
         
-        if (width < 640) {
-          dynamicOffset = -40; // xs screens
-        } else if (width < 768) {
-          dynamicOffset = -30; // sm screens
-        } else if (width < 1024) {
-          dynamicOffset = -20; // md screens
-        } else if (width < 1280) {
-          dynamicOffset = -10; // lg screens
+        // Special case for About section (transforming-lives)
+        if (targetId === 'transforming-lives') {
+          // Using positive offsets to position it higher (closer to top of viewport)
+          if (width < 640) {
+            dynamicOffset = -120; // xs screens
+          } else if (width < 768) {
+            dynamicOffset = -110; // sm screens
+          } else if (width < 1024) {
+            dynamicOffset = -100; // md screens
+          } else if (width < 1280) {
+            dynamicOffset = -90; // lg screens
+          } else {
+            dynamicOffset = -80; // xl screens
+          }
         } else {
-          dynamicOffset = 0; // xl screens
+          // For all other sections
+          if (width < 640) {
+            dynamicOffset = -40; // xs screens
+          } else if (width < 768) {
+            dynamicOffset = -30; // sm screens
+          } else if (width < 1024) {
+            dynamicOffset = -20; // md screens
+          } else if (width < 1280) {
+            dynamicOffset = -10; // lg screens
+          } else {
+            dynamicOffset = 0; // xl screens
+          }
         }
         
         const offsetTop = targetElement.getBoundingClientRect().top + window.pageYOffset + dynamicOffset;
