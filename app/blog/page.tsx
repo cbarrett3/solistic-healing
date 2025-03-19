@@ -9,7 +9,7 @@ import { Search, Calendar, Clock, Tag, ArrowRight } from 'lucide-react';
 import { Navbar } from '../components/layout';
 import { SectionHeading } from '../components/ui';
 
-// Define types
+// define blog post type
 interface BlogPost {
   id: number;
   title: string;
@@ -27,7 +27,7 @@ interface BlogPost {
   };
 }
 
-// Sample blog posts data
+// sample blog content for development
 const blogPosts: BlogPost[] = [
   {
     id: 1,
@@ -152,10 +152,11 @@ const blogPosts: BlogPost[] = [
   },
 ];
 
-// Available categories for filtering
+// extract unique categories for filters
 const categories = Array.from(new Set(blogPosts.map(post => post.category)));
 
 export default function BlogPage() {
+  // state for ui interactions and filtering
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [hoveredPostId, setHoveredPostId] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -163,12 +164,12 @@ export default function BlogPage() {
   const [filteredPosts, setFilteredPosts] = useState(blogPosts);
   const [masonry, setMasonry] = useState<number[][]>([]);
   
-  // Handle mobile menu toggle from Navbar component
+  // sync mobile menu with navbar component
   const handleMobileMenuToggle = (isOpen: boolean) => {
     setMobileMenuOpen(isOpen);
   };
   
-  // Filter posts based on search query and selected category
+  // apply search and category filters
   useEffect(() => {
     let result = blogPosts;
     
@@ -188,49 +189,49 @@ export default function BlogPage() {
     setFilteredPosts(result);
   }, [searchQuery, selectedCategory]);
 
-  // Generate masonry layout
+  // create responsive masonry layout
   useEffect(() => {
     if (filteredPosts.length === 0) return;
     
-    // Create a masonry layout with 4 columns
+    // four column grid for desktop
     const columns = 4;
     const layout: number[][] = Array.from({ length: columns }, () => []);
     
-    // Distribute posts across columns
-    filteredPosts.forEach((post, index) => {
-      // Determine size based on index
+    // distribute posts across columns
+    filteredPosts.forEach((post: BlogPost, index: number) => {
+      // featured posts get more space
       const isLarge = index % 7 === 0;
       const isWide = index % 9 === 2;
       const isTall = index % 5 === 1;
       
       if (isLarge) {
-        // Large posts take 2 columns
+        // large posts take 2 columns
         const shortestCol = layout.indexOf(layout.reduce((prev, curr) => 
           prev.reduce((a, b) => a + b, 0) <= curr.reduce((a, b) => a + b, 0) ? prev : curr
         ));
         const nextCol = (shortestCol + 1) % columns;
         
-        // Add to both columns with height 2
+        // add to both columns with height 2
         layout[shortestCol].push(2);
-        layout[nextCol].push(0); // Placeholder to skip this column for next item
+        layout[nextCol].push(0); // placeholder to skip this column for next item
       } else if (isWide) {
-        // Wide posts take 2 columns with height 1
+        // wide posts take 2 columns with height 1
         const shortestCol = layout.indexOf(layout.reduce((prev, curr) => 
           prev.reduce((a, b) => a + b, 0) <= curr.reduce((a, b) => a + b, 0) ? prev : curr
         ));
         const nextCol = (shortestCol + 1) % columns;
         
         layout[shortestCol].push(1);
-        layout[nextCol].push(0); // Placeholder
+        layout[nextCol].push(0); // placeholder
       } else if (isTall) {
-        // Tall posts take 1 column with height 2
+        // tall posts take 1 column with height 2
         const shortestCol = layout.indexOf(layout.reduce((prev, curr) => 
           prev.reduce((a, b) => a + b, 0) <= curr.reduce((a, b) => a + b, 0) ? prev : curr
         ));
         
         layout[shortestCol].push(2);
       } else {
-        // Regular posts take 1 column with height 1
+        // regular posts take 1 column with height 1
         const shortestCol = layout.indexOf(layout.reduce((prev, curr) => 
           prev.reduce((a, b) => a + b, 0) <= curr.reduce((a, b) => a + b, 0) ? prev : curr
         ));
@@ -242,15 +243,15 @@ export default function BlogPage() {
     setMasonry(layout);
   }, [filteredPosts]);
   
-  // Featured post is the first one marked as featured
+  // featured post is the first one marked as featured
   const featuredPost = blogPosts.find(post => post.featured);
   
   return (
     <div className="min-h-screen relative bg-background">
-      {/* Navigation Bar */}
+      {/* navigation bar */}
       <Navbar onMobileMenuToggle={handleMobileMenuToggle} forceDarkMode={true} />
       
-      {/* Hero Section */}
+      {/* hero section */}
       <section className="pt-20 md:pt-24 pb-6 md:pb-8 w-full relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-primary/10 to-background z-0"></div>
         <div className="container mx-auto px-4 relative z-10">
@@ -264,7 +265,7 @@ export default function BlogPage() {
               <span className="text-white">Insights</span>
               <span className="text-primary font-medium">&nbsp;& Resources</span>
               
-              {/* Simple two-color underline */}
+              {/* simple two-color underline */}
               <motion.div 
                 className="absolute -bottom-3 left-0 w-full h-[3px] rounded-full"
                 initial={{ opacity: 0 }}
@@ -287,13 +288,13 @@ export default function BlogPage() {
         </div>
       </section>
       
-      {/* Search and Filter Section */}
+      {/* search and filter section */}
       <section className="py-4 w-full relative">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6">
-            {/* Search and Filter Section */}
+            {/* search and filter section */}
             <div className="w-full flex flex-col gap-4">
-              {/* Search Bar */}
+              {/* search bar */}
               <div className="relative max-w-md w-full">
                 <input
                   type="text"
@@ -338,7 +339,7 @@ export default function BlogPage() {
                 )}
               </div>
               
-              {/* Category Filters */}
+              {/* category filters */}
               <div className="flex flex-wrap gap-2">
                 <button
                   onClick={() => setSelectedCategory(null)}
@@ -366,7 +367,7 @@ export default function BlogPage() {
                 ))}
               </div>
               
-              {/* Filter Status */}
+              {/* filter status */}
               {(selectedCategory || searchQuery) && (
                 <div className="text-sm text-foreground/60 flex items-center gap-2">
                   <span>
@@ -392,7 +393,7 @@ export default function BlogPage() {
         </div>
       </section>
       
-      {/* Featured Article Section */}
+      {/* featured article section */}
       {featuredPost && (
         <section className="py-8 md:py-12">
           <div className="container mx-auto px-4">
@@ -419,7 +420,7 @@ export default function BlogPage() {
               whileHover={{ y: -5 }}
             >
               <div className="grid grid-cols-1 lg:grid-cols-5 h-full">
-                {/* Image - takes full width on mobile, side on desktop */}
+                {/* image - takes full width on mobile, side on desktop */}
                 <div className="lg:col-span-2 relative overflow-hidden">
                   <div className="relative aspect-[16/9] lg:h-full w-full overflow-hidden">
                     <Image
@@ -434,11 +435,15 @@ export default function BlogPage() {
                   </div>
                 </div>
                 
-                {/* Content - larger portion */}
+                {/* content - larger portion */}
                 <div className="lg:col-span-3 p-5 sm:p-6 md:p-8 relative">
                   <div className="flex flex-wrap items-center gap-3 mb-4">
                     <button 
-                      onClick={() => setSelectedCategory(featuredPost.category)}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setSelectedCategory(featuredPost.category);
+                      }}
                       className="px-3 py-1 bg-primary/90 text-white text-xs rounded-full hover:bg-primary transition-colors duration-300"
                     >
                       {featuredPost.category}
@@ -497,10 +502,10 @@ export default function BlogPage() {
         </section>
       )}
       
-      {/* Blog Content */}
+      {/* blog content */}
       <section className="py-10 md:py-16">
         <div className="container mx-auto px-4">
-          {/* All Posts Grid */}
+          {/* all posts grid */}
           <div className="mb-8">
             <motion.h2 
               className="text-2xl md:text-3xl font-light mb-6 inline-block relative"
@@ -519,22 +524,22 @@ export default function BlogPage() {
             
             {filteredPosts.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-0 border-t border-l border-foreground/10">
-                {filteredPosts.map((post, index) => {
-                  // Determine article size based on index
-                  const isLarge = index % 7 === 0; // Every 7th item is large
-                  const isMedium = index % 5 === 1; // Every 5th item (offset by 1) is medium
-                  const isWide = index % 9 === 2; // Every 9th item (offset by 2) is wide
+                {filteredPosts.map((post: BlogPost, index: number) => {
+                  // determine article size based on index
+                  const isLarge = index % 7 === 0; 
+                  const isMedium = index % 5 === 1; 
+                  const isWide = index % 9 === 2; 
                   
-                  // Calculate height based on content
+                  // calculate height based on content
                   const heightClass = isLarge || isMedium ? 'row-span-2' : 'row-span-1';
                   
-                  // Calculate width based on content
+                  // calculate width based on content
                   const widthClass = isLarge || isWide ? 'col-span-2' : 'col-span-1';
                   
-                  // Skip placeholder items (used for wide/large items)
+                  // skip placeholder items (used for wide/large items)
                   if (index > 0 && (
-                    (filteredPosts[index-1] && index % 7 === 1) || // Skip after large
-                    (filteredPosts[index-1] && index % 9 === 3)    // Skip after wide
+                    (filteredPosts[index-1] && index % 7 === 1) || 
+                    (filteredPosts[index-1] && index % 9 === 3)    
                   )) {
                     return null;
                   }
@@ -547,7 +552,7 @@ export default function BlogPage() {
                       animate={{ opacity: 1 }}
                       transition={{ duration: 0.3, delay: 0.02 * Math.min(index, 10) }}
                     >
-                      {/* Subtle background image */}
+                      {/* subtle background image */}
                       <div className="absolute inset-0 w-full h-full opacity-[0.05] group-hover:opacity-[0.08] transition-opacity duration-500">
                         <Image
                           src={post.imageSrc}
@@ -559,10 +564,10 @@ export default function BlogPage() {
                         />
                       </div>
                       
-                      {/* Content - Text-oriented approach */}
+                      {/* content - text-oriented approach */}
                       <div className="p-3 flex flex-col h-full relative z-10">
                         <Link href={`/blog/${post.id}`} className="group h-full flex flex-col">
-                          {/* Category */}
+                          {/* category */}
                           <button
                             onClick={(e) => {
                               e.preventDefault();
@@ -574,17 +579,17 @@ export default function BlogPage() {
                             {post.category}
                           </button>
                           
-                          {/* Title */}
+                          {/* title */}
                           <h3 className={`${isLarge ? 'text-sm sm:text-base font-semibold' : 'text-xs font-medium'} mb-1.5 line-clamp-3 group-hover:text-primary transition-colors duration-300`}>
                             {post.title}
                           </h3>
                           
-                          {/* Excerpt */}
+                          {/* excerpt */}
                           <p className="text-[10px] text-foreground/70 mb-2 flex-grow line-clamp-3">
                             {post.excerpt}
                           </p>
                           
-                          {/* Author and date */}
+                          {/* author and date */}
                           <div className="flex items-center justify-between mt-auto pt-2 border-t border-foreground/10 text-[9px] text-foreground/60">
                             <div className="flex items-center gap-1.5">
                               <div className="relative w-4 h-4 rounded-full overflow-hidden">
@@ -603,7 +608,7 @@ export default function BlogPage() {
                         </Link>
                       </div>
                       
-                      {/* Hover indicator */}
+                      {/* hover indicator */}
                       <div className="absolute bottom-0 left-0 w-full h-0.5 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
                     </motion.div>
                   );
@@ -636,7 +641,7 @@ export default function BlogPage() {
             )}
           </div>
           
-          {/* Resource Section */}
+          {/* resource section */}
           <div className="mt-16 md:mt-24"></div>
         </div>
       </section>

@@ -47,9 +47,32 @@ export default function Footer() {
             <div className="flex items-center">
               <div className="mr-3 transition-transform duration-500 ease-out">
                 <div className="w-8 h-8 flex items-center justify-center">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-8 h-8 text-primary">
-                    <path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z" strokeWidth="0.5" fill="currentColor" />
-                    <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" strokeWidth="1" />
+                  <svg viewBox="0 0 24 24" fill="none" className="w-8 h-8 text-primary transition-all duration-300 hover:drop-shadow-[0_0_8px_rgba(var(--color-primary-rgb)/0.8)]">
+                    {/* Circle */}
+                    <circle cx="12" cy="12" r="8" stroke="currentColor" strokeWidth="1.5" fill="none" />
+                    
+                    {/* Tree/peace symbol */}
+                    <path 
+                      d="M12 4V20" 
+                      stroke="currentColor" 
+                      strokeWidth="1.5" 
+                      strokeLinecap="round" 
+                    />
+                    
+                    {/* Branches/peace lines */}
+                    <path 
+                      d="M12 8L8 12M12 8L16 12" 
+                      stroke="currentColor" 
+                      strokeWidth="1.5" 
+                      strokeLinecap="round" 
+                    />
+                    
+                    <path 
+                      d="M12 14L9 17M12 14L15 17" 
+                      stroke="currentColor" 
+                      strokeWidth="1.5" 
+                      strokeLinecap="round" 
+                    />
                   </svg>
                 </div>
               </div>

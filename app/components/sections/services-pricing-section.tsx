@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { SectionScrollArrow } from '../ui';
 
+// service data types
 interface ServiceItem {
   id: string;
   name: string;
@@ -13,6 +14,7 @@ interface ServiceItem {
   icon: React.ReactNode;
 }
 
+// pricing plan data type
 interface PricingPlan {
   id: string;
   name: string;
@@ -23,7 +25,7 @@ interface PricingPlan {
   serviceType: string;
 }
 
-// Service data
+// service offerings data
 const services: ServiceItem[] = [
   {
     id: 'kap',
@@ -57,7 +59,7 @@ const services: ServiceItem[] = [
   },
 ];
 
-// Pricing plans data
+// pricing plans data
 const pricingPlans: PricingPlan[] = [
   {
     id: 'kap-intro',
@@ -118,16 +120,23 @@ const pricingPlans: PricingPlan[] = [
   }
 ];
 
+// main component
 export default function ServicesPricingSection() {
+  // state for hovered plan
   const [hoveredPlan, setHoveredPlan] = useState<string | null>(null);
+  
+  // state for selected plan
   const [selectedPlan, setSelectedPlan] = useState<string | null>('kap-session');
+  
+  // state for active service tab
   const [activeServiceTab, setActiveServiceTab] = useState<string>('all');
 
+  // handle plan selection
   const handleSelectPlan = (planId: string) => {
     setSelectedPlan(planId);
   };
 
-  // Filter plans based on active service tab
+  // filter plans based on active service tab
   const filteredPlans = activeServiceTab === 'all' 
     ? pricingPlans 
     : pricingPlans.filter(plan => {
@@ -147,9 +156,9 @@ export default function ServicesPricingSection() {
           </p>
         </div>
 
-        {/* Services Overview with Image */}
+        {/* services overview with image */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-16">
-          {/* Left side - Image */}
+          {/* left side - image */}
           <motion.div
             className="relative h-[400px] md:h-[500px] rounded-xl overflow-hidden"
             initial={{ opacity: 0, x: -20 }}
@@ -174,7 +183,7 @@ export default function ServicesPricingSection() {
             </div>
           </motion.div>
 
-          {/* Right side - Services */}
+          {/* right side - services */}
           <div className="grid grid-cols-1 gap-6">
             {services.map((service, index) => (
               <motion.div 
@@ -204,7 +213,7 @@ export default function ServicesPricingSection() {
           </div>
         </div>
 
-        {/* Service Tabs */}
+        {/* service tabs */}
         <div className="flex flex-wrap justify-center gap-2 mb-10">
           <button
             className={`px-4 py-2 rounded-full text-sm transition-all cursor-pointer ${
@@ -231,7 +240,7 @@ export default function ServicesPricingSection() {
           ))}
         </div>
 
-        {/* Pricing Plans */}
+        {/* pricing plans */}
         <div className="text-center mb-10">
           <h3 className="text-2xl md:text-3xl font-light text-foreground">
             Service <span className="text-primary">Options</span>
@@ -249,7 +258,7 @@ export default function ServicesPricingSection() {
               onMouseEnter={() => setHoveredPlan(plan.id)}
               onMouseLeave={() => setHoveredPlan(null)}
             >
-              {/* Hover effect container */}
+              {/* hover effect container */}
               <div className="absolute inset-0 transition-transform duration-300 group-hover:-translate-y-4 pointer-events-none"></div>
               
               <motion.div
@@ -326,7 +335,7 @@ export default function ServicesPricingSection() {
         </div>
       </div>
       
-      {/* Scroll Arrow to FAQ Section */}
+      {/* scroll arrow to faq section */}
       <div className="mt-4">
         <SectionScrollArrow 
           targetSectionId="faq" 

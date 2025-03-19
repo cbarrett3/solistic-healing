@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 
-// Import from organized component directories
+// component imports
 import { Navbar } from "./components/layout";
 import { SectionHeading, TherapistCard, SectionScrollArrow } from "./components/ui";
 import { 
@@ -19,9 +19,10 @@ import {
 } from "./components/sections";
 
 export default function Home() {
+  // mobile menu state
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Add effect to handle body overflow when mobile menu is open
+  // prevent background scrolling when menu is open
   useEffect(() => {
     if (mobileMenuOpen) {
       document.body.style.overflow = 'hidden';
@@ -34,19 +35,19 @@ export default function Home() {
     };
   }, [mobileMenuOpen]);
 
-  // Handle mobile menu toggle from Navbar component
+  // sync with navbar component
   const handleMobileMenuToggle = (isOpen: boolean) => {
     setMobileMenuOpen(isOpen);
   };
 
   return (
     <div className="min-h-screen relative">
-      {/* Navigation Bar */}
+      {/* navigation */}
       <Navbar onMobileMenuToggle={handleMobileMenuToggle} />
 
-      {/* Hero Section */}
+      {/* hero section */}
       <section id="hero" data-section className="h-screen w-full overflow-hidden relative flex items-center">
-        {/* Background Image */}
+        {/* background image */}
         <div className="absolute inset-0 z-0">
           <Image 
             src="https://images.unsplash.com/photo-1501854140801-50d01698950b?q=80&w=1920&auto=format&fit=crop"
@@ -59,16 +60,16 @@ export default function Home() {
         </div>
         
         <div className="container mx-auto px-4 relative pt-16">
-          {/* Main Content Container - For better organization */}
+          {/* main content container */}
           <div className="flex flex-col md:flex-row md:items-start md:justify-between">
-            {/* Left Side Content */}
+            {/* left side content */}
             <div className="w-full md:w-1/2 lg:w-1/2">
-              {/* Subtitle */}
+              {/* subtitle */}
               <div className="text-white/80 text-xs uppercase tracking-[0.25em]">
                 SOLISTIC HEALING - MENTAL WELLNESS
               </div>
               
-              {/* Main content */}
+              {/* main content */}
               <div className="max-w-[600px] mt-3">
                 <h2 className="text-4xl sm:text-5xl md:text-6xl font-light leading-[1.1] text-white mb-4">
                   <span className="block text-primary">Transformative</span>
@@ -95,9 +96,9 @@ export default function Home() {
               </div>
             </div>
             
-            {/* Right Side Content - Desktop Only */}
+            {/* right side content - desktop only */}
             <div className="hidden md:block md:w-1/2 lg:w-1/2 relative md:pt-0">
-              {/* Watch Story Element */}
+              {/* watch story element */}
               <div className="flex items-center justify-end mb-6">
                 <div className="mr-4 text-sm text-white text-right tracking-wide font-light">
                   Watch Our Story
@@ -125,7 +126,7 @@ export default function Home() {
                 </a>
               </div>
               
-              {/* Services Card - Desktop Only */}
+              {/* services card - desktop only */}
               <div className="w-[220px] sm:w-[260px] lg:w-[280px] ml-auto">
                 <div className="bg-white dark:bg-neutral-900 rounded-2xl shadow-lg overflow-hidden transition-colors duration-300">
                   <div className="p-4 sm:p-5">
@@ -157,7 +158,7 @@ export default function Home() {
               </div>
             </div>
             
-            {/* Mobile-only Watch Story Element - Positioned at bottom of screen */}
+            {/* mobile-only watch story element - positioned at bottom of screen */}
             <div className="flex md:hidden items-center justify-end fixed bottom-10 right-4 z-10">
               <div className="mr-3 text-sm text-white text-right tracking-wide font-light drop-shadow-md">
                 Watch Our Story
@@ -185,7 +186,7 @@ export default function Home() {
               </a>
             </div>
             
-            {/* Mobile Services Button - Shows a modal or navigates to services page */}
+            {/* mobile services button - shows a modal or navigates to services page */}
             <div className="md:hidden fixed bottom-10 left-4 z-10">
               <Link href="/services" className="bg-white text-black rounded-full px-5 py-3 flex items-center shadow-lg group relative overflow-hidden transition-all duration-300 active:scale-95 hover:shadow-[0_0_15px_rgba(255,255,255,0.4)] cursor-pointer">
                 <span className="font-medium text-sm relative z-10">View Services</span>
@@ -198,7 +199,7 @@ export default function Home() {
             </div>
           </div>
           
-          {/* Mobile-only Watch Story Element - Positioned at bottom of screen */}
+          {/* mobile-only watch story element - positioned at bottom of screen */}
           <div className="flex md:hidden items-center justify-end fixed bottom-10 right-4 z-10">
             <div className="mr-3 text-sm text-white text-right tracking-wide font-light drop-shadow-md">
               Watch Our Story
@@ -227,7 +228,7 @@ export default function Home() {
           </div>
         </div>
         
-        {/* Scroll Arrow to Transforming Lives Section */}
+        {/* scroll arrow to transforming lives section */}
         <SectionScrollArrow 
           targetSectionId="transforming-lives" 
           offset={-60}
@@ -235,12 +236,12 @@ export default function Home() {
         />
       </section>
 
-      {/* Transforming Lives Section - Separate section for better structure */}
+      {/* transforming lives section */}
       <section id="transforming-lives" data-section className="w-full py-8 md:py-12 bg-background relative">
         <div className="container mx-auto px-4 md:px-6 lg:px-8">
           <div className="max-w-screen-xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-              {/* Left Column */}
+              {/* left column */}
               <div className="flex flex-col h-full">
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
@@ -272,7 +273,7 @@ export default function Home() {
                 </motion.div>
               </div>
               
-              {/* Right Column */}
+              {/* right column */}
               <div className="flex flex-col h-full">
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
@@ -303,7 +304,7 @@ export default function Home() {
             </div>
           </div>
           
-          {/* Scroll Arrow to Conditions Section */}
+          {/* scroll arrow to conditions section */}
           <SectionScrollArrow 
             targetSectionId="conditions" 
             offset={-60}
@@ -312,15 +313,15 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Conditions We Treat Section */}
+      {/* conditions we treat section */}
       <section id="conditions" data-section className="relative">
         <ConditionsSection />
       </section>
       
-      {/* Media Showcase Section */}
+      {/* media showcase section */}
       <section id="media" data-section className="relative">
         <MediaShowcase />
-        {/* Scroll Arrow to Blog Section */}
+        {/* scroll arrow to blog section */}
         <SectionScrollArrow 
           targetSectionId="blog" 
           offset={-60}
@@ -328,10 +329,10 @@ export default function Home() {
         />
       </section>
       
-      {/* Blog Showcase Section */}
+      {/* blog showcase section */}
       <section id="blog" data-section className="relative">
         <AutoScrollPosts />
-        {/* Scroll Arrow to Services Section */}
+        {/* scroll arrow to services section */}
         <SectionScrollArrow 
           targetSectionId="services-pricing" 
           offset={-60}
@@ -339,17 +340,17 @@ export default function Home() {
         />
       </section>
       
-      {/* Services & Pricing Section */}
+      {/* services & pricing section */}
       <section id="services-pricing" data-section className="relative">
         <ServicesPricingSection />
       </section>
       
-      {/* FAQ Section */}
+      {/* faq section */}
       <section id="faq" data-section className="relative">
         <FAQSection />
       </section>
       
-      {/* Contact Section */}
+      {/* contact section */}
       <section id="contact" data-section className="relative">
         <ContactSection />
       </section>

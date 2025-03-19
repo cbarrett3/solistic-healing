@@ -7,7 +7,7 @@ import Link from 'next/link';
 import ConditionCard from '../ui/condition-card';
 import { SectionScrollArrow } from '../ui';
 
-// Define the conditions data
+// our mental health journey map
 const conditions = [
   {
     title: 'Anxiety Disorders',
@@ -28,11 +28,13 @@ const conditions = [
 ];
 
 export default function ConditionsSection() {
+  // tracking user engagement states
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [isImageHovered, setIsImageHovered] = useState(false);
   
   useEffect(() => {
+    // reveal content on scroll
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -47,6 +49,7 @@ export default function ConditionsSection() {
       observer.observe(section);
     }
     
+    // cleanup observer on unmount
     return () => {
       if (section) {
         observer.unobserve(section);
@@ -58,9 +61,10 @@ export default function ConditionsSection() {
     <section className="conditions-section min-h-screen w-full flex items-center py-10 sm:py-12 md:py-16 lg:py-20 relative bg-background" data-section="conditions">
       <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-10 relative z-10">
         <div className="flex flex-col lg:flex-row gap-6 md:gap-8 h-full">
-          {/* Left Column - Header and Conditions Cards */}
+          {/* left column with cards */}
           <div className="w-full lg:w-2/3 order-2 lg:order-1">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-8">
+              {/* animated section title */}
               <motion.h2 
                 className="section-title text-2xl sm:text-3xl md:text-4xl font-light relative inline-block mb-4 sm:mb-0"
                 initial={{ opacity: 0, y: -20 }}
@@ -76,6 +80,7 @@ export default function ConditionsSection() {
                 />
               </motion.h2>
               
+              {/* learn more button */}
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={isVisible ? { opacity: 1, scale: 1 } : {}}
@@ -107,6 +112,7 @@ export default function ConditionsSection() {
               </motion.div>
             </div>
             
+            {/* condition cards grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6 @container">
               {conditions.map((condition, index) => (
                 <motion.div
@@ -121,9 +127,10 @@ export default function ConditionsSection() {
                     transition: { duration: 0.2 }
                   }}
                 >
-                  {/* Subtle background glow on hover */}
+                  {/* subtle background glow on hover */}
                   <div className="absolute -inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-lg blur-xl -z-10"></div>
                   
+                  {/* the condition card component */}
                   <ConditionCard
                     title={condition.title}
                     description={condition.description}
@@ -134,10 +141,10 @@ export default function ConditionsSection() {
             </div>
           </div>
           
-          {/* Right Column - Image */}
+          {/* right column with image */}
           <div className="w-full lg:w-1/3 order-1 lg:order-2 flex items-center justify-center">
             <div className="condition-image w-full max-w-[300px] lg:max-w-none mb-6 lg:mb-0 h-[350px] lg:h-full relative">
-              {/* Border container - separate from image for reliable effect */}
+              {/* border container - separate from image for reliable effect */}
               <div 
                 className="absolute -inset-1 rounded-lg bg-gradient-to-br from-primary to-primary/70"
                 style={{
@@ -148,7 +155,7 @@ export default function ConditionsSection() {
                 }}
               ></div>
               
-              {/* Image container */}
+              {/* image container */}
               <div 
                 className="aspect-[3/4] relative rounded-lg overflow-hidden shadow-xl bg-black"
                 style={{
@@ -196,11 +203,11 @@ export default function ConditionsSection() {
         </div>
       </div>
       
-      {/* Background Elements - Enhanced with more vibrant gradients */}
+      {/* background elements - enhanced with more vibrant gradients */}
       <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-primary/10 rounded-bl-[100px] -z-10 blur-3xl opacity-70"></div>
       <div className="absolute bottom-0 left-0 w-1/2 h-1/3 bg-primary/10 rounded-tr-[100px] -z-10 blur-3xl opacity-70"></div>
       
-      {/* Scroll Arrow to Media Section */}
+      {/* scroll arrow to media section */}
       <SectionScrollArrow 
         targetSectionId="media" 
         offset={-60}

@@ -10,8 +10,37 @@ interface ConditionCardProps {
   index: number;
 }
 
+// Define a base resource type with common properties
+type BaseResource = {
+  nimh: string;
+};
+
+// Define specific resource types for each condition
+type AnxietyResource = BaseResource & {
+  mayo: string;
+  adaa: string;
+};
+
+type PTSDResource = BaseResource & {
+  mayo: string;
+  ptsd: string;
+};
+
+type DepressionResource = BaseResource & {
+  mayo: string;
+  nami: string;
+};
+
+type AddictionResource = BaseResource & {
+  samhsa: string;
+  nida: string;
+};
+
+// Union type for all possible resources
+type ConditionResource = AnxietyResource | PTSDResource | DepressionResource | AddictionResource;
+
 // External resource links for each condition
-const conditionResources = {
+const conditionResources: Record<string, ConditionResource> = {
   'Anxiety Disorders': {
     nimh: 'https://www.nimh.nih.gov/health/topics/anxiety-disorders',
     mayo: 'https://www.mayoclinic.org/diseases-conditions/anxiety/symptoms-causes/syc-20350961',
@@ -37,8 +66,47 @@ const conditionResources = {
 export default function ConditionCard({ title, description, index }: ConditionCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   
-  // Get resources for this condition, or use empty object if not found
-  const resources = conditionResources[title as keyof typeof conditionResources] || {};
+  // finding our path through condition data
+  const resources = conditionResources[title as keyof typeof conditionResources] || {} as ConditionResource;
+  
+  // crafting links that connect minds
+  const renderResourceLink = (url: string | undefined, title: string, icon: React.ReactNode) => {
+    if (!url) return null;
+    
+    // gentle motion brings attention to knowledge
+    return (
+      <motion.a 
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 hover:bg-primary/20 text-primary transition-colors duration-200"
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.95 }}
+        title={title}
+      >
+        {icon}
+      </motion.a>
+    );
+  };
+  
+  // visual guides for different resource types
+  const documentIcon = (
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+    </svg>
+  );
+  
+  const chevronIcon = (
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.5 5.25l-7.5 7.5-7.5-7.5m15 6l-7.5 7.5-7.5-7.5" />
+    </svg>
+  );
+  
+  const externalLinkIcon = (
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+    </svg>
+  );
   
   return (
     <div 
@@ -46,6 +114,7 @@ export default function ConditionCard({ title, description, index }: ConditionCa
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
+      {/* container transforms with user interaction */}
       <div 
         className={`
           h-full rounded-xl p-4 flex flex-col relative
@@ -54,6 +123,7 @@ export default function ConditionCard({ title, description, index }: ConditionCa
         `}
       >
         <div className="flex items-center mb-3">
+          {/* tiny dot pulses like healing rhythm */}
           <motion.div
             className="w-2 h-2 rounded-full mr-2.5 bg-primary"
             animate={{ 
@@ -86,7 +156,7 @@ export default function ConditionCard({ title, description, index }: ConditionCa
             {description}
           </p>
           
-          {/* External resource links with icons */}
+          {/* resource links fade in on hover */}
           <div className="mt-3 flex items-center space-x-2">
             <motion.div 
               className="flex space-x-2"
@@ -95,61 +165,17 @@ export default function ConditionCard({ title, description, index }: ConditionCa
               transition={{ duration: 0.3 }}
             >
               {/* NIMH Link */}
-              {resources.nimh && (
-                <motion.a 
-                  href={resources.nimh}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 hover:bg-primary/20 text-primary transition-colors duration-200"
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
-                  title="National Institute of Mental Health"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
-                  </svg>
-                </motion.a>
-              )}
+              {renderResourceLink(resources.nimh, "National Institute of Mental Health", documentIcon)}
               
               {/* Mayo Clinic Link */}
-              {resources.mayo && (
-                <motion.a 
-                  href={resources.mayo}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 hover:bg-primary/20 text-primary transition-colors duration-200"
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
-                  title="Mayo Clinic"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.5 5.25l-7.5 7.5-7.5-7.5m15 6l-7.5 7.5-7.5-7.5" />
-                  </svg>
-                </motion.a>
-              )}
+              {'mayo' in resources && renderResourceLink(resources.mayo, "Mayo Clinic", chevronIcon)}
               
-              {/* Third resource - varies by condition */}
-              {(resources.adaa || resources.ptsd || resources.nami || resources.nida || resources.samhsa) && (
-                <motion.a 
-                  href={resources.adaa || resources.ptsd || resources.nami || resources.nida || resources.samhsa}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 hover:bg-primary/20 text-primary transition-colors duration-200"
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
-                  title={
-                    resources.adaa ? "Anxiety & Depression Association of America" :
-                    resources.ptsd ? "National Center for PTSD" :
-                    resources.nami ? "National Alliance on Mental Illness" :
-                    resources.nida ? "National Institute on Drug Abuse" :
-                    resources.samhsa ? "SAMHSA's National Helpline" : ""
-                  }
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
-                  </svg>
-                </motion.a>
-              )}
+              {/* Condition-specific third link */}
+              {'adaa' in resources && renderResourceLink(resources.adaa, "Anxiety & Depression Association of America", externalLinkIcon)}
+              {'ptsd' in resources && renderResourceLink(resources.ptsd, "National Center for PTSD", externalLinkIcon)}
+              {'nami' in resources && renderResourceLink(resources.nami, "National Alliance on Mental Illness", externalLinkIcon)}
+              {'nida' in resources && renderResourceLink(resources.nida, "National Institute on Drug Abuse", externalLinkIcon)}
+              {'samhsa' in resources && renderResourceLink(resources.samhsa, "SAMHSA's National Helpline", externalLinkIcon)}
               
               <motion.span 
                 className="text-xs text-primary/70 self-center"
