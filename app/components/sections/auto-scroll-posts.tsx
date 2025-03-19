@@ -10,11 +10,12 @@ const sampleBlogPosts = [
   {
     id: 1,
     title: 'Understanding the Mind-Body Connection in Therapy',
-    excerpt: 'Exploring how our physical sensations influence our mental state and how integrated approaches can lead to more effective healing.',
+    excerpt: 'Exploring how our physical sensations influence our mental state and how integrated approaches can lead to more effective healing. The mind-body connection is a powerful relationship that has been recognized by healers across cultures for thousands of years. Modern research continues to validate this ancient wisdom, showing how our thoughts and emotions can manifest physically, and how physical practices can transform our mental health.',
+    content: 'The concept of the mind-body connection acknowledges that our thoughts, feelings, beliefs, and attitudes can positively or negatively affect our biological functioning. In other words, our minds can affect how healthy our bodies are. Conversely, what we do with our physical body (what we eat, how much we exercise, even our posture) can impact our mental state, positively or negatively.\n\nThis connection is the foundation of many integrative healing approaches. When we understand that psychological factors can directly influence our physical health, we can develop more holistic treatment plans that address both aspects simultaneously.',
     category: 'Mind-Body',
     date: 'March 15, 2025',
     readTime: '6 min read',
-    imageSrc: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=800&auto=format&fit=crop',
+    imageSrc: 'https://images.unsplash.com/photo-1559595500-e15296bdbb48?q=80&w=800&auto=format&fit=crop',
     featured: true,
   },
   {
@@ -62,6 +63,7 @@ export default function AutoScrollPosts() {
   const containerRef = useRef<HTMLDivElement>(null);
   const controls = useAnimationControls();
   const [hoveredPostId, setHoveredPostId] = useState<number | null>(null);
+  const [isVisible, setIsVisible] = useState(false);
   
   // Find featured post and regular posts
   const featuredPost = sampleBlogPosts.find(post => post.featured);
@@ -69,6 +71,28 @@ export default function AutoScrollPosts() {
   
   // Duplicate regular posts to create a seamless loop
   const duplicatedRegularPosts = [...regularPosts, ...regularPosts];
+  
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+    
+    const section = document.querySelector('[data-section="blog"]');
+    if (section) {
+      observer.observe(section);
+    }
+    
+    return () => {
+      if (section) {
+        observer.unobserve(section);
+      }
+    };
+  }, []);
   
   useEffect(() => {
     const animate = async () => {
@@ -114,100 +138,110 @@ export default function AutoScrollPosts() {
   }, [controls]);
   
   return (
-    <section data-section className="w-full py-16 md:py-24 bg-gradient-to-b from-background to-background/95 overflow-hidden">
-      <div className="container mx-auto px-4">
-        <div className="flex flex-col items-center text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-light text-foreground mb-4">Latest Articles</h2>
-          <div className="w-[60px] h-[1px] bg-primary mb-6"></div>
-          <p className="text-foreground/70 max-w-[700px]">
-            Explore our latest articles on mental health, therapeutic approaches, and personal growth strategies.
-          </p>
-        </div>
+    <section data-section="blog" className="w-full py-12 sm:py-16 md:py-20 lg:py-24 bg-gradient-to-b from-background to-background/95 overflow-hidden">
+      <div className="container mx-auto px-4 sm:px-6">
+        <motion.div 
+          className="mb-8 sm:mb-10 md:mb-12"
+          initial={{ opacity: 0, y: 20 }}
+          animate={isVisible ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
+        >
+          <div className="flex flex-col items-start">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-light text-foreground mb-3 sm:mb-4">Latest Articles</h2>
+            <div className="w-12 sm:w-14 md:w-16 h-0.5 bg-primary mb-4 sm:mb-5"></div>
+            <p className="text-sm sm:text-base text-foreground/70 max-w-xl">
+              Explore our latest articles on mental health, therapeutic approaches, and personal growth strategies.
+            </p>
+          </div>
+        </motion.div>
         
-        {/* Featured post */}
+        {/* Featured post - Content-focused design */}
         {featuredPost && (
-          <div className="mb-12">
-            <motion.div 
-              className="mx-auto max-w-3xl group cursor-pointer"
-              initial={{ opacity: 0.9 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              whileHover={{ 
-                y: -4,
-                transition: { duration: 0.2 }
-              }}
-              whileTap={{ 
-                scale: 0.98,
-                transition: { duration: 0.1 }
-              }}
-              onMouseEnter={() => setHoveredPostId(featuredPost.id)}
-              onMouseLeave={() => setHoveredPostId(null)}
-            >
+          <motion.div 
+            className="mb-10 sm:mb-12 md:mb-16"
+            initial={{ opacity: 0, y: 30 }}
+            animate={isVisible ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.7, delay: 0.2 }}
+          >
+            <div className="group cursor-pointer mx-auto">
               <Link href="/blog" className="block h-full">
-                <div className="relative h-full overflow-hidden rounded-xl border-2 border-border/20 hover:border-primary/30 bg-card/30 backdrop-blur-md shadow-lg flex flex-col md:flex-row transition-all duration-300">
-                  {/* Featured post image */}
-                  <div className="relative w-full md:w-2/5 h-[200px] md:h-auto overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/40 to-transparent z-10 md:bg-gradient-to-r"></div>
-                    <motion.div
-                      animate={{ 
-                        scale: hoveredPostId === featuredPost.id ? 1.05 : 1 
-                      }}
-                      transition={{ duration: 0.4 }}
-                      className="h-full w-full"
-                    >
-                      <Image
-                        src={featuredPost.imageSrc}
-                        alt={featuredPost.title}
-                        fill
-                        className="object-cover opacity-70 group-hover:opacity-90 transition-opacity duration-300"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      />
-                    </motion.div>
-                    
-                    {/* Featured tag */}
-                    <div className="absolute top-4 left-4 z-20">
-                      <span className="bg-primary text-black text-xs font-medium px-2.5 py-1 rounded-full shadow-sm">
-                        Featured
-                      </span>
-                    </div>
-                  </div>
-                  
-                  {/* Content */}
-                  <div className="p-5 sm:p-6 flex-1 flex flex-col">
-                    <div className="flex items-center text-xs text-muted-foreground mb-3">
-                      <span className="text-primary">{featuredPost.category}</span>
-                      <span className="mx-2">•</span>
-                      <span>{featuredPost.date}</span>
-                      <span className="mx-2">•</span>
-                      <span>{featuredPost.readTime}</span>
+                <div className="rounded-xl border border-border/20 hover:border-primary/30 shadow-md transition-all duration-300 overflow-hidden">
+                  <div className="flex flex-col lg:flex-row">
+                    {/* Left side - Content */}
+                    <div className="p-5 sm:p-6 md:p-8 lg:p-10 lg:w-3/5 xl:w-2/3 flex flex-col">
+                      <div className="flex items-center text-xs text-muted-foreground mb-3 sm:mb-4">
+                        <span className="text-primary font-medium">{featuredPost.category}</span>
+                        <span className="mx-2">•</span>
+                        <span>{featuredPost.date}</span>
+                        <span className="mx-2">•</span>
+                        <span>{featuredPost.readTime}</span>
+                      </div>
+                      
+                      <h3 className="text-xl sm:text-2xl md:text-3xl font-medium text-foreground mb-3 sm:mb-4 md:mb-5 group-hover:text-primary transition-colors duration-300">
+                        {featuredPost.title}
+                      </h3>
+                      
+                      <p className="text-muted-foreground text-sm sm:text-base mb-4 sm:mb-5 md:mb-6">
+                        {featuredPost.excerpt}
+                      </p>
+                      
+                      <div className="mt-2 space-y-4 text-sm text-muted-foreground/90 hidden md:block">
+                        <p>{featuredPost.content?.split('\n\n')[0]}</p>
+                        <p className="line-clamp-3">{featuredPost.content?.split('\n\n')[1]}</p>
+                      </div>
+                      
+                      <div className="flex items-center text-primary text-sm font-medium mt-6 group-hover:translate-x-1 transition-transform duration-300">
+                        Read Full Article
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                      </div>
                     </div>
                     
-                    <h3 className="text-xl md:text-2xl font-medium text-foreground mb-3 group-hover:text-primary transition-colors duration-300">
-                      {featuredPost.title}
-                    </h3>
-                    
-                    <p className="text-muted-foreground text-sm md:text-base mb-6 flex-1">
-                      {featuredPost.excerpt}
-                    </p>
-                    
-                    <div className="flex items-center text-primary text-sm font-medium mt-auto group-hover:translate-x-1 transition-transform duration-300">
-                      Read Article
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                      </svg>
+                    {/* Right side - Image */}
+                    <div className="lg:w-2/5 xl:w-1/3 relative">
+                      <div className="relative h-[200px] sm:h-[240px] md:h-[280px] lg:h-full overflow-hidden">
+                        <div className="absolute inset-0 bg-gradient-to-r from-background/90 to-transparent z-10 lg:block hidden"></div>
+                        <div className="absolute inset-0 bg-gradient-to-t from-background/90 to-transparent z-10 lg:hidden"></div>
+                        <motion.div
+                          animate={{ 
+                            scale: hoveredPostId === featuredPost.id ? 1.05 : 1 
+                          }}
+                          transition={{ duration: 0.4 }}
+                          className="h-full w-full"
+                          onMouseEnter={() => setHoveredPostId(featuredPost.id)}
+                          onMouseLeave={() => setHoveredPostId(null)}
+                        >
+                          <Image
+                            src={featuredPost.imageSrc}
+                            alt={featuredPost.title}
+                            fill
+                            className="object-cover opacity-80 group-hover:opacity-95 transition-opacity duration-300"
+                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                            priority
+                          />
+                        </motion.div>
+                        
+                        {/* Featured tag */}
+                        <div className="absolute top-3 sm:top-4 right-3 sm:right-4 z-20">
+                          <span className="bg-primary text-black text-xs font-medium px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full shadow-sm">
+                            Featured
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </Link>
-            </motion.div>
-          </div>
+            </div>
+          </motion.div>
         )}
         
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="text-lg md:text-xl font-medium text-foreground">More Articles</h3>
+        <div className="flex items-center justify-between mb-4 sm:mb-5 md:mb-6">
+          <h3 className="text-base sm:text-lg md:text-xl font-medium text-foreground">More Articles</h3>
           <Link href="/blog" className="inline-flex items-center text-primary hover:text-primary/80 transition-colors">
             View All
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 sm:h-4 sm:w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
             </svg>
           </Link>
@@ -215,18 +249,20 @@ export default function AutoScrollPosts() {
       </div>
       
       {/* Auto-scrolling posts container */}
-      <div 
-        ref={containerRef} 
-        className="relative w-full"
-      >
-        <motion.div 
-          className="flex gap-6 py-4"
-          animate={controls}
+      <div className="container mx-auto px-4 sm:px-6 overflow-hidden">
+        <div 
+          ref={containerRef} 
+          className="relative w-full"
         >
-          {duplicatedRegularPosts.map((post, index) => (
-            <PostCard key={`${post.id}-${index}`} post={post} />
-          ))}
-        </motion.div>
+          <motion.div 
+            className="flex gap-4 sm:gap-5 md:gap-6 py-3 sm:py-4"
+            animate={controls}
+          >
+            {duplicatedRegularPosts.map((post, index) => (
+              <PostCard key={`${post.id}-${index}`} post={post} />
+            ))}
+          </motion.div>
+        </div>
       </div>
     </section>
   );
@@ -247,9 +283,9 @@ interface PostCardProps {
 function PostCard({ post }: PostCardProps) {
   return (
     <motion.div 
-      className="flex-shrink-0 w-[280px] sm:w-[320px] group cursor-pointer"
+      className="flex-shrink-0 w-[260px] sm:w-[280px] md:w-[320px] group cursor-pointer"
       whileHover={{ 
-        y: -5,
+        y: -4,
         transition: { duration: 0.2 }
       }}
       whileTap={{ 
@@ -258,47 +294,34 @@ function PostCard({ post }: PostCardProps) {
       }}
     >
       <Link href="/blog" className="block h-full">
-        <div className="relative h-full overflow-hidden rounded-xl border-2 border-border/20 hover:border-primary/30 bg-card/30 backdrop-blur-md shadow-lg flex flex-col transition-all duration-300">
-          {/* Post image */}
-          <div className="relative w-full h-[140px] overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/40 to-transparent z-10"></div>
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              transition={{ duration: 0.4 }}
-              className="h-full w-full"
-            >
-              <Image
-                src={post.imageSrc}
-                alt={post.title}
-                fill
-                className="object-cover opacity-70 group-hover:opacity-90 transition-opacity duration-300"
-                sizes="(max-width: 768px) 280px, 320px"
-              />
-            </motion.div>
+        <div className="h-full overflow-hidden rounded-xl border border-border/20 hover:border-primary/30 bg-card/30 backdrop-blur-md shadow-md transition-all duration-300">
+          {/* Image */}
+          <div className="relative h-[160px] sm:h-[180px] overflow-hidden">
+            <Image
+              src={post.imageSrc}
+              alt={post.title}
+              fill
+              className="object-cover opacity-70 group-hover:opacity-90 transition-opacity duration-300"
+              sizes="(max-width: 640px) 260px, (max-width: 768px) 280px, 320px"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/40 to-transparent"></div>
           </div>
           
           {/* Content */}
-          <div className="p-5 flex-1 flex flex-col">
-            <div className="flex items-center text-xs text-muted-foreground mb-3">
+          <div className="p-3 sm:p-4">
+            <div className="flex items-center text-xs text-muted-foreground mb-2">
               <span className="text-primary">{post.category}</span>
               <span className="mx-2">•</span>
-              <span>{post.date}</span>
+              <span>{post.readTime}</span>
             </div>
             
-            <h3 className="text-lg font-medium text-foreground mb-3 line-clamp-2 group-hover:text-primary transition-colors duration-300">
+            <h3 className="text-sm sm:text-base font-medium text-foreground mb-2 group-hover:text-primary transition-colors duration-300 line-clamp-2">
               {post.title}
             </h3>
             
-            <p className="text-muted-foreground text-sm mb-4 line-clamp-2 flex-1">
+            <p className="text-muted-foreground text-xs line-clamp-2 mb-2 sm:mb-3">
               {post.excerpt}
             </p>
-            
-            <div className="flex items-center text-primary text-sm font-medium mt-auto group-hover:translate-x-1 transition-transform duration-300">
-              Read
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-              </svg>
-            </div>
           </div>
         </div>
       </Link>

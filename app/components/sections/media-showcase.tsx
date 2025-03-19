@@ -207,14 +207,14 @@ export default function MediaShowcase() {
 
           {/* Video Thumbnails */}
           <div className="w-full lg:w-1/3 flex flex-col">
-            <h3 className="text-xl font-medium text-foreground mb-4">More Videos</h3>
+            <h3 className="text-xl font-medium text-foreground mb-3 sm:mb-4">More Videos</h3>
             
-            <div className="space-y-3 overflow-y-auto pr-2 custom-scrollbar flex-1">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-1 gap-2 sm:gap-3 overflow-y-auto pr-2 custom-scrollbar flex-1">
               {videos.map((video, index) => (
                 <motion.div 
                   key={video.id}
                   onClick={() => setActiveIndex(index)}
-                  className={`flex gap-3 p-2 rounded-lg cursor-pointer transition-all duration-300 ${
+                  className={`flex items-start gap-2 sm:gap-3 p-2 rounded-lg cursor-pointer transition-all duration-300 ${
                     activeIndex === index 
                       ? 'bg-primary/10 border-l-4 border-primary' 
                       : 'hover:bg-card/60'
@@ -223,7 +223,7 @@ export default function MediaShowcase() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: index * 0.05 }}
                 >
-                  <div className="relative w-24 h-16 flex-shrink-0 rounded-md overflow-hidden">
+                  <div className="relative w-20 h-14 sm:w-24 sm:h-16 flex-shrink-0 rounded-md overflow-hidden">
                     <img 
                       src={video.thumbnailUrl} 
                       alt={video.title}
@@ -243,7 +243,7 @@ export default function MediaShowcase() {
                     }`}>
                       {video.title}
                     </h4>
-                    <p className="text-xs text-muted-foreground line-clamp-2 mt-1">
+                    <p className="text-xs text-muted-foreground line-clamp-2 mt-0.5 sm:mt-1">
                       {video.description}
                     </p>
                   </div>

@@ -130,14 +130,10 @@ export default function ConditionsSection() {
           
           {/* Right Column - Image */}
           <div className="w-full lg:w-1/3 order-1 lg:order-2 flex items-center justify-center">
-            <div 
-              className="condition-image w-full max-w-[300px] lg:max-w-none mb-6 lg:mb-0 h-[350px] lg:h-full relative"
-              onMouseEnter={() => setIsImageHovered(true)}
-              onMouseLeave={() => setIsImageHovered(false)}
-            >
+            <div className="condition-image w-full max-w-[300px] lg:max-w-none mb-6 lg:mb-0 h-[350px] lg:h-full relative">
               {/* Border container - separate from image for reliable effect */}
               <div 
-                className="absolute -inset-0.5 rounded-xl bg-primary"
+                className="absolute -inset-1 rounded-lg bg-primary"
                 style={{
                   transform: isImageHovered ? 'translate(3px, -3px)' : 'translate(0, 0)',
                   transition: 'transform 0.4s ease-out',
@@ -147,31 +143,32 @@ export default function ConditionsSection() {
               
               {/* Image container */}
               <div 
-                className="relative h-full w-full rounded-xl overflow-hidden shadow-xl bg-black"
+                className="aspect-[3/4] relative rounded-lg overflow-hidden shadow-md bg-black"
                 style={{
                   transform: isImageHovered ? 'translate(3px, -3px)' : 'translate(0, 0)',
                   transition: 'transform 0.4s ease-out',
                   zIndex: 1,
                   position: 'relative'
                 }}
+                onMouseEnter={() => setIsImageHovered(true)}
+                onMouseLeave={() => setIsImageHovered(false)}
               >
-                <Image
+                <Image 
                   src="/beard.jpeg"
                   alt="Therapist portrait"
-                  fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  className="object-cover object-center"
+                  width={400}
+                  height={500}
+                  className="object-cover h-full w-full"
                   style={{ 
                     filter: isImageHovered ? 'brightness(1.05) contrast(1.05)' : 'brightness(1) contrast(1)',
+                    objectPosition: "center top",
                     transition: 'filter 0.4s ease-out'
                   }}
                   priority
                 />
                 
-                {/* Gradient overlay matching Eric's image */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent"></div>
                 
-                {/* Hover color overlay */}
                 <div 
                   className="absolute inset-0"
                   style={{
@@ -180,7 +177,6 @@ export default function ConditionsSection() {
                   }}
                 />
                 
-                {/* Text overlay with engaging quote */}
                 <div className="absolute bottom-0 left-0 right-0 p-4 pb-5 bg-gradient-to-t from-black/80 to-transparent">
                   <div className="text-white font-light text-xs sm:text-sm italic">
                     "Healing is not an overnight process. It is a daily cleansing of pain, a daily healing of your life."
