@@ -262,7 +262,7 @@ export default function BlogPage() {
               transition={{ duration: 0.6 }}
               className="text-3xl md:text-4xl lg:text-5xl font-light text-center mb-6 relative inline-block"
             >
-              <span className="text-white">Insights</span>
+              <span className="text-foreground dark:text-white">Insights</span>
               <span className="text-primary font-medium">&nbsp;& Resources</span>
               
               {/* simple two-color underline */}
@@ -272,7 +272,7 @@ export default function BlogPage() {
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.8 }}
               >
-                <div className="w-full h-full bg-gradient-to-r from-white via-white to-primary"></div>
+                <div className="w-full h-full bg-gradient-to-r from-foreground dark:from-white via-foreground dark:via-white to-primary"></div>
               </motion.div>
             </motion.h1>
             

@@ -50,13 +50,17 @@ export default function Home() {
         {/* background image */}
         <div className="absolute inset-0 z-0">
           <Image 
-            src="https://images.unsplash.com/photo-1501854140801-50d01698950b?q=80&w=1920&auto=format&fit=crop"
-            alt="Forest background"
+            src="https://images.unsplash.com/photo-1551992315-907fbf183932?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            alt="Aerial view of forest path"
             fill
             priority
             className="object-cover"
           />
+          {/* Overall darkening overlay */}
           <div className="absolute inset-0 bg-black/40 mix-blend-multiply"></div>
+          
+          {/* Left side gradient for better text readability */}
+          <div className="absolute inset-y-0 left-0 w-full md:w-1/2 lg:w-2/5 bg-gradient-to-r from-black/60 to-transparent z-10"></div>
         </div>
         
         <div className="container mx-auto px-4 relative pt-16">
