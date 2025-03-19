@@ -46,9 +46,9 @@ const blogPosts = [
     imageSrc: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=800&auto=format&fit=crop',
     featured: true,
     author: {
-      name: 'Dr. Sarah Johnson',
-      role: 'Clinical Psychologist',
-      image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop'
+      name: 'Eric Peterson',
+      role: 'Holistic Therapist',
+      avatar: '/eric.jpeg'
     },
     relatedPosts: [2, 3, 7]
   },
@@ -62,9 +62,9 @@ const blogPosts = [
     readTime: '8 min read',
     imageSrc: 'https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?q=80&w=800&auto=format&fit=crop',
     author: {
-      name: 'Dr. Michael Chen',
-      role: 'Psychiatrist',
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop'
+      name: 'Eric Peterson',
+      role: 'Energy Healing Specialist',
+      avatar: '/eric.jpeg'
     },
     relatedPosts: [1, 5, 8]
   },
@@ -78,9 +78,9 @@ const blogPosts = [
     readTime: '5 min read',
     imageSrc: 'https://images.unsplash.com/photo-1475483768296-6163e08872a1?q=80&w=800&auto=format&fit=crop',
     author: {
-      name: 'Emma Rodriguez',
-      role: 'Mindfulness Coach',
-      image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=200&auto=format&fit=crop'
+      name: 'Eric Peterson',
+      role: 'Nutritional Therapist',
+      avatar: '/eric.jpeg'
     },
     relatedPosts: [1, 6, 7]
   },
@@ -94,9 +94,9 @@ const blogPosts = [
     readTime: '7 min read',
     imageSrc: 'https://images.unsplash.com/photo-1507652313519-d4e9174996dd?q=80&w=800&auto=format&fit=crop',
     author: {
-      name: 'Dr. James Wilson',
-      role: 'Trauma Specialist',
-      image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=200&auto=format&fit=crop'
+      name: 'Eric Peterson',
+      role: 'Mindfulness Instructor',
+      avatar: '/eric.jpeg'
     },
     relatedPosts: [1, 3, 6]
   },
@@ -110,9 +110,9 @@ const blogPosts = [
     readTime: '9 min read',
     imageSrc: 'https://images.unsplash.com/photo-1502230831726-fe5549140034?q=80&w=800&auto=format&fit=crop',
     author: {
-      name: 'Dr. Olivia Park',
-      role: 'Research Psychologist',
-      image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop'
+      name: 'Eric Peterson',
+      role: 'Trauma Specialist',
+      avatar: '/eric.jpeg'
     },
     relatedPosts: [2, 7, 8]
   },
@@ -126,9 +126,9 @@ const blogPosts = [
     readTime: '6 min read',
     imageSrc: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800&auto=format&fit=crop',
     author: {
-      name: 'Lisa Thompson',
-      role: 'Somatic Practitioner',
-      image: 'https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?q=80&w=200&auto=format&fit=crop'
+      name: 'Eric Peterson',
+      role: 'Sound Healing Practitioner',
+      avatar: '/eric.jpeg'
     },
     relatedPosts: [1, 3, 4]
   },
@@ -142,9 +142,9 @@ const blogPosts = [
     readTime: '7 min read',
     imageSrc: 'https://images.unsplash.com/photo-1507652313519-d4e9174996dd?q=80&w=800&auto=format&fit=crop',
     author: {
-      name: 'Dr. David Miller',
-      role: 'Integrative Therapist',
-      image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200&auto=format&fit=crop'
+      name: 'Eric Peterson',
+      role: 'Integrative Health Specialist',
+      avatar: '/eric.jpeg'
     },
     relatedPosts: [1, 3, 5]
   },
@@ -158,9 +158,9 @@ const blogPosts = [
     readTime: '8 min read',
     imageSrc: 'https://images.unsplash.com/photo-1559757175-5700dde675bc?q=80&w=800&auto=format&fit=crop',
     author: {
-      name: 'Dr. Rebecca Lee',
-      role: 'Neuropsychologist',
-      image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=200&auto=format&fit=crop'
+      name: 'Eric Peterson',
+      role: 'Breathwork Facilitator',
+      avatar: '/eric.jpeg'
     },
     relatedPosts: [1, 2, 5]
   },
@@ -294,18 +294,19 @@ export default function BlogPostPage() {
                   {post.author && (
                     <div className="mb-8 p-6 rounded-xl bg-card/30 backdrop-blur-sm border border-border/20">
                       <h3 className="text-lg font-light text-foreground mb-4">About the Author</h3>
-                      <div className="flex items-center mb-4">
-                        <div className="relative w-12 h-12 rounded-full overflow-hidden mr-3">
+                      <div className="flex items-center gap-3 mb-6">
+                        <div className="relative w-12 h-12 rounded-full overflow-hidden">
                           <Image
-                            src={post.author.image}
+                            src={post.author.avatar}
                             alt={post.author.name}
                             fill
+                            sizes="48px"
                             className="object-cover"
                           />
                         </div>
                         <div>
-                          <h4 className="text-foreground font-medium">{post.author.name}</h4>
-                          <p className="text-sm text-muted-foreground">{post.author.role}</p>
+                          <p className="font-medium">{post.author.name}</p>
+                          <p className="text-sm text-foreground/60">{post.author.role}</p>
                         </div>
                       </div>
                     </div>
