@@ -417,32 +417,7 @@ export default function BlogPostPage() {
         </section>
       )}
       
-      {/* Newsletter CTA */}
-      <section className="py-12 md:py-16">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto p-8 md:p-12 rounded-xl bg-gradient-to-r from-primary/10 to-primary/5 border border-primary/20">
-            <div className="text-center">
-              <h3 className="text-2xl md:text-3xl font-light text-foreground mb-4">Enjoyed this article?</h3>
-              <p className="text-foreground/70 mb-8 max-w-2xl mx-auto">
-                Subscribe to our newsletter to receive more insights on holistic healing, mental health, and therapeutic approaches.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-                <input
-                  type="email"
-                  placeholder="Your email address"
-                  className="flex-1 px-4 py-3 rounded-lg border border-border bg-background/50 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50 transition-all"
-                />
-                <button className="px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors">
-                  Subscribe
-                </button>
-              </div>
-              <p className="text-xs text-foreground/50 mt-4">
-                We respect your privacy. Unsubscribe at any time.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Newsletter CTA - Removed as requested */}
     </div>
   );
 }

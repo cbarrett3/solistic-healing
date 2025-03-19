@@ -259,16 +259,22 @@ export default function BlogPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="text-3xl md:text-4xl lg:text-5xl font-light text-foreground mb-3 relative inline-block"
+              className="text-3xl md:text-4xl lg:text-5xl font-light text-center mb-6 relative inline-block"
             >
-              <span className="relative z-10">Insights & Resources</span>
-              <motion.span 
-                className="absolute bottom-0 left-0 h-1 bg-primary/40"
-                initial={{ width: 0 }}
-                animate={{ width: '100%' }}
-                transition={{ duration: 0.8, delay: 0.6 }}
-              />
+              <span className="text-white">Insights</span>
+              <span className="text-primary font-medium">&nbsp;& Resources</span>
+              
+              {/* Simple two-color underline */}
+              <motion.div 
+                className="absolute -bottom-3 left-0 w-full h-[3px] rounded-full"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.8 }}
+              >
+                <div className="w-full h-full bg-gradient-to-r from-white via-white to-primary"></div>
+              </motion.div>
             </motion.h1>
+            
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -285,65 +291,103 @@ export default function BlogPage() {
       <section className="py-4 w-full relative">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6">
-            {/* Search Bar */}
-            <motion.div 
-              className="relative w-full md:w-1/3"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <div className="relative group">
+            {/* Search and Filter Section */}
+            <div className="w-full flex flex-col gap-4">
+              {/* Search Bar */}
+              <div className="relative max-w-md w-full">
                 <input
                   type="text"
                   placeholder="Search articles..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full py-2 pl-10 pr-4 rounded-full border border-foreground/10 bg-card/30 focus:bg-card/50 focus:border-primary/50 focus:ring-1 focus:ring-primary/30 transition-all duration-300 text-foreground placeholder:text-foreground/50"
+                  className="w-full px-4 py-2 pl-10 rounded-md bg-card/30 border border-foreground/10 focus:border-primary/50 focus:outline-none focus:ring-1 focus:ring-primary/50 text-sm transition-colors duration-300"
                 />
-                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground/50 group-hover:text-primary transition-colors duration-300">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Filter Categories */}
-            <motion.div 
-              className="flex flex-wrap justify-center gap-2"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-            >
-              <button
-                onClick={() => setSelectedCategory('')}
-                className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-300 border hover:shadow-sm ${
-                  selectedCategory === '' 
-                    ? 'bg-primary text-white border-primary hover:bg-primary/90' 
-                    : 'bg-card/30 border-foreground/10 text-foreground/80 hover:bg-card/50 hover:border-foreground/30 hover:text-foreground'
-                } cursor-pointer`}
-              >
-                All
-              </button>
-              {categories.map((category, index) => (
-                <motion.button
-                  key={index}
-                  onClick={() => setSelectedCategory(category)}
-                  className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-300 border hover:shadow-sm ${
-                    selectedCategory === category 
-                      ? 'bg-primary text-white border-primary hover:bg-primary/90' 
-                      : 'bg-card/30 border-foreground/10 text-foreground/80 hover:bg-card/50 hover:border-foreground/30 hover:text-foreground'
-                  } cursor-pointer`}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.3, delay: 0.1 + index * 0.05 }}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                <svg 
+                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-foreground/50" 
+                  width="16" 
+                  height="16" 
+                  viewBox="0 0 24 24" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  strokeWidth="2" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round"
                 >
-                  {category}
-                </motion.button>
-              ))}
-            </motion.div>
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery('')}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-foreground/50 hover:text-foreground/80 min-h-[24px] min-w-[24px] cursor-pointer"
+                  >
+                    <svg 
+                      width="14" 
+                      height="14" 
+                      viewBox="0 0 24 24" 
+                      fill="none" 
+                      stroke="currentColor" 
+                      strokeWidth="2" 
+                      strokeLinecap="round" 
+                      strokeLinejoin="round"
+                    >
+                      <line x1="18" y1="6" x2="6" y2="18"></line>
+                      <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                  </button>
+                )}
+              </div>
+              
+              {/* Category Filters */}
+              <div className="flex flex-wrap gap-2">
+                <button
+                  onClick={() => setSelectedCategory(null)}
+                  className={`px-3 py-1.5 rounded-md text-xs sm:text-sm transition-colors duration-300 min-h-[44px] min-w-[44px] cursor-pointer ${
+                    selectedCategory === null 
+                      ? 'bg-primary text-white' 
+                      : 'bg-card/30 hover:bg-card/50 text-foreground/80'
+                  }`}
+                >
+                  All Categories
+                </button>
+                
+                {categories.map((category) => (
+                  <button
+                    key={category}
+                    onClick={() => setSelectedCategory(category)}
+                    className={`px-3 py-1.5 rounded-md text-xs sm:text-sm transition-colors duration-300 min-h-[44px] min-w-[44px] cursor-pointer ${
+                      selectedCategory === category 
+                        ? 'bg-primary text-white' 
+                        : 'bg-card/30 hover:bg-card/50 text-foreground/80'
+                    }`}
+                  >
+                    {category}
+                  </button>
+                ))}
+              </div>
+              
+              {/* Filter Status */}
+              {(selectedCategory || searchQuery) && (
+                <div className="text-sm text-foreground/60 flex items-center gap-2">
+                  <span>
+                    Showing {filteredPosts.length} {filteredPosts.length === 1 ? 'result' : 'results'}
+                    {selectedCategory && <span> in <strong>{selectedCategory}</strong></span>}
+                    {searchQuery && <span> for "<strong>{searchQuery}</strong>"</span>}
+                  </span>
+                  {(selectedCategory || searchQuery) && (
+                    <button 
+                      onClick={() => {
+                        setSelectedCategory(null);
+                        setSearchQuery('');
+                      }}
+                      className="text-primary hover:text-primary/80 text-xs underline cursor-pointer"
+                    >
+                      Clear filters
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </section>
@@ -584,7 +628,7 @@ export default function BlogPage() {
                     setSearchQuery('');
                     setSelectedCategory('');
                   }}
-                  className="mt-6 px-6 py-2 bg-primary/10 hover:bg-primary/20 text-primary rounded-full transition-colors duration-300"
+                  className="mt-6 px-6 py-2 bg-primary/10 hover:bg-primary/20 text-primary rounded-full transition-colors duration-300 cursor-pointer"
                 >
                   Clear filters
                 </button>
