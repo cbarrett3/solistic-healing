@@ -5,28 +5,11 @@ import { z } from 'zod';
 
 // Environment variables schema
 const envSchema = z.object({
-  ADMIN_PASSWORD_HASH: z.string().min(1),
   ADMIN_AUTH_SECRET: z.string().min(1),
 });
 
 // Cookie name for admin session
 const ADMIN_COOKIE_NAME = 'solistic_admin_session';
-
-/**
- * Validate admin password
- */
-export async function validateAdminPassword(password: string): Promise<boolean> {
-  try {
-    // In a production environment, we would use a proper password hashing library
-    // For simplicity in this demo, we're using a basic comparison
-    // Replace this with bcrypt or similar in a real application
-    const { ADMIN_PASSWORD_HASH } = envSchema.parse(process.env);
-    return password === ADMIN_PASSWORD_HASH;
-  } catch (error) {
-    console.error('Environment variables not properly configured:', error);
-    return false;
-  }
-}
 
 /**
  * Create admin session
@@ -62,11 +45,15 @@ export function isAuthenticated(): boolean {
   try {
     const { ADMIN_AUTH_SECRET } = envSchema.parse(process.env);
     const cookieStore = cookies();
-    const adminCookie = cookieStore.get(ADMIN_COOKIE_NAME);
+    const sessionCookie = cookieStore.get(ADMIN_COOKIE_NAME);
     
-    return adminCookie?.value === ADMIN_AUTH_SECRET;
+    if (!sessionCookie) {
+      return false;
+    }
+    
+    return sessionCookie.value === ADMIN_AUTH_SECRET;
   } catch (error) {
-    console.error('Failed to check authentication:', error);
+    console.error('Auth check failed:', error);
     return false;
   }
 }
@@ -75,19 +62,20 @@ export function isAuthenticated(): boolean {
  * Middleware to protect admin routes
  */
 export function withAdminAuth(request: NextRequest) {
-  try {
-    const { ADMIN_AUTH_SECRET } = envSchema.parse(process.env);
-    const adminCookie = request.cookies.get(ADMIN_COOKIE_NAME);
-    
-    if (!adminCookie || adminCookie.value !== ADMIN_AUTH_SECRET) {
-      return NextResponse.redirect(new URL('/admin/login', request.url));
-    }
-    
-    return NextResponse.next();
-  } catch (error) {
-    console.error('Admin auth middleware error:', error);
+  const { ADMIN_AUTH_SECRET } = process.env;
+  
+  if (!ADMIN_AUTH_SECRET) {
+    console.error('ADMIN_AUTH_SECRET not configured');
     return NextResponse.redirect(new URL('/admin/login', request.url));
   }
+  
+  const sessionCookie = request.cookies.get(ADMIN_COOKIE_NAME);
+  
+  if (!sessionCookie || sessionCookie.value !== ADMIN_AUTH_SECRET) {
+    return NextResponse.redirect(new URL('/admin/login', request.url));
+  }
+  
+  return NextResponse.next();
 }
 
 /**
@@ -105,4 +93,5 @@ export function adminAuthGuard() {
 export function endAdminSession() {
   const cookieStore = cookies();
   cookieStore.delete(ADMIN_COOKIE_NAME);
+  return true;
 }

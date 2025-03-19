@@ -1,0 +1,49 @@
+[2025-03-19T20:34:30.621Z] Received create post request
+
+[2025-03-19T20:34:30.628Z] Form data received
+Data: {
+  "type": "external",
+  "fields": [
+    {
+      "key": "title",
+      "value": "Stouts Menu"
+    },
+    {
+      "key": "slug",
+      "value": "stouts-menu"
+    },
+    {
+      "key": "type",
+      "value": "external"
+    },
+    {
+      "key": "externalUrl",
+      "value": "https://www.stoutspub.com/menu"
+    },
+    {
+      "key": "commentary",
+      "value": "Good Menu"
+    }
+  ]
+}
+
+[2025-03-19T20:34:30.631Z] Created external post object
+Data: {
+  "title": "Stouts Menu",
+  "slug": "stouts-menu",
+  "externalUrl": "https://www.stoutspub.com/menu",
+  "commentaryLength": 9
+}
+
+[2025-03-19T20:34:30.632Z] Attempting to save post
+Data: {
+  "slug": "stouts-menu",
+  "type": "external"
+}
+
+[2025-03-19T20:34:30.707Z] Post saved successfully
+Data: {
+  "slug": "stouts-menu",
+  "type": "external"
+}
+

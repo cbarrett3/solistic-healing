@@ -162,6 +162,13 @@ export default function Footer() {
         <div className="border-t border-white/5 mt-8 pt-6 flex flex-col sm:flex-row justify-between items-center">
           <p className="text-xs text-foreground/60 mb-4 sm:mb-0">
             &copy; {currentYear} Solistic Healing. All rights reserved.
+            <Link 
+              href="/admin/login" 
+              className="ml-3 text-xs text-primary/40 hover:text-primary transition-colors duration-300 opacity-70 hover:opacity-100"
+              aria-label="Admin Login"
+            >
+              Admin
+            </Link>
           </p>
           <div className="flex space-x-4 text-xs text-foreground/60">
             <Link href="/privacy" className="hover:text-primary transition-colors duration-200">Privacy Policy</Link>

@@ -1,22 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createAdminSession, validateAdminPassword } from '@/app/lib/admin/auth';
+import { createAdminSession } from '@/app/lib/admin/auth';
 
 export async function POST(request: NextRequest) {
   try {
-    const { password } = await request.json();
+    const { answer } = await request.json();
 
-    if (!password) {
+    if (!answer) {
       return NextResponse.json(
-        { message: 'Password is required' },
+        { message: 'Answer is required' },
         { status: 400 }
       );
     }
 
-    const isValid = await validateAdminPassword(password);
+    // Check if the answer is correct (case insensitive)
+    const isValid = answer.toLowerCase() === 'cloquet';
 
     if (!isValid) {
       return NextResponse.json(
-        { message: 'Invalid password' },
+        { message: 'Incorrect answer' },
         { status: 401 }
       );
     }

@@ -2,15 +2,20 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
+import { Card, CardHeader, CardContent, CardFooter, Button, Input } from '../components/ui';
 
 export default function AdminLogin() {
-  const [password, setPassword] = useState('');
+  const [answer, setAnswer] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    
+    if (loading || !answer.trim()) return; // Prevent double submission or empty submission
+    
     setLoading(true);
     setError('');
 
@@ -20,62 +25,86 @@ export default function AdminLogin() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ password }),
+        body: JSON.stringify({ answer }),
       });
 
       if (response.ok) {
-        router.push('/admin/blog');
+        router.push('/admin');
         router.refresh();
       } else {
         const data = await response.json();
-        setError(data.message || 'Invalid password');
+        setError(data.message || 'Incorrect answer');
+        setLoading(false);
       }
     } catch (err) {
       setError('An error occurred. Please try again.');
       console.error(err);
-    } finally {
       setLoading(false);
     }
   }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="w-full max-w-md p-8 space-y-8 bg-card rounded-lg shadow-lg">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold">Solistic Healing Admin</h1>
-          <p className="text-muted-foreground mt-2">Enter password to continue</p>
-        </div>
+      <motion.div 
+        className="w-full max-w-md"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <Card>
+          <CardHeader className="text-center">
+            <motion.div
+              initial={{ scale: 0.9 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              <h1 className="text-2xl font-bold">Welcome Back</h1>
+              <p className="text-muted-foreground mt-2">Please answer the security question to continue</p>
+            </motion.div>
+          </CardHeader>
 
-        {error && (
-          <div className="p-3 bg-destructive/10 border border-destructive/20 rounded text-destructive text-sm">
-            {error}
-          </div>
-        )}
+          <CardContent>
+            {error && (
+              <motion.div 
+                className="mb-6 p-4 bg-destructive/10 border border-destructive/20 rounded-md text-destructive"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                {error}
+              </motion.div>
+            )}
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium mb-1">
-              Password
-            </label>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-              required
-            />
-          </div>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="mb-4">
+                <p className="font-medium mb-2">What town did Eric grow up in?</p>
+              </div>
+              
+              <Input
+                id="answer"
+                type="text"
+                value={answer}
+                onChange={(e) => setAnswer(e.target.value)}
+                fullWidth
+                required
+                autoFocus
+                placeholder="Enter your answer"
+              />
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full py-2 px-4 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-colors disabled:opacity-70"
-          >
-            {loading ? 'Logging in...' : 'Log In'}
-          </button>
-        </form>
-      </div>
+              <Button
+                type="submit"
+                disabled={loading}
+                className="w-full"
+              >
+                {loading ? 'Checking...' : 'Continue'}
+              </Button>
+            </form>
+          </CardContent>
+          <CardFooter className="text-center text-sm text-muted-foreground">
+            <p>Protected area for site administrators only</p>
+          </CardFooter>
+        </Card>
+      </motion.div>
     </div>
   );
 }

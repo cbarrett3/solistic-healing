@@ -1,0 +1,48 @@
+[2025-03-19T20:24:26.266Z] Starting test post creation
+
+[2025-03-19T20:24:26.269Z] Test post object created
+Data: {
+  "type": "original",
+  "title": "Test Blog Post",
+  "slug": "test-blog-post",
+  "date": "2025-03-19",
+  "content": "# Test Blog Post\n\nThis is a test blog post created to verify the post creation system works correctly."
+}
+
+[2025-03-19T20:24:26.273Z] Saving post to path:
+Data: "C:\\Users\\conno\\OneDrive\\Documents\\GitHub\\solistic-healing\\app\\content\\blog\\test-blog-post.mdx"
+
+[2025-03-19T20:24:26.277Z] MDX content created:
+Data: {
+  "contentLength": 188
+}
+
+[2025-03-19T20:24:26.279Z] File written successfully
+
+[2025-03-19T20:24:26.280Z] Test post created successfully
+
+[2025-03-19T20:24:26.281Z] Starting test external post creation
+
+[2025-03-19T20:24:26.282Z] Test external post object created
+Data: {
+  "type": "external",
+  "title": "Test External Link",
+  "slug": "test-external-link",
+  "date": "2025-03-19",
+  "externalUrl": "https://example.com/article",
+  "sourceName": "Example Website",
+  "commentary": "This is a test external post with commentary to verify the external post creation system works correctly."
+}
+
+[2025-03-19T20:24:26.284Z] Saving post to path:
+Data: "C:\\Users\\conno\\OneDrive\\Documents\\GitHub\\solistic-healing\\app\\content\\blog\\test-external-link.mdx"
+
+[2025-03-19T20:24:26.286Z] MDX content created:
+Data: {
+  "contentLength": 270
+}
+
+[2025-03-19T20:24:26.288Z] File written successfully
+
+[2025-03-19T20:24:26.289Z] Test external post created successfully
+

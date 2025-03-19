@@ -8,3 +8,11 @@ export function GET(request: NextRequest) {
   // Redirect to login page
   return NextResponse.redirect(new URL('/admin/login', request.url));
 }
+
+export async function POST(request: NextRequest) {
+  // End the admin session
+  endAdminSession();
+  
+  // Return success response
+  return NextResponse.json({ success: true });
+}
