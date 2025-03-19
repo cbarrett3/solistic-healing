@@ -136,7 +136,7 @@ export default function ServicesPricingSection() {
       });
 
   return (
-    <section id="services-pricing" className="w-full py-16 md:py-24 bg-background" data-section>
+    <section id="services-pricing" data-section className="w-full py-16 md:py-24 bg-background relative">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-light text-foreground">
@@ -207,7 +207,7 @@ export default function ServicesPricingSection() {
         {/* Service Tabs */}
         <div className="flex flex-wrap justify-center gap-2 mb-10">
           <button
-            className={`px-4 py-2 rounded-full text-sm transition-all ${
+            className={`px-4 py-2 rounded-full text-sm transition-all cursor-pointer ${
               activeServiceTab === 'all'
                 ? 'bg-primary text-black'
                 : 'bg-white/5 text-foreground hover:bg-white/10'
@@ -219,7 +219,7 @@ export default function ServicesPricingSection() {
           {services.map((service) => (
             <button
               key={service.id}
-              className={`px-4 py-2 rounded-full text-sm transition-all ${
+              className={`px-4 py-2 rounded-full text-sm transition-all cursor-pointer ${
                 activeServiceTab === service.id
                   ? 'bg-primary text-black'
                   : 'bg-white/5 text-foreground hover:bg-white/10'
@@ -302,7 +302,7 @@ export default function ServicesPricingSection() {
                 <div className="p-6 pt-0">
                   <button
                     onClick={() => handleSelectPlan(plan.id)}
-                    className={`w-full py-2 rounded-lg transition-all duration-300 ${
+                    className={`w-full py-2 rounded-lg transition-all duration-300 cursor-pointer ${
                       selectedPlan === plan.id
                         ? 'bg-primary text-black'
                         : 'bg-primary/10 text-primary hover:bg-primary/20'
@@ -326,12 +326,15 @@ export default function ServicesPricingSection() {
         </div>
       </div>
       
-      {/* Scroll Arrow to Contact Section */}
-      <SectionScrollArrow 
-        targetSectionId="contact" 
-        offset={-60}
-        nextSectionName="Contact" 
-      />
+      {/* Scroll Arrow to FAQ Section */}
+      <div className="mt-4">
+        <SectionScrollArrow 
+          targetSectionId="faq" 
+          offset={-60}
+          nextSectionName="FAQ" 
+          className="z-50"
+        />
+      </div>
     </section>
   );
 }

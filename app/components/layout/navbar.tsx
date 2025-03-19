@@ -38,14 +38,22 @@ export default function Navbar({ onMobileMenuToggle }: NavbarProps) {
     };
   }, [scrolled]);
 
-  // Handle link click to prevent default behavior
-  const handleLinkClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    // No scrolling behavior - just update the URL
-    const href = (e.currentTarget as HTMLAnchorElement).getAttribute('href');
-    if (href) {
-      window.history.pushState({}, '', href);
+  // Handle section link click
+  const handleSectionLinkClick = (e: React.MouseEvent, href: string, isSection: boolean) => {
+    if (isSection) {
+      e.preventDefault();
+      const targetId = href.split('#')[1];
+      const targetElement = document.getElementById(targetId);
+      
+      if (targetElement) {
+        const offsetTop = targetElement.getBoundingClientRect().top + window.pageYOffset - 80;
+        window.scrollTo({
+          top: offsetTop,
+          behavior: 'smooth'
+        });
+      }
     }
+    
     // Close mobile menu if open
     if (mobileMenuOpen) {
       toggleMobileMenu();
@@ -59,7 +67,19 @@ export default function Navbar({ onMobileMenuToggle }: NavbarProps) {
   const handleIconMouseUp = () => setPressedIcon(null);
 
   // Navigation items array
-  const navItems = ['Home', 'About', 'Services', 'Media', 'Pricing', 'Contact'];
+  const navItems = [
+    { name: 'About', href: '/#about', isSection: true },
+    { name: 'Conditions', href: '/conditions', isSection: false },
+    { name: 'Resources', href: '/blog', isSection: false, hasSubmenu: true, 
+      submenu: [
+        { name: 'Blog', href: '/blog' },
+        { name: 'Videos', href: '/videos' }
+      ] 
+    },
+    { name: 'Services', href: '/#services', isSection: true },
+    { name: 'FAQ', href: '/#faq', isSection: true },
+    { name: 'Contact', href: '/#contact', isSection: true }
+  ];
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -88,7 +108,7 @@ export default function Navbar({ onMobileMenuToggle }: NavbarProps) {
 
           {/* Mobile Menu Button */}
           <button 
-            className="block sm:hidden"
+            className="block sm:hidden cursor-pointer"
             onClick={toggleMobileMenu}
             aria-label="Toggle menu"
           >
@@ -100,21 +120,21 @@ export default function Navbar({ onMobileMenuToggle }: NavbarProps) {
           </button>
 
           {/* Desktop Navigation */}
-          <nav className="hidden sm:flex items-center space-x-8">
+          <nav className="hidden sm:flex items-center space-x-4 md:space-x-6 lg:space-x-8">
             {navItems.map((item, index) => (
               <Link
                 key={index}
-                href={`#${item.toLowerCase()}`}
-                className={`relative text-sm font-light uppercase tracking-wider ${
+                href={item.href}
+                className={`relative text-sm font-light uppercase tracking-wider cursor-pointer ${
                   scrolled ? 'text-foreground hover:text-primary' : 'text-white hover:text-primary'
                 } transition-colors duration-300`}
                 onMouseEnter={() => handleIconMouseEnter(index)}
                 onMouseLeave={handleIconMouseLeave}
                 onMouseDown={() => handleIconMouseDown(index)}
                 onMouseUp={handleIconMouseUp}
-                onClick={handleLinkClick}
+                onClick={(e) => handleSectionLinkClick(e, item.href, item.isSection)}
               >
-                {item}
+                {item.name}
                 <motion.span
                   className="absolute -bottom-1 left-0 h-[1px] bg-primary"
                   initial={{ width: 0 }}
@@ -127,20 +147,34 @@ export default function Navbar({ onMobileMenuToggle }: NavbarProps) {
 
           {/* Mobile Navigation */}
           {mobileMenuOpen && (
-            <div className="fixed inset-0 top-16 bg-background/95 backdrop-blur-sm z-40 sm:hidden">
-              <nav className="flex flex-col items-center justify-center h-full">
+            <motion.div 
+              className="fixed inset-0 top-16 bg-gradient-to-b from-background/95 to-background/90 backdrop-blur-md z-40 sm:hidden"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3 }}
+            >
+              <nav className="flex flex-col items-center justify-center h-full py-10">
                 {navItems.map((item, index) => (
-                  <Link
+                  <motion.div
                     key={index}
-                    href={`#${item.toLowerCase()}`}
-                    className="text-lg font-light uppercase tracking-wider text-foreground hover:text-primary my-4 transition-colors duration-300"
-                    onClick={handleLinkClick}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: index * 0.05 }}
+                    className="w-full"
                   >
-                    {item}
-                  </Link>
+                    <Link
+                      href={item.href}
+                      className="text-lg font-light uppercase tracking-wider text-foreground hover:text-primary my-5 transition-all duration-300 cursor-pointer flex flex-col items-center"
+                      onClick={(e) => handleSectionLinkClick(e, item.href, item.isSection)}
+                    >
+                      <span>{item.name}</span>
+                      <span className="h-[1px] bg-white/10 w-16 mt-5"></span>
+                    </Link>
+                  </motion.div>
                 ))}
               </nav>
-            </div>
+            </motion.div>
           )}
         </div>
       </div>

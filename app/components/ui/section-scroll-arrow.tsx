@@ -8,13 +8,15 @@ interface SectionScrollArrowProps {
   className?: string;
   offset?: number;
   nextSectionName?: string;
+  forceShow?: boolean;
 }
 
 export const SectionScrollArrow = ({ 
   targetSectionId, 
   className = '',
   offset = 0,
-  nextSectionName = ''
+  nextSectionName = '',
+  forceShow = false
 }: SectionScrollArrowProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
@@ -22,6 +24,8 @@ export const SectionScrollArrow = ({
   
   useEffect(() => {
     const checkIfLastSection = () => {
+      if (forceShow) return; // Skip this check if forceShow is true
+      
       const sections = document.querySelectorAll('[data-section]');
       if (sections.length === 0) return;
       
@@ -56,7 +60,7 @@ export const SectionScrollArrow = ({
     return () => {
       window.removeEventListener('resize', updateScreenSize);
     };
-  }, [targetSectionId]);
+  }, [targetSectionId, forceShow]);
   
   const handleClick = () => {
     const targetSection = document.getElementById(targetSectionId);

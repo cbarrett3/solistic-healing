@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 // Import from organized component directories
 import { Navbar } from "./components/layout";
@@ -13,7 +13,9 @@ import {
   ConditionsSection, 
   MediaShowcase, 
   AutoScrollPosts,
-  ServicesPricingSection
+  ServicesPricingSection,
+  FAQSection,
+  ContactSection
 } from "./components/sections";
 
 export default function Home() {
@@ -336,47 +338,18 @@ export default function Home() {
       </section>
       
       {/* Services & Pricing Section */}
-      <ServicesPricingSection />
+      <section id="services-pricing" data-section className="relative">
+        <ServicesPricingSection />
+      </section>
       
-      {/* Contact CTA Section */}
-      <section id="contact" data-section className="w-full py-16 md:py-24 bg-background">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-light text-foreground mb-4">Begin Your Healing Journey Today</h2>
-            <div className="w-[60px] h-[1px] bg-primary mx-auto mb-6"></div>
-            <p className="text-foreground/70 max-w-[700px] mx-auto mb-8">
-              Take the first step toward mental wellness. Contact us to schedule a free 15-minute consultation and learn how our services can help you achieve lasting positive change.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <div className="flex items-center gap-2 text-foreground">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                </svg>
-                <span>+1 612-412-4873</span>
-              </div>
-              <div className="flex items-center gap-2 text-foreground">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2" />
-                </svg>
-                <span>ericpeterson@solistichealing.org</span>
-              </div>
-              <div className="flex items-center gap-2 text-foreground">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                <span>1611 County Road B West, Suite 214, Roseville, MN, 55113</span>
-              </div>
-            </div>
-            <div className="mt-8">
-              <Link href="/contact" className="bg-primary text-black uppercase font-medium px-8 py-3 rounded-full text-sm tracking-[0.15em] relative overflow-hidden transition-all duration-300 hover:shadow-[0_0_20px_rgba(var(--color-primary-rgb)/0.7)] active:scale-95 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-black/20 cursor-pointer">
-                <span className="relative z-10">CONTACT US</span>
-                <span className="absolute inset-0 bg-white/0 group-hover:bg-white/20 transition-colors duration-300"></span>
-                <span className="absolute bottom-0 left-0 w-full h-0 bg-black/10 group-hover:h-full transition-all duration-300 ease-in-out"></span>
-              </Link>
-            </div>
-          </div>
-        </div>
+      {/* FAQ Section */}
+      <section id="faq" data-section className="relative">
+        <FAQSection />
+      </section>
+      
+      {/* Contact Section */}
+      <section id="contact" data-section className="relative">
+        <ContactSection />
       </section>
     </div>
   );

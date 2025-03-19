@@ -5,3 +5,5 @@ export { default as PricingSection } from './pricing-section';
 export { default as BlogShowcase } from './blog-showcase';
 export { default as AutoScrollPosts } from './auto-scroll-posts';
 export { default as ServicesPricingSection } from './services-pricing-section';
+export { default as FAQSection } from './faq-section';
+export { default as ContactSection } from './contact-section';
