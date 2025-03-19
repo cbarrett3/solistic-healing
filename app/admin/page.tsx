@@ -1,130 +1,187 @@
-'use client';
-
-import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import Link from 'next/link';
 import AdminLayout from './components/admin-layout';
-import { Card, CardHeader, CardContent, LinkButton, Badge } from './components/ui';
+import { Card, CardContent } from './components/ui';
+import { FiPlus, FiList, FiGithub, FiServer, FiMail, FiCalendar, FiFileText, FiAlertCircle } from 'react-icons/fi';
 
-// Icons
-const BlogIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-    <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2" />
-    <path d="M18 14h-8" />
-    <path d="M15 18h-5" />
-    <path d="M10 6h8v4h-8V6Z" />
-  </svg>
-);
-
-interface DashboardPost {
-  slug: string;
-  title: string;
-  date: string;
-  type: 'original' | 'external';
-}
-
-export default function AdminDashboard() {
-  const [posts, setPosts] = useState<DashboardPost[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+export default async function AdminDashboard() {
+  // Simulate blog posts data for now
+  const posts = [{ slug: 'test-post', title: 'Test Blog Post', date: '2025-03-19', type: 'original' as const }];
+  const postCount = posts.length;
   
-  useEffect(() => {
-    // For now, simulate data
-    setTimeout(() => {
-      setPosts([
-        {
-          slug: 'test-post',
-          title: 'Test Blog Post',
-          date: '2025-03-19',
-          type: 'original'
-        }
-      ]);
-      setIsLoading(false);
-    }, 500);
-    
-    // Uncomment when API is ready
-    // fetchPosts();
-  }, []);
-  
-  const fadeIn = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
-      y: 0, 
-      transition: { duration: 0.5 }
-    }
-  };
+  // Calculate days since site launch (March 19th, 2025)
+  const launchDate = new Date('2025-03-19');
+  const today = new Date();
+  const daysSinceLaunch = Math.floor((today.getTime() - launchDate.getTime()) / (1000 * 60 * 60 * 24));
   
   return (
-    <AdminLayout 
-      title="Admin Dashboard" 
-      description="Welcome to the Solistic Healing admin dashboard"
-    >
-      <div className="space-y-8">
-        {/* Quick Stats */}
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={fadeIn}
-          className="grid grid-cols-1 md:grid-cols-3 gap-4"
-        >
-          <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">Total Blog Posts</p>
-                  <h3 className="text-2xl font-bold mt-1">{posts.length}</h3>
-                </div>
-                <div className="bg-primary/10 p-2 rounded-full">
-                  <BlogIcon />
-                </div>
-              </div>
-              <div className="mt-4">
-                <LinkButton href="/admin/blog" variant="ghost" size="sm" className="px-0 hover:bg-transparent">
-                  View all posts
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="ml-1">
-                    <path d="M5 12h14M12 5l7 7-7 7"/>
-                  </svg>
-                </LinkButton>
-              </div>
-            </CardContent>
-          </Card>
+    <AdminLayout title="Admin Dashboard" description="Welcome to the Solistic Healing admin dashboard">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Site Information Cards */}
+        <div className="lg:col-span-2 space-y-6">
+          <h2 className="text-lg font-light text-lime-500 mb-3">Site Information</h2>
           
-          {/* Add more stat cards here as needed */}
-        </motion.div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* GitHub Repository */}
+            <Card className="border-none shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer group dark:border-none border border-gray-100">
+              <CardContent className="p-4 flex items-start">
+                <div className="mr-4 p-2 bg-lime-50/50 dark:bg-lime-950/20 rounded-full transition-all duration-300 group-hover:bg-lime-100 dark:group-hover:bg-lime-950/30 group-hover:scale-110">
+                  <FiGithub className="h-6 w-6 text-lime-700/70 dark:text-lime-300/70" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-medium group-hover:text-lime-600 dark:group-hover:text-lime-400 transition-colors duration-300">GitHub Repository</h3>
+                  <p className="text-xs text-foreground/60 mt-1">cbarrett3/solistic-healing</p>
+                  <Link 
+                    href="https://github.com/cbarrett3/solistic-healing" 
+                    target="_blank"
+                    className="text-xs text-lime-500 hover:text-lime-600 mt-2 inline-block"
+                  >
+                    View Repository →
+                  </Link>
+                </div>
+              </CardContent>
+            </Card>
+            
+            {/* Hosting Platform */}
+            <Card className="border-none shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer group dark:border-none border border-gray-100">
+              <CardContent className="p-4 flex items-start">
+                <div className="mr-4 p-2 bg-lime-50/50 dark:bg-lime-950/20 rounded-full transition-all duration-300 group-hover:bg-lime-100 dark:group-hover:bg-lime-950/30 group-hover:scale-110">
+                  <FiServer className="h-6 w-6 text-lime-700/70 dark:text-lime-300/70" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-medium group-hover:text-lime-600 dark:group-hover:text-lime-400 transition-colors duration-300">Hosting Platform</h3>
+                  <p className="text-xs text-foreground/60 mt-1">Vercel (Next.js 15)</p>
+                  <Link 
+                    href="https://vercel.com/dashboard" 
+                    target="_blank"
+                    className="text-xs text-lime-500 hover:text-lime-600 mt-2 inline-block"
+                  >
+                    View Dashboard →
+                  </Link>
+                </div>
+              </CardContent>
+            </Card>
+            
+            {/* Email Platform */}
+            <Card className="border-none shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer group dark:border-none border border-gray-100">
+              <CardContent className="p-4 flex items-start">
+                <div className="mr-4 p-2 bg-lime-50/50 dark:bg-lime-950/20 rounded-full transition-all duration-300 group-hover:bg-lime-100 dark:group-hover:bg-lime-950/30 group-hover:scale-110">
+                  <FiMail className="h-6 w-6 text-lime-700/70 dark:text-lime-300/70" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-medium group-hover:text-lime-600 dark:group-hover:text-lime-400 transition-colors duration-300">Email Platform</h3>
+                  <p className="text-xs text-foreground/60 mt-1">Resend API</p>
+                  <Link 
+                    href="https://resend.com/dashboard" 
+                    target="_blank"
+                    className="text-xs text-lime-500 hover:text-lime-600 mt-2 inline-block"
+                  >
+                    View Dashboard →
+                  </Link>
+                </div>
+              </CardContent>
+            </Card>
+            
+            {/* Days Since Launch */}
+            <Card className="border-none shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer group dark:border-none border border-gray-100">
+              <CardContent className="p-4 flex items-start">
+                <div className="mr-4 p-2 bg-lime-50/50 dark:bg-lime-950/20 rounded-full transition-all duration-300 group-hover:bg-lime-100 dark:group-hover:bg-lime-950/30 group-hover:scale-110">
+                  <FiCalendar className="h-6 w-6 text-lime-700/70 dark:text-lime-300/70" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-medium group-hover:text-lime-600 dark:group-hover:text-lime-400 transition-colors duration-300">Site Launch</h3>
+                  <p className="text-xs text-foreground/60 mt-1">March 19, 2025</p>
+                  <p className="text-xs text-lime-500 mt-2">{daysSinceLaunch} days online</p>
+                </div>
+              </CardContent>
+            </Card>
+            
+            {/* Blog Posts Count */}
+            <Card className="border-none shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer group md:col-span-2 dark:border-none border border-gray-100">
+              <CardContent className="p-4 flex items-start">
+                <div className="mr-4 p-2 bg-lime-50/50 dark:bg-lime-950/20 rounded-full transition-all duration-300 group-hover:bg-lime-100 dark:group-hover:bg-lime-950/30 group-hover:scale-110">
+                  <FiFileText className="h-6 w-6 text-lime-700/70 dark:text-lime-300/70" />
+                </div>
+                <div className="flex-1">
+                  <div className="flex justify-between items-center">
+                    <h3 className="text-sm font-medium group-hover:text-lime-600 dark:group-hover:text-lime-400 transition-colors duration-300">Blog Posts</h3>
+                    <span className="text-xs bg-lime-100 text-lime-700 dark:bg-lime-900 dark:text-lime-300 px-2 py-1 rounded-full">
+                      {postCount} total
+                    </span>
+                  </div>
+                  <div className="flex justify-between mt-3">
+                    <Link 
+                      href="/admin/blog" 
+                      className="text-xs text-lime-500 hover:text-lime-600 inline-block"
+                    >
+                      View All Posts →
+                    </Link>
+                    <Link 
+                      href="/admin/blog/new" 
+                      className="text-xs text-lime-500 hover:text-lime-600 inline-block"
+                    >
+                      Create New Post →
+                    </Link>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
         
-        {/* Welcome Message */}
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={fadeIn}
-          transition={{ delay: 0.2 }}
-        >
-          <Card>
-            <CardContent className="p-6">
-              <h2 className="text-xl font-medium mb-2">Welcome to your admin dashboard</h2>
-              <p className="text-muted-foreground">
-                This is your central hub for managing your Solistic Healing website. 
-                Use the navigation menu to access different sections.
-              </p>
-              
-              <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <LinkButton href="/admin/blog/new" variant="outline" className="justify-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
-                    <path d="M12 5v14M5 12h14"/>
-                  </svg>
+        {/* Quick Actions */}
+        <div className="space-y-6">
+          <h2 className="text-lg font-light text-lime-500 mb-3">Quick Actions</h2>
+          
+          <Card className="border-none shadow-sm dark:border-none border border-gray-100">
+            <CardContent className="p-4 space-y-3">
+              <Link 
+                href="/admin/blog/new" 
+                className="flex items-center justify-between p-3 bg-lime-50 dark:bg-lime-950/30 text-lime-700 dark:text-lime-300 rounded-lg hover:bg-lime-100 dark:hover:bg-lime-950/50 transition-all duration-300 hover:shadow-sm hover:translate-x-1 cursor-pointer border border-lime-100 dark:border-transparent"
+              >
+                <span className="flex items-center">
+                  <FiPlus className="mr-2" />
                   Create New Blog Post
-                </LinkButton>
-                
-                <LinkButton href="/admin/blog" variant="outline" className="justify-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
-                    <rect width="18" height="18" x="3" y="3" rx="2" />
-                    <path d="M7 7h10M7 12h10M7 17h10"/>
-                  </svg>
+                </span>
+                <span className="text-xs">→</span>
+              </Link>
+              
+              <Link 
+                href="/admin/blog" 
+                className="flex items-center justify-between p-3 bg-lime-50/30 dark:bg-lime-950/10 text-foreground/80 dark:text-foreground/80 rounded-lg hover:bg-lime-50 dark:hover:bg-lime-950/20 hover:text-lime-700 dark:hover:text-lime-300 transition-all duration-300 hover:shadow-sm hover:translate-x-1 cursor-pointer border border-gray-100 dark:border-transparent"
+              >
+                <span className="flex items-center">
+                  <FiList className="mr-2" />
                   Manage Blog Posts
-                </LinkButton>
-              </div>
+                </span>
+                <span className="text-xs">→</span>
+              </Link>
+              
+              <Link 
+                href="https://github.com/cbarrett3/solistic-healing/issues/new" 
+                target="_blank"
+                className="flex items-center justify-between p-3 bg-lime-50/30 dark:bg-lime-950/10 text-foreground/80 dark:text-foreground/80 rounded-lg hover:bg-lime-50 dark:hover:bg-lime-950/20 hover:text-lime-700 dark:hover:text-lime-300 transition-all duration-300 hover:shadow-sm hover:translate-x-1 cursor-pointer border border-gray-100 dark:border-transparent"
+              >
+                <span className="flex items-center">
+                  <FiAlertCircle className="mr-2" />
+                  Open GitHub Issue
+                </span>
+                <span className="text-xs">→</span>
+              </Link>
+              
+              <Link 
+                href="/" 
+                target="_blank"
+                className="flex items-center justify-between p-3 bg-lime-50/30 dark:bg-lime-950/10 text-foreground/80 dark:text-foreground/80 rounded-lg hover:bg-lime-50 dark:hover:bg-lime-950/20 hover:text-lime-700 dark:hover:text-lime-300 transition-all duration-300 hover:shadow-sm hover:translate-x-1 cursor-pointer border border-gray-100 dark:border-transparent"
+              >
+                <span className="flex items-center">
+                  <FiServer className="mr-2" />
+                  View Live Site
+                </span>
+                <span className="text-xs">→</span>
+              </Link>
             </CardContent>
           </Card>
-        </motion.div>
+        </div>
       </div>
     </AdminLayout>
   );

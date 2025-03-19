@@ -119,7 +119,7 @@ export default function PostForm({ post, isEditing = false }: PostFormProps) {
       <CardContent className="p-0">
         {/* Post Type Selector */}
         {!isEditing && (
-          <div className="border-b">
+          <div className="px-6 pt-4 pb-2 border-b bg-muted/10 flex items-center">
             <Tabs 
               value={postType}
               onChange={handleTabChange}
@@ -127,25 +127,26 @@ export default function PostForm({ post, isEditing = false }: PostFormProps) {
                 { value: 'original', label: 'Original Content' },
                 { value: 'external', label: 'External Link' }
               ]}
-              className="px-6 pt-6"
+              variant="pills"
+              className="inline-flex"
             />
           </div>
         )}
         
         {isEditing && (
-          <div className="px-6 py-4 border-b bg-muted/30 flex items-center">
+          <div className="px-6 py-3 border-b bg-muted/10 flex items-start">
             <span className={`
-              px-2 py-1 rounded-sm text-xs font-medium
+              inline-flex px-3 py-1 rounded-full text-xs font-medium
               ${postType === 'original' 
-                ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300' 
-                : 'bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300'}
+                ? 'bg-lime-100 text-lime-700 dark:bg-lime-950/50 dark:text-lime-300' 
+                : 'bg-blue-100 text-blue-700 dark:bg-blue-950/50 dark:text-blue-300'}
             `}>
               {postType === 'original' ? 'Original Content' : 'External Link'}
             </span>
           </div>
         )}
         
-        <form onSubmit={handleSubmit} className="space-y-6 p-6">
+        <form onSubmit={handleSubmit} className="space-y-5 p-6">
           {/* Common Fields */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">

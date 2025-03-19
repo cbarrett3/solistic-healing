@@ -47,32 +47,39 @@ export function Tabs({
     switch (variant) {
       case 'pills':
         return isActive 
-          ? 'bg-primary text-primary-foreground' 
+          ? 'bg-lime-500 text-white dark:bg-lime-600' 
           : 'text-foreground/70 hover:text-foreground hover:bg-muted';
       case 'boxed':
         return isActive 
-          ? 'bg-background text-foreground border-t border-l border-r border-border' 
-          : 'bg-muted/50 text-foreground/70 hover:text-foreground border border-transparent';
+          ? 'bg-background text-lime-500 dark:text-lime-400 border-b-2 border-lime-500 dark:border-lime-400 font-medium' 
+          : 'bg-muted/30 text-foreground/70 hover:text-foreground border-b-2 border-transparent';
       case 'underline':
       default:
         return isActive 
-          ? 'text-foreground border-b-2 border-primary' 
-          : 'text-foreground/70 hover:text-foreground border-b-2 border-transparent hover:border-muted';
+          ? 'text-foreground border-b-2 border-lime-500' 
+          : 'text-foreground/70 hover:text-foreground border-b-2 border-transparent';
     }
   };
   
   return (
     <div className={`w-full ${className}`}>
-      <div className="flex overflow-x-auto">
+      <div className={`flex ${variant === 'boxed' ? 'gap-1' : 'gap-4'} overflow-x-auto`}>
         {tabs.map((tab) => (
           <button
             key={tab.value}
             type="button"
             onClick={() => handleTabChange(tab.value)}
-            className={`px-4 py-2 flex items-center transition-all duration-200 ${getTabStyles(tab.value)}`}
+            className={`
+              ${getTabStyles(tab.value)}
+              ${variant === 'pills' ? 'px-4 py-2 rounded-md' : ''}
+              ${variant === 'boxed' ? 'px-4 py-2 rounded-t-md' : ''}
+              ${variant === 'underline' ? 'pb-2' : ''}
+              transition-all duration-200 cursor-pointer
+              flex items-center
+            `}
           >
             {tab.icon && <span className="mr-2">{tab.icon}</span>}
-            <span>{tab.label}</span>
+            {tab.label}
           </button>
         ))}
       </div>

@@ -32,14 +32,14 @@ export default function AdminLayout({ children, title, description }: AdminLayou
     <div className="min-h-screen bg-background">
       {/* Page Header */}
       <motion.div 
-        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-4"
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4"
         initial="hidden"
         animate="visible"
         variants={fadeIn}
       >
         <div className="max-w-7xl mx-auto text-center">
           <motion.h1 
-            className="text-2xl font-light tracking-wide text-foreground"
+            className="text-2xl font-light tracking-wide text-lime-500 dark:text-lime-400"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
@@ -48,7 +48,7 @@ export default function AdminLayout({ children, title, description }: AdminLayou
           </motion.h1>
           {description && (
             <motion.p 
-              className="mt-2 text-sm text-foreground/60"
+              className="mt-1 text-sm text-foreground/60"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.2 }}

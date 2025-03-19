@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { ReactNode } from 'react';
 import { motion } from 'framer-motion';
 import { ToastProvider } from './components/ui/toast';
+import NavigationLinks from './components/navigation-links';
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
   return (
@@ -54,21 +55,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
                   </h1>
                 </Link>
                 
-                <nav className="hidden sm:flex items-center ml-8 space-x-4 md:space-x-6 lg:space-x-8">
-                  {[
-                    { name: 'Dashboard', href: '/admin' },
-                    { name: 'Blog', href: '/admin/blog' }
-                  ].map((item, index) => (
-                    <Link 
-                      key={item.name}
-                      href={item.href}
-                      className="relative text-sm font-light uppercase tracking-wider text-foreground hover:text-primary transition-colors duration-300"
-                    >
-                      {item.name}
-                      <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-primary transition-all duration-300 ease-out group-hover:w-full"></span>
-                    </Link>
-                  ))}
-                </nav>
+                <NavigationLinks />
               </div>
               
               <div className="flex items-center space-x-4 md:space-x-6 lg:space-x-8">
@@ -76,7 +63,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
                   href="/" 
                   className="relative text-sm font-light uppercase tracking-wider text-foreground hover:text-primary transition-colors duration-300"
                 >
-                  Back to Site
+                  Return to Main Site
                   <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-primary transition-all duration-300 ease-out group-hover:w-full"></span>
                 </Link>
                 <Link 
