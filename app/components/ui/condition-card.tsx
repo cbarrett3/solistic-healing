@@ -14,20 +14,17 @@ export default function ConditionCard({ title, description, index }: ConditionCa
   const [isHovered, setIsHovered] = useState(false);
   
   return (
-    <motion.div 
+    <div 
       className="h-full"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       <div 
         className={`
           h-full rounded-xl p-4 flex flex-col relative
-          border border-solid transition-all duration-300
-          ${isHovered ? 'border-primary/30 shadow-lg -translate-y-2 bg-card/40' : 'border-white/10 bg-card/20'}
+          transition-all duration-300
+          ${isHovered ? 'shadow-lg -translate-y-1 bg-card/40' : 'bg-card/20'}
         `}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
       >
         <div className="flex items-center mb-3">
           <motion.div
@@ -63,21 +60,23 @@ export default function ConditionCard({ title, description, index }: ConditionCa
           </p>
           
           {/* Learn More button */}
-          <div className="h-6 mt-3 text-xs">
+          <div className="h-8 mt-3">
             <motion.div 
-              className="inline-flex items-center text-primary cursor-pointer"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: isHovered ? 1 : 0 }}
+              className="inline-flex items-center justify-center px-4 py-2 rounded-full bg-primary hover:bg-primary/90 dark:bg-primary dark:hover:bg-primary/90 text-white text-xs font-medium shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0"
+              initial={{ opacity: 0, y: 5 }}
+              animate={{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 5 }}
               transition={{ duration: 0.3 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
-              <span className="mr-1">Learn more</span>
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <span className="mr-1.5">Learn more</span>
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
             </motion.div>
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }

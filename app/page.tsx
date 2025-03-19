@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 
 // Import from organized component directories
 import { Navbar } from "./components/layout";
-import { SectionHeading, TherapistCard } from "./components/ui";
+import { SectionHeading, TherapistCard, SectionScrollArrow } from "./components/ui";
 import { 
   MissionSection, 
   ConditionsSection, 
@@ -43,7 +43,7 @@ export default function Home() {
       <Navbar onMobileMenuToggle={handleMobileMenuToggle} />
 
       {/* Hero Section */}
-      <section data-section className="h-screen w-full overflow-hidden relative flex items-center">
+      <section id="hero" data-section className="h-screen w-full overflow-hidden relative flex items-center">
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <Image 
@@ -56,18 +56,18 @@ export default function Home() {
           <div className="absolute inset-0 bg-black/40 mix-blend-multiply"></div>
         </div>
         
-        <div className="relative w-full px-5 sm:px-8 md:px-10 pt-16">
+        <div className="container mx-auto px-4 relative pt-16">
           {/* Main Content Container - For better organization */}
           <div className="flex flex-col md:flex-row md:items-start md:justify-between">
             {/* Left Side Content */}
-            <div className="w-full md:w-1/2 lg:w-3/5">
+            <div className="w-full md:w-1/2 lg:w-1/2">
               {/* Subtitle */}
-              <div className="ml-0 sm:ml-6 text-white/80 text-xs uppercase tracking-[0.25em]">
+              <div className="text-white/80 text-xs uppercase tracking-[0.25em]">
                 SOLISTIC HEALING - MENTAL WELLNESS
               </div>
               
               {/* Main content */}
-              <div className="ml-0 sm:ml-6 max-w-[600px] mt-3">
+              <div className="max-w-[600px] mt-3">
                 <h2 className="text-4xl sm:text-5xl md:text-6xl font-light leading-[1.1] text-white mb-4">
                   <span className="block text-primary">Transformative</span>
                   <span className="block">Ketamine-Assisted</span>
@@ -92,7 +92,7 @@ export default function Home() {
             </div>
             
             {/* Right Side Content - Desktop Only */}
-            <div className="hidden md:block md:w-1/2 lg:w-2/5 relative md:pt-0">
+            <div className="hidden md:block md:w-1/2 lg:w-1/2 relative md:pt-0">
               {/* Watch Story Element */}
               <div className="flex items-center justify-end mb-6">
                 <div className="mr-4 text-sm text-white text-right tracking-wide font-light">
@@ -222,90 +222,124 @@ export default function Home() {
             </a>
           </div>
         </div>
+        
+        {/* Scroll Arrow to Transforming Lives Section */}
+        <SectionScrollArrow 
+          targetSectionId="transforming-lives" 
+          offset={-60}
+          nextSectionName="Our Approach" 
+        />
       </section>
 
-      {/* About Us Section */}
-      <section data-section className="w-full py-8 md:py-12 about-us-section flex items-center min-h-[600px] lg:min-h-[650px] xl:min-h-[700px] 2xl:min-h-[750px]">
-        <div className="container mx-auto px-4 about-us-content">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 max-w-screen-xl mx-auto about-us-grid">
-            {/* Left Column */}
-            <div className="flex flex-col h-full">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                viewport={{ once: true }}
-              >
-                <SectionHeading 
-                  title="Transforming Lives Through Care" 
-                />
-              </motion.div>
+      {/* Transforming Lives Section - Separate section for better structure */}
+      <section id="transforming-lives" data-section className="w-full py-8 md:py-12 bg-background relative">
+        <div className="container mx-auto px-4 md:px-6 lg:px-8">
+          <div className="max-w-screen-xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+              {/* Left Column */}
+              <div className="flex flex-col h-full">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                  viewport={{ once: true }}
+                >
+                  <SectionHeading 
+                    title="Transforming Lives Through Care" 
+                  />
+                </motion.div>
 
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                viewport={{ once: true }}
-                className="mt-5 flex-1 flex flex-col"
-              >
-                <TherapistCard
-                  name="Eric Peterson"
-                  title="Therapist, Solistic Healing"
-                  bio={[
-                    "I received my M.A in Counseling and Psychological Services from Saint Mary's University of Minnesota with a Graduate Certificate in Addiction Studies.",
-                    "My approach to healing is informed by cognitive-behavioral therapy, transpersonal psychology, person-centered therapy, & somatic and mindfulness-based therapies."
-                  ]}
-                  imageSrc="/eric-cutout.png"
-                />
-              </motion.div>
-            </div>
-            
-            {/* Right Column */}
-            <div className="flex flex-col h-full">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                viewport={{ once: true }}
-                className="flex-1 flex flex-col h-full"
-              >
-                <MissionSection
-                  title="Our Mission & Approach"
-                  points={[
-                    {
-                      title: "Holistic Healing",
-                      description: "We believe in treating the whole person, not just symptoms. Our approach integrates mind, body, and spirit for complete wellness, addressing the interconnected nature of psychological, physical, and emotional health to create lasting transformation."
-                    },
-                    {
-                      title: "Evidence-Based Practices",
-                      description: "Our therapeutic methods are grounded in rigorous research and proven techniques, ensuring effective and reliable care. We continuously update our approaches based on the latest advancements in neuroscience, psychology, and integrative medicine to provide optimal outcomes."
-                    },
-                    {
-                      title: "Personalized Care",
-                      description: "We recognize that each individual's journey is unique. Our treatment plans are carefully tailored to your specific needs, goals, and circumstances, honoring your personal history and creating a collaborative healing partnership that respects your autonomy and lived experience."
-                    }
-                  ]}
-                />
-              </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                  viewport={{ once: true }}
+                  className="mt-5 flex-1 flex flex-col"
+                >
+                  <TherapistCard
+                    name="Eric Peterson"
+                    title="Therapist, Solistic Healing"
+                    bio={[
+                      "I received my M.A in Counseling and Psychological Services from Saint Mary's University of Minnesota with a Graduate Certificate in Addiction Studies.",
+                      "My approach to healing is informed by cognitive-behavioral therapy, transpersonal psychology, person-centered therapy, & somatic and mindfulness-based therapies."
+                    ]}
+                    imageSrc="/eric-cutout.png"
+                  />
+                </motion.div>
+              </div>
+              
+              {/* Right Column */}
+              <div className="flex flex-col h-full">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.1 }}
+                  viewport={{ once: true }}
+                  className="flex-1 flex flex-col h-full"
+                >
+                  <MissionSection
+                    title="Our Mission & Approach"
+                    points={[
+                      {
+                        title: "Holistic Healing",
+                        description: "We believe in treating the whole person, not just symptoms. Our approach integrates mind, body, and spirit for complete wellness, addressing the interconnected nature of psychological, physical, and emotional health to create lasting transformation."
+                      },
+                      {
+                        title: "Evidence-Based Practices",
+                        description: "Our therapeutic methods are grounded in rigorous research and proven techniques, ensuring effective and reliable care. We continuously update our approaches based on the latest advancements in neuroscience, psychology, and integrative medicine to provide optimal outcomes."
+                      },
+                      {
+                        title: "Personalized Care",
+                        description: "We recognize that each individual's journey is unique. Our treatment plans are carefully tailored to your specific needs, goals, and circumstances, honoring your personal history and creating a collaborative healing partnership that respects your autonomy and lived experience."
+                      }
+                    ]}
+                  />
+                </motion.div>
+              </div>
             </div>
           </div>
+          
+          {/* Scroll Arrow to Conditions Section */}
+          <SectionScrollArrow 
+            targetSectionId="conditions" 
+            offset={-60}
+            nextSectionName="Conditions" 
+          />
         </div>
       </section>
 
       {/* Conditions We Treat Section */}
-      <ConditionsSection />
+      <section id="conditions" data-section className="relative">
+        <ConditionsSection />
+      </section>
       
       {/* Media Showcase Section */}
-      <MediaShowcase />
+      <section id="media" data-section className="relative">
+        <MediaShowcase />
+        {/* Scroll Arrow to Blog Section */}
+        <SectionScrollArrow 
+          targetSectionId="blog" 
+          offset={-60}
+          nextSectionName="Blog" 
+        />
+      </section>
       
       {/* Blog Showcase Section */}
-      <AutoScrollPosts />
+      <section id="blog" data-section className="relative">
+        <AutoScrollPosts />
+        {/* Scroll Arrow to Services Section */}
+        <SectionScrollArrow 
+          targetSectionId="services-pricing" 
+          offset={-60}
+          nextSectionName="Services" 
+        />
+      </section>
       
       {/* Services & Pricing Section */}
       <ServicesPricingSection />
       
       {/* Contact CTA Section */}
-      <section data-section className="w-full py-16 md:py-24 bg-background">
+      <section id="contact" data-section className="w-full py-16 md:py-24 bg-background">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl md:text-4xl font-light text-foreground mb-4">Begin Your Healing Journey Today</h2>

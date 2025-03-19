@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
+import { SectionScrollArrow } from '../ui';
 
 interface ServiceItem {
   id: string;
@@ -324,6 +325,13 @@ export default function ServicesPricingSection() {
           </Link>
         </div>
       </div>
+      
+      {/* Scroll Arrow to Contact Section */}
+      <SectionScrollArrow 
+        targetSectionId="contact" 
+        offset={-60}
+        nextSectionName="Contact" 
+      />
     </section>
   );
 }
