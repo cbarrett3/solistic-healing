@@ -121,10 +121,11 @@ export default function MediaShowcase() {
         <div className="flex flex-col lg:flex-row gap-8 max-w-7xl mx-auto">
           {/* Main Video Player */}
           <div 
-            className="w-full lg:w-2/3 relative rounded-xl overflow-hidden aspect-video bg-black shadow-xl"
+            className="w-full lg:w-2/3 relative rounded-xl overflow-hidden aspect-video bg-black shadow-xl cursor-pointer"
             ref={containerRef}
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
+            onClick={togglePlay}
           >
             <div className="w-full h-full">
               <iframe
@@ -142,7 +143,7 @@ export default function MediaShowcase() {
             {/* Video Controls Overlay */}
             <div 
               className={`absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex flex-col justify-between p-4 sm:p-6 transition-opacity duration-300 ${
-                isHovering ? 'opacity-100' : 'opacity-0'
+                isHovering || isPlaying ? 'opacity-100' : 'opacity-0'
               }`}
             >
               <div className="flex justify-between items-center">
@@ -169,14 +170,20 @@ export default function MediaShowcase() {
                 <div className="flex justify-between items-center mt-4">
                   <div className="flex items-center space-x-3">
                     <button 
-                      onClick={togglePlay}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        togglePlay();
+                      }}
                       className="bg-primary/90 hover:bg-primary text-primary-foreground rounded-full p-2 transition-all duration-300"
                       aria-label={isPlaying ? "Pause video" : "Play video"}
                     >
                       {isPlaying ? <Pause size={20} /> : <Play size={20} />}
                     </button>
                     <button 
-                      onClick={toggleMute}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleMute();
+                      }}
                       className="bg-white/20 hover:bg-white/30 text-white rounded-full p-2 transition-all duration-300"
                       aria-label={isMuted ? "Unmute video" : "Mute video"}
                     >
@@ -186,14 +193,20 @@ export default function MediaShowcase() {
                   
                   <div className="flex items-center space-x-2">
                     <button 
-                      onClick={handlePrev}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handlePrev();
+                      }}
                       className="bg-white/20 hover:bg-white/30 text-white rounded-full p-2 transition-all duration-300"
                       aria-label="Previous video"
                     >
                       <ChevronLeft size={20} />
                     </button>
                     <button 
-                      onClick={handleNext}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleNext();
+                      }}
                       className="bg-white/20 hover:bg-white/30 text-white rounded-full p-2 transition-all duration-300"
                       aria-label="Next video"
                     >
@@ -203,6 +216,17 @@ export default function MediaShowcase() {
                 </div>
               </div>
             </div>
+
+            {/* Play/Pause Indicator in Center when not hovering */}
+            {!isHovering && (
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div className={`transition-opacity duration-300 ${isPlaying ? 'opacity-0' : 'opacity-100'}`}>
+                  <div className="bg-primary/90 text-primary-foreground rounded-full p-4 shadow-lg">
+                    <Play size={32} />
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Video Thumbnails */}
@@ -217,17 +241,17 @@ export default function MediaShowcase() {
                   className={`flex items-start gap-2 sm:gap-3 p-2 rounded-lg cursor-pointer transition-all duration-300 ${
                     activeIndex === index 
                       ? 'bg-primary/10 border-l-4 border-primary' 
-                      : 'hover:bg-card/60'
+                      : 'hover:bg-white/10 dark:hover:bg-card/60 hover:shadow-md hover:-translate-y-0.5'
                   }`}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: index * 0.05 }}
                 >
-                  <div className="relative w-20 h-14 sm:w-24 sm:h-16 flex-shrink-0 rounded-md overflow-hidden">
+                  <div className="relative w-20 h-14 sm:w-24 sm:h-16 flex-shrink-0 rounded-md overflow-hidden group">
                     <img 
                       src={video.thumbnailUrl} 
                       alt={video.title}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                     {activeIndex === index && isPlaying && (
                       <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
@@ -236,10 +260,17 @@ export default function MediaShowcase() {
                         </span>
                       </div>
                     )}
+                    {activeIndex !== index && (
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 flex items-center justify-center transition-all duration-300 opacity-0 group-hover:opacity-100">
+                        <span className="bg-primary/90 rounded-full p-1.5">
+                          <Play size={14} className="text-primary-foreground" />
+                        </span>
+                      </div>
+                    )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h4 className={`text-sm font-medium line-clamp-1 ${
-                      activeIndex === index ? 'text-primary' : 'text-foreground'
+                    <h4 className={`text-sm font-medium line-clamp-1 transition-colors duration-300 ${
+                      activeIndex === index ? 'text-primary' : 'text-foreground group-hover:text-primary/80'
                     }`}>
                       {video.title}
                     </h4>

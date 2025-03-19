@@ -256,7 +256,7 @@ export default function ServicesPricingSection() {
                 className={`relative rounded-xl overflow-hidden h-full flex flex-col transition-all duration-300 pricing-card ${
                   selectedPlan === plan.id
                     ? 'ring-2 ring-primary shadow-lg shadow-primary/20'
-                    : 'bg-card shadow-md'
+                    : 'bg-card shadow-md hover:shadow-lg hover:-translate-y-1'
                 }`}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
