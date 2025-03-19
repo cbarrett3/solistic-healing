@@ -123,25 +123,28 @@ export default function Home() {
               
               {/* Services Card - Desktop Only */}
               <div className="w-[220px] sm:w-[260px] lg:w-[280px] ml-auto">
-                <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+                <div className="bg-white dark:bg-neutral-900 rounded-2xl shadow-lg overflow-hidden transition-colors duration-300">
                   <div className="p-4 sm:p-5">
                     <div className="flex justify-between items-center mb-3">
-                      <h3 className="font-medium text-black text-sm">Core Services</h3>
+                      <h3 className="font-medium text-black dark:text-white text-sm">Core Services</h3>
                       <div className="w-2 h-2 rounded-full bg-primary"></div>
                     </div>
                     <div className="space-y-2">
-                      <div className="bg-[#F2FED7] text-black p-3 rounded-lg text-sm hover:bg-primary/20 transition-colors cursor-pointer">
-                        Therapy Sessions
+                      <div className="bg-[#F2FED7] dark:bg-primary/20 text-black dark:text-white p-3 rounded-lg text-sm hover:bg-primary/20 dark:hover:bg-primary/30 transition-colors cursor-pointer">
+                        Ketamine-Assisted Psychotherapy
                       </div>
-                      <div className="bg-[#F2FED7] text-black p-3 rounded-lg text-sm hover:bg-primary/20 transition-colors cursor-pointer">
-                        Psychiatric Consultations
+                      <div className="bg-[#F2FED7] dark:bg-primary/20 text-black dark:text-white p-3 rounded-lg text-sm hover:bg-primary/20 dark:hover:bg-primary/30 transition-colors cursor-pointer">
+                        Individual Psychotherapy
+                      </div>
+                      <div className="bg-[#F2FED7] dark:bg-primary/20 text-black dark:text-white p-3 rounded-lg text-sm hover:bg-primary/20 dark:hover:bg-primary/30 transition-colors cursor-pointer">
+                        Psychedelic Integration
                       </div>
                     </div>
                   </div>
-                  <div className="w-full h-[120px] bg-amber-400 overflow-hidden relative">
+                  <div className="w-full h-[120px] overflow-hidden relative">
                     <Image 
-                      src="https://images.unsplash.com/photo-1573497620053-ea5300f94f21?q=80&w=240&auto=format&fit=crop"
-                      alt="Therapy session"
+                      src="/practice.jpeg"
+                      alt="Solistic Healing Practice"
                       fill
                       className="object-cover"
                     />
