@@ -42,11 +42,38 @@ export default function Navbar({ onMobileMenuToggle }: NavbarProps) {
   const handleSectionLinkClick = (e: React.MouseEvent, href: string, isSection: boolean) => {
     if (isSection) {
       e.preventDefault();
+      
+      // Check if we're on the home page
+      const isHomePage = window.location.pathname === '/' || window.location.pathname === '';
+      
+      if (!isHomePage && href.startsWith('/#')) {
+        // If we're not on the home page and the link is to a section on the home page,
+        // navigate to the home page first
+        window.location.href = href;
+        return;
+      }
+      
       const targetId = href.split('#')[1];
       const targetElement = document.getElementById(targetId);
       
       if (targetElement) {
-        const offsetTop = targetElement.getBoundingClientRect().top + window.pageYOffset - 80;
+        // Finding a middle ground for the scroll position
+        const width = window.innerWidth;
+        let dynamicOffset = -20; // Default offset
+        
+        if (width < 640) {
+          dynamicOffset = -40; // xs screens
+        } else if (width < 768) {
+          dynamicOffset = -30; // sm screens
+        } else if (width < 1024) {
+          dynamicOffset = -20; // md screens
+        } else if (width < 1280) {
+          dynamicOffset = -10; // lg screens
+        } else {
+          dynamicOffset = 0; // xl screens
+        }
+        
+        const offsetTop = targetElement.getBoundingClientRect().top + window.pageYOffset + dynamicOffset;
         window.scrollTo({
           top: offsetTop,
           behavior: 'smooth'
@@ -68,15 +95,15 @@ export default function Navbar({ onMobileMenuToggle }: NavbarProps) {
 
   // Navigation items array
   const navItems = [
-    { name: 'About', href: '/#about', isSection: true },
-    { name: 'Conditions', href: '/conditions', isSection: false },
+    { name: 'About', href: '/#transforming-lives', isSection: true },
+    { name: 'Conditions', href: '/#conditions', isSection: true },
     { name: 'Resources', href: '/blog', isSection: false, hasSubmenu: true, 
       submenu: [
         { name: 'Blog', href: '/blog' },
         { name: 'Videos', href: '/videos' }
       ] 
     },
-    { name: 'Services', href: '/#services', isSection: true },
+    { name: 'Services', href: '/#services-pricing', isSection: true },
     { name: 'FAQ', href: '/#faq', isSection: true },
     { name: 'Contact', href: '/#contact', isSection: true }
   ];
