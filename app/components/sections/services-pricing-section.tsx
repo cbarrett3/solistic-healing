@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface ServiceItem {
   id: string;
@@ -29,17 +30,17 @@ const services: ServiceItem[] = [
     description: 'A transformative approach combining ketamine medicine with psychotherapy to help treat depression, anxiety, PTSD, and other conditions resistant to traditional treatments.',
     icon: (
       <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 11l-2.25 2.25l6.5-6.5m-4.5 4.5l6.5 6.5" />
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
       </svg>
     )
   },
   {
     id: 'psychotherapy',
     name: 'Individual Psychotherapy',
-    description: 'Using cognitive-behavioral therapy to increase awareness of thinking and behavioral patterns, developing skills for a more relaxed, creative, and flexible mind.',
+    description: 'Using cognitive-behavioral therapy, mindfulness, and somatic approaches to increase awareness of thinking patterns and develop skills for a more relaxed, creative, and flexible mind.',
     icon: (
       <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
       </svg>
     )
   },
@@ -49,7 +50,7 @@ const services: ServiceItem[] = [
     description: 'Support for processing insights from psychedelic experiences, creating individualized integration plans to help you gain long-term benefits and personal transformation.',
     icon: (
       <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 11l-2.25 2.25l6.5-6.5m-4.5 4.5l6.5 6.5" />
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5" />
       </svg>
     )
   },
@@ -134,40 +135,72 @@ export default function ServicesPricingSection() {
       });
 
   return (
-    <section id="services-pricing" className="py-16 md:py-24 bg-background" data-section>
+    <section id="services-pricing" className="w-full py-16 md:py-24 bg-background" data-section>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-light text-foreground">
-            Our <span className="text-primary">Services</span>
+            Core <span className="text-primary">Services</span>
           </h2>
           <p className="mt-3 text-muted-foreground max-w-2xl mx-auto">
             Comprehensive mental wellness services tailored to your unique needs and goals
           </p>
         </div>
 
-        {/* Services Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
-          {services.map((service) => (
-            <motion.div 
-              key={service.id}
-              className="bg-white/5 backdrop-blur-sm p-6 rounded-lg border border-white/10 hover:border-primary/30 transition-all duration-300 group cursor-pointer"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              onClick={() => setActiveServiceTab(service.id)}
-            >
-              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors duration-300">
-                {service.icon}
-              </div>
-              <h3 className="text-xl font-medium text-foreground mb-2 group-hover:text-primary transition-colors duration-300">
-                {service.name}
-              </h3>
-              <p className="text-foreground/70 text-sm">
-                {service.description}
+        {/* Services Overview with Image */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-16">
+          {/* Left side - Image */}
+          <motion.div
+            className="relative h-[400px] md:h-[500px] rounded-xl overflow-hidden"
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10 rounded-xl"></div>
+            <Image 
+              src="/practice.jpeg" 
+              alt="Solistic Healing Practice" 
+              fill 
+              className="object-cover rounded-xl"
+              sizes="(max-width: 768px) 100vw, 50vw"
+              priority
+            />
+            <div className="absolute bottom-0 left-0 p-6 md:p-8 z-20">
+              <h3 className="text-2xl md:text-3xl font-light text-white mb-2">Healing Environment</h3>
+              <p className="text-white/80 max-w-md">
+                Our practice provides a safe, comfortable space for your therapeutic journey
               </p>
-            </motion.div>
-          ))}
+            </div>
+          </motion.div>
+
+          {/* Right side - Services */}
+          <div className="grid grid-cols-1 gap-6">
+            {services.map((service, index) => (
+              <motion.div 
+                key={service.id}
+                className="bg-white/5 backdrop-blur-sm p-6 rounded-lg border border-white/10 hover:border-primary/30 transition-all duration-300 group cursor-pointer"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                onClick={() => setActiveServiceTab(service.id)}
+              >
+                <div className="flex items-start">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mr-4 group-hover:bg-primary/20 transition-colors duration-300 shrink-0">
+                    {service.icon}
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-medium text-foreground mb-2 group-hover:text-primary transition-colors duration-300">
+                      {service.name}
+                    </h3>
+                    <p className="text-foreground/70 text-sm">
+                      {service.description}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
 
         {/* Service Tabs */}
