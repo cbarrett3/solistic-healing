@@ -151,7 +151,7 @@ export default function Navbar({ onMobileMenuToggle, forceDarkMode = false }: Na
       <div className="container mx-auto px-5 sm:px-8 md:px-10 py-4 sm:py-5">
         <div className="flex items-center justify-between">
           {/* Logo and brand */}
-          <div className="flex items-center group">
+          <Link href="/" className="flex items-center group cursor-pointer">
             <div className="mr-3 md:mr-4 transition-all duration-300 ease-out group-hover:scale-110">
               <div className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center">
                 {/* Tree of life / peace symbol inspired icon */}
@@ -184,26 +184,24 @@ export default function Navbar({ onMobileMenuToggle, forceDarkMode = false }: Na
                 </svg>
               </div>
             </div>
-            <Link href="/">
-              <h1 className={`text-base sm:text-lg font-normal tracking-wider hidden md:block ${
-                !scrolled && !forceDarkMode ? 'text-white/80' : forceDarkMode ? (isDarkMode ? 'text-white/80' : 'text-foreground/80') : isDarkMode ? 'text-white/80' : 'text-foreground/80'
-              } transition-colors duration-300 cursor-pointer hover:text-primary`}>
-                Solistic Healing
-                <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-primary transition-all duration-500 ease-out group-hover:w-full"></span>
-              </h1>
-            </Link>
-          </div>
+            <h1 className={`text-base sm:text-lg font-normal tracking-wider hidden md:block ${
+              !scrolled && !forceDarkMode ? 'text-white/80' : forceDarkMode ? (isDarkMode ? 'text-white/80' : 'text-foreground/80') : isDarkMode ? 'text-white/80' : 'text-foreground/80'
+            } transition-colors duration-300 hover:text-primary`}>
+              Solistic Healing
+              <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-primary transition-all duration-500 ease-out group-hover:w-full"></span>
+            </h1>
+          </Link>
 
           {/* Mobile Menu Button */}
           <button 
-            className="block sm:hidden cursor-pointer"
+            className="block sm:hidden cursor-pointer relative group p-2 -m-2 rounded-lg transition-all duration-300 hover:bg-primary/10 focus:outline-none focus:ring-2 focus:ring-primary/30"
             onClick={toggleMobileMenu}
             aria-label="Toggle menu"
           >
             <div className="w-6 h-5 flex flex-col justify-between">
-              <span className={`w-full h-0.5 bg-primary transition-all duration-300 ${mobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`}></span>
-              <span className={`w-full h-0.5 bg-primary transition-all duration-300 ${mobileMenuOpen ? 'opacity-0' : 'opacity-100'}`}></span>
-              <span className={`w-full h-0.5 bg-primary transition-all duration-300 ${mobileMenuOpen ? '-rotate-45 -translate-y-2' : ''}`}></span>
+              <span className={`w-full h-0.5 bg-primary transition-all duration-300 ${mobileMenuOpen ? 'rotate-45 translate-y-2' : 'group-hover:w-5 group-hover:translate-x-1'}`}></span>
+              <span className={`w-full h-0.5 bg-primary transition-all duration-300 ${mobileMenuOpen ? 'opacity-0' : 'opacity-100 group-hover:w-4 group-hover:translate-x-2'}`}></span>
+              <span className={`w-full h-0.5 bg-primary transition-all duration-300 ${mobileMenuOpen ? '-rotate-45 -translate-y-2' : 'group-hover:w-5 group-hover:translate-x-1'}`}></span>
             </div>
           </button>
 

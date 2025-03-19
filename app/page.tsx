@@ -79,11 +79,13 @@ export default function Home() {
                 <p className="text-white/90 max-w-[500px] mb-5 text-base font-light leading-relaxed">
                   Offering individual psychotherapy, ketamine-assisted psychotherapy, and psychedelic integration services to help you find healing, purpose, and a renewed sense of self.
                 </p>
-                <button className="bg-primary text-black uppercase font-medium px-8 py-3 rounded-full text-sm tracking-[0.15em] relative overflow-hidden transition-all duration-300 hover:shadow-[0_0_20px_rgba(var(--color-primary-rgb)/0.7)] active:scale-95 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-black/20 cursor-pointer">
-                  <span className="relative z-10">LEARN MORE</span>
-                  <span className="absolute inset-0 bg-white/0 group-hover:bg-white/20 transition-colors duration-300"></span>
-                  <span className="absolute bottom-0 left-0 w-full h-0 bg-black/10 group-hover:w-full transition-all duration-300 ease-in-out"></span>
-                </button>
+                <Link href="/#contact" className="group inline-block">
+                  <button className="bg-primary hover:bg-primary/90 active:bg-primary/80 text-black uppercase font-medium px-8 py-3 rounded-full text-sm tracking-wider relative overflow-hidden transition-all duration-300 hover:shadow-[0_0_20px_rgba(var(--color-primary-rgb)/0.7)] active:scale-95 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-black/20 cursor-pointer">
+                    <span className="relative z-10">Schedule a free consultation</span>
+                    <span className="absolute inset-0 bg-white/0 group-hover:bg-white/20 transition-colors duration-300"></span>
+                    <span className="absolute bottom-0 left-0 w-0 h-1 bg-black/10 group-hover:w-full transition-all duration-300 ease-in-out"></span>
+                  </button>
+                </Link>
                 
                 <div className="mt-8">
                   <div className="text-sm text-white tracking-wide">
