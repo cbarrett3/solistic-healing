@@ -6,13 +6,15 @@ import { motion } from 'framer-motion';
 
 interface NavbarProps {
   onMobileMenuToggle?: (isOpen: boolean) => void;
+  forceDarkMode?: boolean;
 }
 
-export default function Navbar({ onMobileMenuToggle }: NavbarProps) {
+export default function Navbar({ onMobileMenuToggle, forceDarkMode = false }: NavbarProps) {
   const [hoveredIcon, setHoveredIcon] = useState<number | null>(null);
   const [pressedIcon, setPressedIcon] = useState<number | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   // Handle mobile menu toggle
   const toggleMobileMenu = () => {
@@ -37,6 +39,28 @@ export default function Navbar({ onMobileMenuToggle }: NavbarProps) {
       window.removeEventListener('scroll', handleScroll);
     };
   }, [scrolled]);
+
+  // Detect system color scheme
+  useEffect(() => {
+    // Check if browser supports matchMedia
+    if (typeof window !== 'undefined' && window.matchMedia) {
+      const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      
+      // Set initial state
+      setIsDarkMode(darkModeQuery.matches);
+      
+      // Add listener for changes
+      const handleChange = (e: MediaQueryListEvent) => {
+        setIsDarkMode(e.matches);
+      };
+      
+      // Modern browsers
+      if (darkModeQuery.addEventListener) {
+        darkModeQuery.addEventListener('change', handleChange);
+        return () => darkModeQuery.removeEventListener('change', handleChange);
+      }
+    }
+  }, []);
 
   // Handle section link click
   const handleSectionLinkClick = (e: React.MouseEvent, href: string, isSection: boolean) => {
@@ -114,12 +138,7 @@ export default function Navbar({ onMobileMenuToggle }: NavbarProps) {
   const navItems = [
     { name: 'About', href: '/#transforming-lives', isSection: true },
     { name: 'Conditions', href: '/#conditions', isSection: true },
-    { name: 'Resources', href: '/blog', isSection: false, hasSubmenu: true, 
-      submenu: [
-        { name: 'Blog', href: '/blog' },
-        { name: 'Videos', href: '/videos' }
-      ] 
-    },
+    { name: 'Blog', href: '/blog', isSection: false },
     { name: 'Services', href: '/#services-pricing', isSection: true },
     { name: 'FAQ', href: '/#faq', isSection: true },
     { name: 'Contact', href: '/#contact', isSection: true }
@@ -143,7 +162,9 @@ export default function Navbar({ onMobileMenuToggle }: NavbarProps) {
               </div>
             </div>
             <Link href="/">
-              <h1 className={`text-xl sm:text-2xl font-light tracking-[0.25em] sm:tracking-[0.3em] ${scrolled ? 'text-foreground' : 'text-white'} uppercase relative group-hover:text-primary transition-colors duration-300 cursor-pointer`}>
+              <h1 className={`text-xl sm:text-2xl font-light tracking-[0.25em] sm:tracking-[0.3em] ${
+                !scrolled && !forceDarkMode ? 'text-white' : forceDarkMode ? (isDarkMode ? 'text-white' : 'text-foreground') : isDarkMode ? 'text-white' : 'text-foreground'
+              } uppercase relative group-hover:text-primary transition-colors duration-300 cursor-pointer`}>
                 SOLISTIC HEALING
                 <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-primary transition-all duration-500 ease-out group-hover:w-full"></span>
               </h1>
@@ -170,8 +191,8 @@ export default function Navbar({ onMobileMenuToggle }: NavbarProps) {
                 key={index}
                 href={item.href}
                 className={`relative text-sm font-light uppercase tracking-wider cursor-pointer ${
-                  scrolled ? 'text-foreground hover:text-primary' : 'text-white hover:text-primary'
-                } transition-colors duration-300`}
+                  !scrolled && !forceDarkMode ? 'text-white' : forceDarkMode ? (isDarkMode ? 'text-white' : 'text-foreground') : isDarkMode ? 'text-white' : 'text-foreground'
+                } hover:text-primary transition-colors duration-300`}
                 onMouseEnter={() => handleIconMouseEnter(index)}
                 onMouseLeave={handleIconMouseLeave}
                 onMouseDown={() => handleIconMouseDown(index)}
@@ -192,7 +213,9 @@ export default function Navbar({ onMobileMenuToggle }: NavbarProps) {
           {/* Mobile Navigation */}
           {mobileMenuOpen && (
             <motion.div 
-              className="fixed inset-0 top-16 bg-gradient-to-b from-background/95 to-background/90 backdrop-blur-md z-40 sm:hidden"
+              className={`fixed inset-0 top-16 ${
+                forceDarkMode ? (isDarkMode ? 'bg-gradient-to-b from-background/95 to-background/90' : 'bg-white/95') : isDarkMode ? 'bg-gradient-to-b from-background/95 to-background/90' : 'bg-white/95'
+              } backdrop-blur-md z-40 sm:hidden`}
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
@@ -209,11 +232,15 @@ export default function Navbar({ onMobileMenuToggle }: NavbarProps) {
                   >
                     <Link
                       href={item.href}
-                      className="text-lg font-light uppercase tracking-wider text-foreground hover:text-primary my-5 transition-all duration-300 cursor-pointer flex flex-col items-center"
+                      className={`text-lg font-light uppercase tracking-wider ${
+                        forceDarkMode ? (isDarkMode ? 'text-white' : 'text-foreground') : isDarkMode ? 'text-white' : 'text-foreground'
+                      } hover:text-primary my-5 transition-all duration-300 cursor-pointer flex flex-col items-center`}
                       onClick={(e) => handleSectionLinkClick(e, item.href, item.isSection)}
                     >
                       <span>{item.name}</span>
-                      <span className="h-[1px] bg-white/10 w-16 mt-5"></span>
+                      <span className={`h-[1px] ${
+                        forceDarkMode ? (isDarkMode ? 'bg-white/10' : 'bg-foreground/10') : isDarkMode ? 'bg-white/10' : 'bg-foreground/10'
+                      } w-16 mt-5`}></span>
                     </Link>
                   </motion.div>
                 ))}
