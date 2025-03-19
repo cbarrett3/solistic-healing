@@ -55,7 +55,7 @@ export default function ConditionsSection() {
   }, []);
   
   return (
-    <section className="conditions-section min-h-screen w-full flex items-center py-10 sm:py-12 md:py-16 lg:py-20 relative bg-background/50" data-section="conditions">
+    <section className="conditions-section min-h-screen w-full flex items-center py-10 sm:py-12 md:py-16 lg:py-20 relative bg-background" data-section="conditions">
       <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-10 relative z-10">
         <div className="flex flex-col lg:flex-row gap-6 md:gap-8 h-full">
           {/* Left Column - Header and Conditions Cards */}
@@ -87,15 +87,18 @@ export default function ConditionsSection() {
                   whileTap={{ scale: 0.95 }}
                   className="relative group"
                 >
-                  <Link href="/services" className="inline-block">
+                  <Link href="/#contact" className="inline-block">
                     <motion.div
-                      className="learn-more-btn px-4 py-2 rounded-full text-xs sm:text-sm uppercase tracking-wider font-medium inline-flex items-center justify-center bg-primary hover:bg-primary/90 dark:bg-primary dark:hover:bg-primary/90 text-white shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0"
+                      className="learn-more-btn px-5 py-2.5 rounded-full text-xs sm:text-sm uppercase tracking-wider font-medium inline-flex items-center justify-center bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary text-white shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0 border border-primary/20"
                       initial={{ opacity: 1 }}
-                      whileHover={{ scale: 1.05 }}
+                      whileHover={{ 
+                        scale: 1.05,
+                        boxShadow: "0 10px 15px -3px rgba(var(--color-primary-rgb), 0.3)"
+                      }}
                       whileTap={{ scale: 0.95 }}
                     >
-                      Learn More
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 ml-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      Begin Your Journey
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 ml-1.5 group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>
                     </motion.div>
@@ -108,12 +111,19 @@ export default function ConditionsSection() {
               {conditions.map((condition, index) => (
                 <motion.div
                   key={condition.title}
-                  className="bg-white/5 backdrop-blur-sm p-6 rounded-lg border border-white/10 hover:border-primary/30 transition-all duration-300 group cursor-pointer"
+                  className="bg-gradient-to-br from-white/10 to-white/5 dark:from-white/5 dark:to-transparent backdrop-blur-sm p-6 rounded-lg border border-white/10 hover:border-primary/40 transition-all duration-300 group cursor-pointer shadow-md hover:shadow-lg hover:shadow-primary/5 relative overflow-hidden"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
+                  whileHover={{ 
+                    y: -5,
+                    transition: { duration: 0.2 }
+                  }}
                 >
+                  {/* Subtle background glow on hover */}
+                  <div className="absolute -inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-lg blur-xl -z-10"></div>
+                  
                   <ConditionCard
                     title={condition.title}
                     description={condition.description}
@@ -129,19 +139,20 @@ export default function ConditionsSection() {
             <div className="condition-image w-full max-w-[300px] lg:max-w-none mb-6 lg:mb-0 h-[350px] lg:h-full relative">
               {/* Border container - separate from image for reliable effect */}
               <div 
-                className="absolute -inset-1 rounded-lg bg-primary"
+                className="absolute -inset-1 rounded-lg bg-gradient-to-br from-primary to-primary/70"
                 style={{
-                  transform: isImageHovered ? 'translate(3px, -3px)' : 'translate(0, 0)',
+                  transform: isImageHovered ? 'translate(4px, -4px)' : 'translate(0, 0)',
                   transition: 'transform 0.4s ease-out',
-                  zIndex: 0
+                  zIndex: 0,
+                  opacity: isImageHovered ? 0.9 : 0.7
                 }}
               ></div>
               
               {/* Image container */}
               <div 
-                className="aspect-[3/4] relative rounded-lg overflow-hidden shadow-md bg-black"
+                className="aspect-[3/4] relative rounded-lg overflow-hidden shadow-xl bg-black"
                 style={{
-                  transform: isImageHovered ? 'translate(3px, -3px)' : 'translate(0, 0)',
+                  transform: isImageHovered ? 'translate(4px, -4px)' : 'translate(0, 0)',
                   transition: 'transform 0.4s ease-out',
                   zIndex: 1,
                   position: 'relative'
@@ -156,7 +167,7 @@ export default function ConditionsSection() {
                   height={500}
                   className="object-cover h-full w-full"
                   style={{ 
-                    filter: isImageHovered ? 'brightness(1.05) contrast(1.05)' : 'brightness(1) contrast(1)',
+                    filter: isImageHovered ? 'brightness(1.1) contrast(1.05)' : 'brightness(1) contrast(1)',
                     objectPosition: "center top",
                     transition: 'filter 0.4s ease-out'
                   }}
@@ -168,7 +179,7 @@ export default function ConditionsSection() {
                 <div 
                   className="absolute inset-0"
                   style={{
-                    backgroundColor: isImageHovered ? 'rgba(var(--color-primary-rgb), 0.1)' : 'rgba(var(--color-primary-rgb), 0)',
+                    backgroundColor: isImageHovered ? 'rgba(var(--color-primary-rgb), 0.15)' : 'rgba(var(--color-primary-rgb), 0)',
                     transition: 'background-color 0.4s ease-out'
                   }}
                 />
@@ -185,9 +196,9 @@ export default function ConditionsSection() {
         </div>
       </div>
       
-      {/* Background Elements - Subtle and blended */}
-      <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-primary/5 rounded-bl-[100px] -z-10 blur-3xl opacity-60"></div>
-      <div className="absolute bottom-0 left-0 w-1/2 h-1/3 bg-primary/5 rounded-tr-[100px] -z-10 blur-3xl opacity-60"></div>
+      {/* Background Elements - Enhanced with more vibrant gradients */}
+      <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-primary/10 rounded-bl-[100px] -z-10 blur-3xl opacity-70"></div>
+      <div className="absolute bottom-0 left-0 w-1/2 h-1/3 bg-primary/10 rounded-tr-[100px] -z-10 blur-3xl opacity-70"></div>
       
       {/* Scroll Arrow to Media Section */}
       <SectionScrollArrow 
