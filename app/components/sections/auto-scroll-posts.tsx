@@ -146,12 +146,22 @@ export default function AutoScrollPosts() {
           animate={isVisible ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
         >
-          <div className="flex flex-col items-start">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-light text-foreground mb-3 sm:mb-4">Latest Articles</h2>
-            <div className="w-12 sm:w-14 md:w-16 h-0.5 bg-primary mb-4 sm:mb-5"></div>
-            <p className="text-sm sm:text-base text-foreground/70 max-w-xl">
-              Explore our latest articles on mental health, therapeutic approaches, and personal growth strategies.
-            </p>
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+            <div className="flex flex-col items-start">
+              <div className="flex items-center gap-3 mb-3">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-light text-foreground">Latest Articles</h2>
+                <div className="w-12 sm:w-14 md:w-16 h-0.5 bg-primary"></div>
+              </div>
+              <p className="text-sm sm:text-base text-foreground/70 max-w-xl">
+                Explore our latest articles on mental health, therapeutic approaches, and personal growth strategies.
+              </p>
+            </div>
+            <Link href="/blog" className="hidden md:flex items-center text-primary text-sm font-medium mt-4 md:mt-0 hover:translate-x-1 transition-transform duration-300 group">
+              View all articles
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </Link>
           </div>
         </motion.div>
         

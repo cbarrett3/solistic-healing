@@ -12,8 +12,8 @@ import {
   MissionSection, 
   ConditionsSection, 
   MediaShowcase, 
-  PricingSection,
-  AutoScrollPosts
+  AutoScrollPosts,
+  ServicesPricingSection
 } from "./components/sections";
 
 export default function Home() {
@@ -298,159 +298,9 @@ export default function Home() {
       {/* Blog Showcase Section */}
       <AutoScrollPosts />
       
-      {/* Pricing Section */}
-      <PricingSection />
+      {/* Services & Pricing Section */}
+      <ServicesPricingSection />
       
-      {/* Ketamine Education Section */}
-      <section data-section className="w-full py-16 md:py-24 bg-black/30 backdrop-blur-md">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row items-center">
-            <div className="w-full md:w-1/2 mb-8 md:mb-0">
-              <div className="relative w-full h-[300px] md:h-[400px] overflow-hidden rounded-lg">
-                <div className="relative w-full h-full bg-neutral-900 flex items-center justify-center">
-                  <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent"></div>
-                  <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
-                    <div className="text-center px-4 mb-6">
-                      <h3 className="text-xl font-medium mb-2">Ketamine-Assisted Psychotherapy</h3>
-                      <p className="text-sm text-white/70">Click to watch our story</p>
-                    </div>
-                    <a 
-                      href="https://www.youtube.com/watch?v=_uLNBoyzA8I" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="w-16 h-16 rounded-full bg-primary/90 flex items-center justify-center cursor-pointer hover:bg-primary transition-colors duration-300 hover:scale-110 transform"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="w-full md:w-1/2 md:pl-12">
-              <h2 className="text-3xl md:text-4xl font-light text-white mb-4">Understanding KAP</h2>
-              <div className="w-[60px] h-[1px] bg-primary mb-6"></div>
-              <p className="text-white/80 mb-6 leading-relaxed">
-                Ketamine-Assisted Psychotherapy (KAP) combines the therapeutic effects of ketamine with professional psychotherapy to create a unique healing experience for treatment-resistant conditions.
-              </p>
-              <p className="text-white/80 mb-6 leading-relaxed">
-                KAP works by allowing people to take a break from their everyday thinking patterns. The ketamine experience creates a window of neuroplasticity, helping patients gain new insights and make meaningful behavioral changes with the guidance of a trained therapist.
-              </p>
-              <a 
-                href="https://www.youtube.com/watch?v=_uLNBoyzA8I" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="inline-block text-primary border border-primary px-6 py-2 rounded-full text-sm hover:bg-primary hover:text-black transition-all duration-300 cursor-pointer"
-              >
-                Watch Our Story
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* How KAP Works Section */}
-      <section data-section className="w-full py-16 md:py-24 bg-background">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-light text-foreground mb-4 text-center">How Ketamine-Assisted Psychotherapy Works</h2>
-            <div className="w-[60px] h-[1px] bg-primary mx-auto mb-10"></div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="bg-white/5 backdrop-blur-sm p-6 rounded-lg border border-white/10 hover:border-primary/30 transition-all duration-300">
-                <h3 className="text-xl font-medium text-foreground mb-3">Confronting Fears</h3>
-                <p className="text-foreground/70">
-                  Ketamine can help you accept thoughts, emotions, memories, and sensations that normally would be avoided. It helps you confront your fears and learn that certain things do not need to be avoided.
-                </p>
-              </div>
-              
-              <div className="bg-white/5 backdrop-blur-sm p-6 rounded-lg border border-white/10 hover:border-primary/30 transition-all duration-300">
-                <h3 className="text-xl font-medium text-foreground mb-3">Increasing Motivation</h3>
-                <p className="text-foreground/70">
-                  Ketamine can help to increase motivation to maintain new learned behaviors that are more suited for your goals and needs.
-                </p>
-              </div>
-              
-              <div className="bg-white/5 backdrop-blur-sm p-6 rounded-lg border border-white/10 hover:border-primary/30 transition-all duration-300">
-                <h3 className="text-xl font-medium text-foreground mb-3">Reducing Threat Response</h3>
-                <p className="text-foreground/70">
-                  Ketamine can help to reduce the threat response that is attached to certain emotions, thoughts, beliefs, body sensations, and images.
-                </p>
-              </div>
-              
-              <div className="bg-white/5 backdrop-blur-sm p-6 rounded-lg border border-white/10 hover:border-primary/30 transition-all duration-300">
-                <h3 className="text-xl font-medium text-foreground mb-3">Creating New Thoughts</h3>
-                <p className="text-foreground/70">
-                  Speaking new thoughts into existence and realizing those thoughts are more gentle, relaxing, and helpful to use when talking to yourself.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Services Section */}
-      <section data-section className="w-full py-16 md:py-24 bg-background">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-light text-foreground mb-3">Our Services</h2>
-            <div className="w-[60px] h-[1px] bg-primary mx-auto mb-4"></div>
-            <p className="text-foreground/70 max-w-[600px] mx-auto">
-              Comprehensive mental wellness services tailored to your unique needs and goals.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Service 1 */}
-            <div className="bg-white/5 backdrop-blur-sm p-6 rounded-lg border border-white/10 hover:border-primary/30 transition-all duration-300 group cursor-pointer">
-              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 11l-2.25 2.25l6.5-6.5m-4.5 4.5l6.5 6.5" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-medium text-foreground mb-2 group-hover:text-primary transition-colors duration-300">Ketamine-Assisted Psychotherapy</h3>
-              <p className="text-foreground/70 text-sm">
-                A transformative approach combining ketamine medicine with psychotherapy to help treat depression, anxiety, PTSD, and other conditions resistant to traditional treatments.
-              </p>
-            </div>
-            
-            {/* Service 2 */}
-            <div className="bg-white/5 backdrop-blur-sm p-6 rounded-lg border border-white/10 hover:border-primary/30 transition-all duration-300 group cursor-pointer">
-              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-medium text-foreground mb-2 group-hover:text-primary transition-colors duration-300">Individual Psychotherapy</h3>
-              <p className="text-foreground/70 text-sm">
-                Using cognitive-behavioral therapy to increase awareness of thinking and behavioral patterns, developing skills for a more relaxed, creative, and flexible mind.
-              </p>
-            </div>
-            
-            {/* Service 3 */}
-            <div className="bg-white/5 backdrop-blur-sm p-6 rounded-lg border border-white/10 hover:border-primary/30 transition-all duration-300 group cursor-pointer">
-              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 11l-2.25 2.25l6.5-6.5m-4.5 4.5l6.5 6.5" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-medium text-foreground mb-2 group-hover:text-primary transition-colors duration-300">Psychedelic Integration</h3>
-              <p className="text-foreground/70 text-sm">
-                Support for processing insights from psychedelic experiences, creating individualized integration plans to help you gain long-term benefits and personal transformation.
-              </p>
-            </div>
-          </div>
-          
-          <div className="text-center mt-10">
-            <Link href="/services" className="inline-block text-primary border border-primary px-6 py-2 rounded-full text-sm hover:bg-primary hover:text-black transition-all duration-300 cursor-pointer">
-              View All Services
-            </Link>
-          </div>
-        </div>
-      </section>
-
       {/* Contact CTA Section */}
       <section data-section className="w-full py-16 md:py-24 bg-background">
         <div className="container mx-auto px-4">
