@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Poppins, Montserrat } from "next/font/google";
 import "./globals.css";
 import { ThemeScript } from "./components/utils";
+import { Footer } from "./components/layout";
 
 // Load Montserrat for headings
 const montserrat = Montserrat({
@@ -35,8 +36,9 @@ export default function RootLayout({
       <head>
         <ThemeScript />
       </head>
-      <body>
+      <body className="flex flex-col min-h-screen">
         {children}
+        <Footer />
       </body>
     </html>
   );

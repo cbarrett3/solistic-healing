@@ -122,14 +122,14 @@ export default function ContactSection() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 sm:p-8"
+            className="bg-white/10 dark:bg-white/5 backdrop-blur-sm border border-gray-200/20 dark:border-white/10 rounded-xl p-6 sm:p-8 shadow-sm"
           >
             <h3 className="text-xl font-medium text-foreground mb-6">Get in Touch</h3>
             
             <form onSubmit={handleSubmit} className="space-y-5">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-foreground/80 mb-1">
+                  <label htmlFor="name" className="block text-sm font-medium text-foreground/90 dark:text-foreground/80 mb-1">
                     Name <span className="text-primary">*</span>
                   </label>
                   <input
@@ -138,7 +138,7 @@ export default function ContactSection() {
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    className={`w-full px-4 py-2.5 bg-white/5 border ${errors.name ? 'border-red-500/50' : 'border-white/10'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all duration-300`}
+                    className={`w-full px-4 py-2.5 bg-gray-50/80 dark:bg-white/5 border ${errors.name ? 'border-red-500/50' : 'border-gray-300/50 dark:border-white/10'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all duration-300`}
                     placeholder="Your name"
                   />
                   {errors.name && (
@@ -147,7 +147,7 @@ export default function ContactSection() {
                 </div>
                 
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-foreground/80 mb-1">
+                  <label htmlFor="email" className="block text-sm font-medium text-foreground/90 dark:text-foreground/80 mb-1">
                     Email <span className="text-primary">*</span>
                   </label>
                   <input
@@ -156,7 +156,7 @@ export default function ContactSection() {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    className={`w-full px-4 py-2.5 bg-white/5 border ${errors.email ? 'border-red-500/50' : 'border-white/10'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all duration-300`}
+                    className={`w-full px-4 py-2.5 bg-gray-50/80 dark:bg-white/5 border ${errors.email ? 'border-red-500/50' : 'border-gray-300/50 dark:border-white/10'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all duration-300`}
                     placeholder="Your email"
                   />
                   {errors.email && (
@@ -166,7 +166,7 @@ export default function ContactSection() {
               </div>
               
               <div>
-                <label htmlFor="phone" className="block text-sm font-medium text-foreground/80 mb-1">
+                <label htmlFor="phone" className="block text-sm font-medium text-foreground/90 dark:text-foreground/80 mb-1">
                   Phone (Optional)
                 </label>
                 <input
@@ -175,13 +175,13 @@ export default function ContactSection() {
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
-                  className="w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all duration-300"
+                  className="w-full px-4 py-2.5 bg-gray-50/80 dark:bg-white/5 border border-gray-300/50 dark:border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all duration-300"
                   placeholder="Your phone number"
                 />
               </div>
               
               <div>
-                <label htmlFor="subject" className="block text-sm font-medium text-foreground/80 mb-1">
+                <label htmlFor="subject" className="block text-sm font-medium text-foreground/90 dark:text-foreground/80 mb-1">
                   Subject <span className="text-primary">*</span>
                 </label>
                 <div className="relative">
@@ -191,7 +191,7 @@ export default function ContactSection() {
                     name="subject"
                     value={formData.subject}
                     onChange={handleChange}
-                    className={`w-full px-4 py-2.5 bg-white/5 border ${errors.subject ? 'border-red-500/50' : 'border-white/10'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all duration-300`}
+                    className={`w-full px-4 py-2.5 bg-gray-50/80 dark:bg-white/5 border ${errors.subject ? 'border-red-500/50' : 'border-gray-300/50 dark:border-white/10'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all duration-300`}
                     placeholder="What is this regarding?"
                   />
                   <div className="absolute right-2 top-2.5">
@@ -218,16 +218,16 @@ export default function ContactSection() {
               </div>
               
               <div>
-                <label htmlFor="message" className="block text-sm font-medium text-foreground/80 mb-1">
+                <label htmlFor="message" className="block text-sm font-medium text-foreground/90 dark:text-foreground/80 mb-1">
                   Message <span className="text-primary">*</span>
                 </label>
                 <textarea
                   id="message"
                   name="message"
+                  rows={4}
                   value={formData.message}
                   onChange={handleChange}
-                  rows={5}
-                  className={`w-full px-4 py-2.5 bg-white/5 border ${errors.message ? 'border-red-500/50' : 'border-white/10'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all duration-300`}
+                  className={`w-full px-4 py-2.5 bg-gray-50/80 dark:bg-white/5 border ${errors.message ? 'border-red-500/50' : 'border-gray-300/50 dark:border-white/10'} rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all duration-300`}
                   placeholder="How can we help you?"
                 ></textarea>
                 {errors.message && (
@@ -241,7 +241,7 @@ export default function ContactSection() {
                   disabled={isSubmitting}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full bg-primary hover:bg-primary/90 text-black dark:text-white font-medium py-3 rounded-lg transition-all duration-300 flex items-center justify-center cursor-pointer"
+                  className="w-full sm:w-auto px-6 py-3 bg-primary/90 hover:bg-primary text-white rounded-lg transition-all duration-300 flex items-center justify-center disabled:opacity-70 disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? (
                     <>

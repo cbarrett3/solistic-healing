@@ -241,11 +241,11 @@ export default function FAQSection() {
       {/* Custom Scroll Arrow to Contact Section */}
       <div className="flex justify-center items-center mt-8 mb-12">
         <div className="flex flex-col items-center cursor-pointer group">
-          <div className="text-[10px] text-white/60 dark:text-white/60 font-light tracking-wider mb-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <div className="text-[10px] text-primary/80 dark:text-white/60 font-light tracking-wider mb-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             Contact
           </div>
           <div 
-            className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-white/10 dark:bg-black/20 backdrop-blur-sm flex items-center justify-center border border-white/20 dark:border-white/10 shadow-lg group-hover:bg-primary/20 group-hover:border-primary/30 transition-all duration-300"
+            className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-white/10 dark:bg-black/20 backdrop-blur-sm flex items-center justify-center border border-primary/30 dark:border-white/10 shadow-lg group-hover:bg-primary/20 group-hover:border-primary/30 transition-all duration-300"
             onClick={() => {
               const contactSection = document.getElementById('contact');
               if (contactSection) {
@@ -259,7 +259,7 @@ export default function FAQSection() {
           >
             <svg 
               xmlns="http://www.w3.org/2000/svg" 
-              className="h-5 w-5 sm:h-6 sm:w-6 text-white/70 dark:text-white/70 group-hover:text-primary transition-colors duration-300" 
+              className="h-5 w-5 sm:h-6 sm:w-6 text-primary dark:text-white/70 group-hover:text-primary transition-colors duration-300" 
               fill="none" 
               viewBox="0 0 24 24" 
               stroke="currentColor"
