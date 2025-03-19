@@ -161,6 +161,7 @@ export default function BlogPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [filteredPosts, setFilteredPosts] = useState(blogPosts);
+  const [masonry, setMasonry] = useState<number[][]>([]);
   
   // Handle mobile menu toggle from Navbar component
   const handleMobileMenuToggle = (isOpen: boolean) => {
@@ -186,6 +187,60 @@ export default function BlogPage() {
     
     setFilteredPosts(result);
   }, [searchQuery, selectedCategory]);
+
+  // Generate masonry layout
+  useEffect(() => {
+    if (filteredPosts.length === 0) return;
+    
+    // Create a masonry layout with 4 columns
+    const columns = 4;
+    const layout: number[][] = Array.from({ length: columns }, () => []);
+    
+    // Distribute posts across columns
+    filteredPosts.forEach((post, index) => {
+      // Determine size based on index
+      const isLarge = index % 7 === 0;
+      const isWide = index % 9 === 2;
+      const isTall = index % 5 === 1;
+      
+      if (isLarge) {
+        // Large posts take 2 columns
+        const shortestCol = layout.indexOf(layout.reduce((prev, curr) => 
+          prev.reduce((a, b) => a + b, 0) <= curr.reduce((a, b) => a + b, 0) ? prev : curr
+        ));
+        const nextCol = (shortestCol + 1) % columns;
+        
+        // Add to both columns with height 2
+        layout[shortestCol].push(2);
+        layout[nextCol].push(0); // Placeholder to skip this column for next item
+      } else if (isWide) {
+        // Wide posts take 2 columns with height 1
+        const shortestCol = layout.indexOf(layout.reduce((prev, curr) => 
+          prev.reduce((a, b) => a + b, 0) <= curr.reduce((a, b) => a + b, 0) ? prev : curr
+        ));
+        const nextCol = (shortestCol + 1) % columns;
+        
+        layout[shortestCol].push(1);
+        layout[nextCol].push(0); // Placeholder
+      } else if (isTall) {
+        // Tall posts take 1 column with height 2
+        const shortestCol = layout.indexOf(layout.reduce((prev, curr) => 
+          prev.reduce((a, b) => a + b, 0) <= curr.reduce((a, b) => a + b, 0) ? prev : curr
+        ));
+        
+        layout[shortestCol].push(2);
+      } else {
+        // Regular posts take 1 column with height 1
+        const shortestCol = layout.indexOf(layout.reduce((prev, curr) => 
+          prev.reduce((a, b) => a + b, 0) <= curr.reduce((a, b) => a + b, 0) ? prev : curr
+        ));
+        
+        layout[shortestCol].push(1);
+      }
+    });
+    
+    setMasonry(layout);
+  }, [filteredPosts]);
   
   // Featured post is the first one marked as featured
   const featuredPost = blogPosts.find(post => post.featured);
@@ -347,7 +402,7 @@ export default function BlogPage() {
                     <span className="text-xs text-foreground/60">{featuredPost.date} · {featuredPost.readTime}</span>
                   </div>
                   
-                  <Link href={`/blog/${featuredPost.id}`} className="block group">
+                  <Link href={`/blog/${featuredPost.id}`} className="group">
                     <h3 className="text-xl sm:text-2xl lg:text-3xl font-medium mb-3 sm:mb-4 group-hover:text-primary transition-colors duration-300">
                       {featuredPost.title}
                     </h3>
@@ -419,76 +474,96 @@ export default function BlogPage() {
             </motion.h2>
             
             {filteredPosts.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-                {filteredPosts.map((post, index) => (
-                  <motion.div
-                    key={post.id}
-                    className="group relative overflow-hidden rounded-xl shadow-md bg-card/30 hover:shadow-lg transition-all duration-300 h-full flex flex-col"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.1 * Math.min(index, 5) }}
-                    whileHover={{ y: -5 }}
-                  >
-                    {/* Image - smaller portion */}
-                    <div className="relative aspect-[3/2] sm:aspect-[2/1] w-full overflow-hidden">
-                      <Image
-                        src={post.imageSrc}
-                        alt={post.title}
-                        fill
-                        className="object-cover transition-transform duration-700 group-hover:scale-105"
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/50 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-300"></div>
-                      <div className="absolute top-4 left-4">
-                        <button
-                          onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            setSelectedCategory(post.category);
-                          }}
-                          className="px-3 py-1 bg-primary/90 text-white text-xs rounded-full hover:bg-primary transition-colors duration-300 min-h-[28px] min-w-[44px]"
-                        >
-                          {post.category}
-                        </button>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-0 border-t border-l border-foreground/10">
+                {filteredPosts.map((post, index) => {
+                  // Determine article size based on index
+                  const isLarge = index % 7 === 0; // Every 7th item is large
+                  const isMedium = index % 5 === 1; // Every 5th item (offset by 1) is medium
+                  const isWide = index % 9 === 2; // Every 9th item (offset by 2) is wide
+                  
+                  // Calculate height based on content
+                  const heightClass = isLarge || isMedium ? 'row-span-2' : 'row-span-1';
+                  
+                  // Calculate width based on content
+                  const widthClass = isLarge || isWide ? 'col-span-2' : 'col-span-1';
+                  
+                  // Skip placeholder items (used for wide/large items)
+                  if (index > 0 && (
+                    (filteredPosts[index-1] && index % 7 === 1) || // Skip after large
+                    (filteredPosts[index-1] && index % 9 === 3)    // Skip after wide
+                  )) {
+                    return null;
+                  }
+                  
+                  return (
+                    <motion.div
+                      key={post.id}
+                      className={`group relative overflow-hidden border-r border-b border-foreground/10 bg-card/20 hover:bg-card/40 transition-colors duration-300 h-full flex flex-col ${heightClass} ${widthClass}`}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.3, delay: 0.02 * Math.min(index, 10) }}
+                    >
+                      {/* Subtle background image */}
+                      <div className="absolute inset-0 w-full h-full opacity-[0.05] group-hover:opacity-[0.08] transition-opacity duration-500">
+                        <Image
+                          src={post.imageSrc}
+                          alt=""
+                          fill
+                          className="object-cover blur-[2px] group-hover:blur-[1px] transition-all duration-700"
+                          sizes={`(max-width: 640px) 50vw, ${isLarge || isWide ? '(max-width: 1024px) 50vw, 40vw' : '(max-width: 1024px) 33vw, 20vw'}`}
+                          priority={index < 4}
+                        />
                       </div>
-                    </div>
-                    
-                    {/* Content - larger portion */}
-                    <div className="p-4 sm:p-5 flex flex-col flex-grow">
-                      <Link href={`/blog/${post.id}`} className="block group">
-                        <h3 className="text-base sm:text-lg md:text-xl font-medium mb-2 sm:mb-3 line-clamp-2 group-hover:text-primary transition-colors duration-300">
-                          {post.title}
-                        </h3>
-                        
-                        <p className="text-xs sm:text-sm text-foreground/70 mb-3 sm:mb-4 line-clamp-3 sm:line-clamp-4">
-                          {post.excerpt}
-                        </p>
-                        
-                        <blockquote className="border-l-2 border-primary/50 pl-3 sm:pl-4 italic text-foreground/90 text-xs sm:text-sm mb-3 sm:mb-4 line-clamp-2">
-                          "{post.content.split('.')[0]}."
-                        </blockquote>
-                        
-                        <div className="flex items-center justify-between mt-auto pt-3 border-t border-foreground/10">
-                          <div className="flex items-center gap-2">
-                            <div className="relative w-6 h-6 sm:w-8 sm:h-8 rounded-full overflow-hidden">
-                              <Image
-                                src={post.author.avatar}
-                                alt={post.author.name}
-                                fill
-                                className="object-cover"
-                                sizes="(max-width: 640px) 24px, 32px"
-                              />
+                      
+                      {/* Content - Text-oriented approach */}
+                      <div className="p-3 flex flex-col h-full relative z-10">
+                        <Link href={`/blog/${post.id}`} className="group h-full flex flex-col">
+                          {/* Category */}
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              setSelectedCategory(post.category);
+                            }}
+                            className="self-start mb-2 text-[10px] text-primary font-medium hover:underline"
+                          >
+                            {post.category}
+                          </button>
+                          
+                          {/* Title */}
+                          <h3 className={`${isLarge ? 'text-sm sm:text-base font-semibold' : 'text-xs font-medium'} mb-1.5 line-clamp-3 group-hover:text-primary transition-colors duration-300`}>
+                            {post.title}
+                          </h3>
+                          
+                          {/* Excerpt */}
+                          <p className="text-[10px] text-foreground/70 mb-2 flex-grow line-clamp-3">
+                            {post.excerpt}
+                          </p>
+                          
+                          {/* Author and date */}
+                          <div className="flex items-center justify-between mt-auto pt-2 border-t border-foreground/10 text-[9px] text-foreground/60">
+                            <div className="flex items-center gap-1.5">
+                              <div className="relative w-4 h-4 rounded-full overflow-hidden">
+                                <Image
+                                  src={post.author.avatar}
+                                  alt={post.author.name}
+                                  fill
+                                  className="object-cover"
+                                  sizes="16px"
+                                />
+                              </div>
+                              <span>{post.author.name}</span>
                             </div>
-                            <span className="text-xs sm:text-sm text-foreground/60">{post.author.name}</span>
+                            <span>{post.date}</span>
                           </div>
-                          <span className="text-xs text-foreground/60">{post.date}</span>
-                        </div>
-                      </Link>
-                    </div>
-                    
-                    <div className="absolute bottom-0 left-0 w-full h-1 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
-                  </motion.div>
-                ))}
+                        </Link>
+                      </div>
+                      
+                      {/* Hover indicator */}
+                      <div className="absolute bottom-0 left-0 w-full h-0.5 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+                    </motion.div>
+                  );
+                })}
               </div>
             ) : (
               <motion.div 
