@@ -320,34 +320,38 @@ function PostCard({ post }: PostCardProps) {
       }}
     >
       <Link href={`/blog/${post.slug}`} className="block h-full">
-        <div className="h-full overflow-hidden rounded-xl border border-border/20 hover:border-primary/30 bg-card/30 backdrop-blur-md shadow-md transition-all duration-300">
-          {/* Image */}
-          <div className="relative h-[160px] sm:h-[180px] overflow-hidden">
+        <div className="relative h-full overflow-hidden rounded-xl border border-border/20 hover:border-primary/30 bg-card/30 backdrop-blur-md shadow-md transition-all duration-300">
+          {/* Background Image */}
+          <div className="absolute inset-0 z-0">
             <Image
               src={post.imageSrc}
-              alt={post.title}
+              alt=""
               fill
-              className="object-cover opacity-70 group-hover:opacity-90 transition-opacity duration-300"
+              className="object-cover opacity-20 group-hover:opacity-30 transition-opacity duration-300"
               sizes="(max-width: 640px) 260px, (max-width: 768px) 280px, 320px"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/40 to-transparent"></div>
+            <div className="absolute inset-0 bg-gradient-to-b from-background/60 to-background/90"></div>
           </div>
           
           {/* Content */}
-          <div className="p-3 sm:p-4">
+          <div className="relative z-10 p-4 h-full flex flex-col">
             <div className="flex items-center text-xs text-muted-foreground mb-2">
-              <span className="text-primary">{post.category}</span>
-              <span className="mx-2">•</span>
-              <span>{post.readTime}</span>
+              <span className="text-xs font-medium text-primary uppercase tracking-wider">{post.category}</span>
+              <span className="mx-2 text-foreground/30">•</span>
+              <span className="text-foreground/60">{post.readTime}</span>
             </div>
             
             <h3 className="text-sm sm:text-base font-medium text-foreground mb-2 group-hover:text-primary transition-colors duration-300 line-clamp-2">
               {post.title}
             </h3>
             
-            <p className="text-muted-foreground text-xs line-clamp-2 mb-2 sm:mb-3">
+            <p className="text-foreground/70 text-xs line-clamp-2 mb-auto">
               {post.excerpt}
             </p>
+            
+            <div className="mt-3 pt-2 border-t border-foreground/10">
+              <span className="text-xs text-foreground/60">{post.date}</span>
+            </div>
           </div>
         </div>
       </Link>

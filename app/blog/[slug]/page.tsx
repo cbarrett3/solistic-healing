@@ -231,7 +231,7 @@ export default function BlogPostPage() {
     return (
       <div className="min-h-screen bg-background">
         <Navbar onMobileMenuToggle={handleMobileMenuToggle} forceDarkMode={true} />
-        <div className="container mx-auto px-4 py-16">
+        <div className="container mx-auto px-4">
           <div className="animate-pulse">
             <div className="h-8 bg-card/50 rounded w-3/4 mb-4"></div>
             <div className="h-4 bg-card/30 rounded w-1/4 mb-8"></div>
@@ -253,112 +253,113 @@ export default function BlogPostPage() {
     <div className="min-h-screen bg-background">
       <Navbar onMobileMenuToggle={handleMobileMenuToggle} forceDarkMode={true} />
       
-      {/* Hero section with featured image */}
-      <section className="w-full relative pt-16 md:pt-20">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col items-start gap-4 max-w-3xl mx-auto">
+      {/* Compact article layout */}
+      <section className="pt-16 md:pt-20">
+        <div className="container mx-auto px-4 max-w-3xl">
+          <div className="flex flex-col">
+            {/* Back link */}
             <Link 
               href="/blog"
-              className="flex items-center text-sm text-foreground/70 hover:text-primary transition-colors duration-300"
+              className="inline-flex items-center text-xs text-foreground/70 hover:text-primary transition-colors mb-4"
             >
-              <ArrowLeft className="w-4 h-4 mr-1" />
+              <ArrowLeft className="w-3 h-3 mr-1" />
               Back to Blog
             </Link>
             
-            <div className="w-full">
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-xs font-medium text-primary/80 uppercase tracking-wider">
-                  {post.category}
-                </span>
-                <span className="text-foreground/30">•</span>
-                <span className="text-xs text-foreground/60 flex items-center">
-                  <Calendar className="w-3 h-3 mr-1" />
-                  {post.date}
-                </span>
-                <span className="text-foreground/30">•</span>
-                <span className="text-xs text-foreground/60 flex items-center">
-                  <Clock className="w-3 h-3 mr-1" />
-                  {post.readTime}
-                </span>
+            {/* Article header with small image */}
+            <div className="flex flex-col md:flex-row gap-5 mb-6">
+              {/* Content */}
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-xs font-medium text-primary uppercase tracking-wider">
+                    {post.category}
+                  </span>
+                  <span className="text-foreground/30">•</span>
+                  <span className="text-xs text-foreground/60 flex items-center">
+                    <Calendar className="w-3 h-3 mr-1" />
+                    {post.date}
+                  </span>
+                  <span className="text-foreground/30">•</span>
+                  <span className="text-xs text-foreground/60 flex items-center">
+                    <Clock className="w-3 h-3 mr-1" />
+                    {post.readTime}
+                  </span>
+                </div>
+                
+                <h1 className="text-xl md:text-2xl lg:text-3xl font-medium mb-3 text-foreground leading-tight">
+                  {post.title}
+                </h1>
+                
+                <p className="text-foreground/80 text-base mb-4 leading-relaxed">
+                  {post.excerpt}
+                </p>
+                
+                <div className="flex items-center">
+                  <div className="w-8 h-8 rounded-full overflow-hidden relative mr-2">
+                    <Image 
+                      src={post.author.avatar} 
+                      alt={post.author.name}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                  <div>
+                    <div className="text-xs font-medium">{post.author.name}</div>
+                    <div className="text-xs text-foreground/60">{post.author.role}</div>
+                  </div>
+                </div>
               </div>
               
-              <h1 className="text-2xl md:text-3xl lg:text-4xl font-medium mb-4 text-foreground/90 leading-tight">
-                {post.title}
-              </h1>
-              
-              <p className="text-foreground/70 text-lg mb-6">
-                {post.excerpt}
-              </p>
-              
-              <div className="flex items-center mb-6">
-                <div className="w-10 h-10 rounded-full overflow-hidden relative mr-3">
-                  <Image 
-                    src={post.author.avatar} 
-                    alt={post.author.name}
+              {/* Small image */}
+              <div className="md:w-1/3 shrink-0">
+                <div className="relative aspect-[4/3] rounded-md overflow-hidden shadow-sm">
+                  <Image
+                    src={post.imageSrc}
+                    alt={post.title}
                     fill
-                    className="object-cover"
+                    className="object-cover opacity-80"
+                    sizes="(max-width: 768px) 100vw, 300px"
+                    priority
                   />
-                </div>
-                <div>
-                  <div className="text-sm font-medium">{post.author.name}</div>
-                  <div className="text-xs text-foreground/60">{post.author.role}</div>
                 </div>
               </div>
             </div>
             
-            <div className="w-full aspect-[16/9] relative rounded-xl overflow-hidden mb-8">
-              <Image
-                src={post.imageSrc}
-                alt={post.title}
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 70vw, 50vw"
-                priority
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-      
-      {/* Article content */}
-      <section className="py-8">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto">
-            <article className="prose prose-lg dark:prose-invert prose-headings:font-medium prose-headings:text-foreground/90 prose-p:text-foreground/80 prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-lg">
+            {/* Divider */}
+            <div className="border-t border-border/10 my-4"></div>
+            
+            {/* Article content */}
+            <article className="prose prose-sm sm:prose-base dark:prose-invert mx-auto w-full
+              prose-headings:font-medium 
+              prose-headings:text-foreground 
+              prose-p:text-foreground/90 
+              prose-p:leading-relaxed
+              prose-a:text-primary 
+              prose-a:no-underline 
+              hover:prose-a:underline 
+              prose-img:rounded-md
+              prose-strong:text-foreground
+              prose-li:text-foreground/90
+              prose-li:leading-relaxed
+              prose-blockquote:border-primary/30
+              prose-blockquote:bg-card/20
+              prose-blockquote:py-0.5
+              prose-blockquote:px-3
+              prose-blockquote:rounded-sm
+              prose-blockquote:not-italic
+              prose-blockquote:text-foreground/80
+              max-w-none">
               <div dangerouslySetInnerHTML={{ __html: post.content }} />
             </article>
             
             {/* Tags section */}
-            <div className="mt-8 pt-8 border-t border-foreground/10">
-              <div className="flex flex-wrap gap-2">
-                <Tag className="w-4 h-4 text-foreground/60" />
-                <span className="text-sm text-foreground/60 mr-2">Tags:</span>
-                <span className="px-2 py-1 bg-card/30 rounded-full text-xs text-foreground/70">Holistic Therapy</span>
-                <span className="px-2 py-1 bg-card/30 rounded-full text-xs text-foreground/70">Mental Health</span>
-                <span className="px-2 py-1 bg-card/30 rounded-full text-xs text-foreground/70">Wellness</span>
-              </div>
-            </div>
-            
-            {/* Author bio */}
-            <div className="mt-8 p-6 bg-card/20 rounded-xl">
-              <div className="flex items-center">
-                <div className="w-16 h-16 rounded-full overflow-hidden relative mr-4">
-                  <Image 
-                    src={post.author.avatar} 
-                    alt={post.author.name}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <div>
-                  <h3 className="text-lg font-medium mb-1">{post.author.name}</h3>
-                  <p className="text-sm text-foreground/70 mb-2">{post.author.role}</p>
-                  <p className="text-sm text-foreground/70">
-                    Eric is a holistic therapist specializing in mind-body approaches to healing. 
-                    With over 15 years of experience, he integrates various modalities to help clients 
-                    achieve lasting wellness.
-                  </p>
-                </div>
+            <div className="mt-6 pt-4 border-t border-foreground/10">
+              <div className="flex flex-wrap gap-1.5 items-center">
+                <Tag className="w-3 h-3 text-primary/80" />
+                <span className="text-xs text-foreground/70 mr-1">Tags:</span>
+                <span className="px-2 py-0.5 bg-card/30 hover:bg-card/50 rounded-full text-xs text-foreground/80 transition-colors">Holistic Therapy</span>
+                <span className="px-2 py-0.5 bg-card/30 hover:bg-card/50 rounded-full text-xs text-foreground/80 transition-colors">Mental Health</span>
+                <span className="px-2 py-0.5 bg-card/30 hover:bg-card/50 rounded-full text-xs text-foreground/80 transition-colors">Wellness</span>
               </div>
             </div>
           </div>
@@ -367,46 +368,45 @@ export default function BlogPostPage() {
       
       {/* Related posts section */}
       {relatedPosts.length > 0 && (
-        <section className="py-12 bg-card/10">
-          <div className="container mx-auto px-4">
-            <div className="max-w-3xl mx-auto">
-              <h2 className="text-xl font-medium mb-6">Related Articles</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {relatedPosts.map((relatedPost) => (
-                  <Link 
-                    key={relatedPost.id}
-                    href={`/blog/${relatedPost.slug}`}
-                    className="group"
-                  >
-                    <div className="bg-card/30 hover:bg-card/50 rounded-lg overflow-hidden transition-colors duration-300 h-full flex flex-col">
-                      <div className="relative h-40 w-full">
-                        <Image
-                          src={relatedPost.imageSrc}
-                          alt={relatedPost.title}
-                          fill
-                          className="object-cover"
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        />
-                      </div>
-                      <div className="p-4 flex-grow">
-                        <div className="flex items-center mb-2">
-                          <span className="text-xs font-medium text-primary/80 uppercase tracking-wider">
-                            {relatedPost.category}
-                          </span>
-                          <span className="mx-2 text-foreground/30">•</span>
-                          <span className="text-xs text-foreground/60">{relatedPost.date}</span>
-                        </div>
-                        <h3 className="text-lg font-medium mb-2 group-hover:text-primary transition-colors duration-300">
-                          {relatedPost.title}
-                        </h3>
-                        <p className="text-sm text-foreground/70 line-clamp-2">
-                          {relatedPost.excerpt}
-                        </p>
-                      </div>
+        <section className="py-8 mt-6 bg-card/5">
+          <div className="container mx-auto px-4 max-w-3xl">
+            <h2 className="text-base font-medium mb-4">Related Articles</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {relatedPosts.map((relatedPost) => (
+                <Link 
+                  key={relatedPost.id}
+                  href={`/blog/${relatedPost.slug}`}
+                  className="group"
+                >
+                  <div className="relative h-24 bg-card/20 hover:bg-card/30 border border-border/10 rounded-md overflow-hidden transition-all duration-300 flex shadow-sm hover:shadow-md">
+                    {/* Background image with opacity */}
+                    <div className="absolute inset-0 z-0">
+                      <Image
+                        src={relatedPost.imageSrc}
+                        alt=""
+                        fill
+                        className="object-cover opacity-20 group-hover:opacity-30 transition-opacity"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      />
                     </div>
-                  </Link>
-                ))}
-              </div>
+                    
+                    {/* Content overlay */}
+                    <div className="relative z-10 p-3 flex-1">
+                      <div className="flex items-center mb-1">
+                        <span className="text-xs font-medium text-primary uppercase tracking-wider">
+                          {relatedPost.category}
+                        </span>
+                      </div>
+                      <h3 className="text-sm font-medium mb-1 group-hover:text-primary transition-colors duration-300 line-clamp-1">
+                        {relatedPost.title}
+                      </h3>
+                      <p className="text-xs text-foreground/70 line-clamp-1 leading-relaxed">
+                        {relatedPost.excerpt}
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+              ))}
             </div>
           </div>
         </section>
