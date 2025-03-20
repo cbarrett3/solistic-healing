@@ -20,6 +20,8 @@ interface BlogPost {
   readTime: string;
   imageSrc: string;
   featured?: boolean;
+  type: 'original' | 'external';
+  externalUrl?: string;
   author: {
     name: string;
     role: string;
@@ -39,6 +41,7 @@ const blogPosts: BlogPost[] = [
     readTime: '5 min read',
     imageSrc: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=800&auto=format&fit=crop',
     featured: true,
+    type: 'original',
     author: {
       name: 'Eric Peterson',
       role: 'Holistic Therapist',
@@ -54,6 +57,7 @@ const blogPosts: BlogPost[] = [
     date: 'March 8, 2025',
     readTime: '8 min read',
     imageSrc: 'https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?q=80&w=800&auto=format&fit=crop',
+    type: 'original',
     author: {
       name: 'Eric Peterson',
       role: 'Energy Healing Specialist',
@@ -69,6 +73,7 @@ const blogPosts: BlogPost[] = [
     date: 'February 28, 2025',
     readTime: '5 min read',
     imageSrc: 'https://images.unsplash.com/photo-1475483768296-6163e08872a1?q=80&w=800&auto=format&fit=crop',
+    type: 'original',
     author: {
       name: 'Eric Peterson',
       role: 'Nutritional Therapist',
@@ -84,6 +89,8 @@ const blogPosts: BlogPost[] = [
     date: 'February 20, 2025',
     readTime: '7 min read',
     imageSrc: 'https://images.unsplash.com/photo-1507652313519-d4e9174996dd?q=80&w=800&auto=format&fit=crop',
+    type: 'external',
+    externalUrl: 'https://example.com/mindfulness-article',
     author: {
       name: 'Eric Peterson',
       role: 'Mindfulness Instructor',
@@ -99,6 +106,7 @@ const blogPosts: BlogPost[] = [
     date: 'February 12, 2025',
     readTime: '9 min read',
     imageSrc: 'https://images.unsplash.com/photo-1502230831726-fe5549140034?q=80&w=800&auto=format&fit=crop',
+    type: 'original',
     author: {
       name: 'Eric Peterson',
       role: 'Trauma Specialist',
@@ -114,6 +122,7 @@ const blogPosts: BlogPost[] = [
     date: 'January 30, 2025',
     readTime: '6 min read',
     imageSrc: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800&auto=format&fit=crop',
+    type: 'original',
     author: {
       name: 'Eric Peterson',
       role: 'Sound Healing Practitioner',
@@ -129,6 +138,7 @@ const blogPosts: BlogPost[] = [
     date: 'January 15, 2025',
     readTime: '7 min read',
     imageSrc: 'https://images.unsplash.com/photo-1507652313519-d4e9174996dd?q=80&w=800&auto=format&fit=crop',
+    type: 'original',
     author: {
       name: 'Eric Peterson',
       role: 'Integrative Health Specialist',
@@ -144,6 +154,7 @@ const blogPosts: BlogPost[] = [
     date: 'January 5, 2025',
     readTime: '8 min read',
     imageSrc: 'https://images.unsplash.com/photo-1559757175-5700dde675bc?q=80&w=800&auto=format&fit=crop',
+    type: 'original',
     author: {
       name: 'Eric Peterson',
       role: 'Breathwork Facilitator',
@@ -160,16 +171,15 @@ export default function BlogPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [hoveredPostId, setHoveredPostId] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedType, setSelectedType] = useState<'all' | 'original' | 'external'>('all');
   const [filteredPosts, setFilteredPosts] = useState(blogPosts);
-  const [masonry, setMasonry] = useState<number[][]>([]);
   
   // sync mobile menu with navbar component
   const handleMobileMenuToggle = (isOpen: boolean) => {
     setMobileMenuOpen(isOpen);
   };
   
-  // apply search and category filters
+  // apply search and type filters
   useEffect(() => {
     let result = blogPosts;
     
@@ -182,467 +192,301 @@ export default function BlogPage() {
       );
     }
     
-    if (selectedCategory) {
-      result = result.filter(post => post.category === selectedCategory);
+    if (selectedType !== 'all') {
+      result = result.filter(post => post.type === selectedType);
     }
     
     setFilteredPosts(result);
-  }, [searchQuery, selectedCategory]);
+  }, [searchQuery, selectedType]);
 
-  // create responsive masonry layout
-  useEffect(() => {
-    if (filteredPosts.length === 0) return;
-    
-    // four column grid for desktop
-    const columns = 4;
-    const layout: number[][] = Array.from({ length: columns }, () => []);
-    
-    // distribute posts across columns
-    filteredPosts.forEach((post: BlogPost, index: number) => {
-      // featured posts get more space
-      const isLarge = index % 7 === 0;
-      const isWide = index % 9 === 2;
-      const isTall = index % 5 === 1;
-      
-      if (isLarge) {
-        // large posts take 2 columns
-        const shortestCol = layout.indexOf(layout.reduce((prev, curr) => 
-          prev.reduce((a, b) => a + b, 0) <= curr.reduce((a, b) => a + b, 0) ? prev : curr
-        ));
-        const nextCol = (shortestCol + 1) % columns;
-        
-        // add to both columns with height 2
-        layout[shortestCol].push(2);
-        layout[nextCol].push(0); // placeholder to skip this column for next item
-      } else if (isWide) {
-        // wide posts take 2 columns with height 1
-        const shortestCol = layout.indexOf(layout.reduce((prev, curr) => 
-          prev.reduce((a, b) => a + b, 0) <= curr.reduce((a, b) => a + b, 0) ? prev : curr
-        ));
-        const nextCol = (shortestCol + 1) % columns;
-        
-        layout[shortestCol].push(1);
-        layout[nextCol].push(0); // placeholder
-      } else if (isTall) {
-        // tall posts take 1 column with height 2
-        const shortestCol = layout.indexOf(layout.reduce((prev, curr) => 
-          prev.reduce((a, b) => a + b, 0) <= curr.reduce((a, b) => a + b, 0) ? prev : curr
-        ));
-        
-        layout[shortestCol].push(2);
-      } else {
-        // regular posts take 1 column with height 1
-        const shortestCol = layout.indexOf(layout.reduce((prev, curr) => 
-          prev.reduce((a, b) => a + b, 0) <= curr.reduce((a, b) => a + b, 0) ? prev : curr
-        ));
-        
-        layout[shortestCol].push(1);
-      }
-    });
-    
-    setMasonry(layout);
-  }, [filteredPosts]);
-  
-  // featured post is the first one marked as featured
-  const featuredPost = blogPosts.find(post => post.featured);
-  
   return (
     <div className="min-h-screen relative bg-background">
       {/* navigation bar */}
       <Navbar onMobileMenuToggle={handleMobileMenuToggle} forceDarkMode={true} />
       
-      {/* hero section */}
-      <section className="pt-20 md:pt-24 pb-6 md:pb-8 w-full relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/10 to-background z-0"></div>
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <motion.h1 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="text-3xl md:text-4xl lg:text-5xl font-light text-center mb-6 relative inline-block"
-            >
-              <span className="text-foreground dark:text-white">Insights</span>
-              <span className="text-primary font-medium">&nbsp;& Resources</span>
-              
-              {/* simple two-color underline */}
-              <motion.div 
-                className="absolute -bottom-3 left-0 w-full h-[3px] rounded-full"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5, delay: 0.8 }}
-              >
-                <div className="w-full h-full bg-gradient-to-r from-foreground dark:from-white via-foreground dark:via-white to-primary"></div>
-              </motion.div>
-            </motion.h1>
-            
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-base md:text-lg text-foreground/70 mb-6 max-w-2xl mx-auto"
-            >
-              Explore our collection of articles on holistic healing, mental health, and therapeutic approaches.
-            </motion.p>
-          </div>
-        </div>
-      </section>
-      
-      {/* search and filter section */}
-      <section className="py-4 w-full relative">
+      {/* hero section with integrated search */}
+      <section className="pt-16 md:pt-20 pb-2 w-full relative">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6">
-            {/* search and filter section */}
-            <div className="w-full flex flex-col gap-4">
-              {/* search bar */}
-              <div className="relative max-w-md w-full">
-                <input
-                  type="text"
-                  placeholder="Search articles..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full px-4 py-2 pl-10 rounded-md bg-card/30 border border-foreground/10 focus:border-primary/50 focus:outline-none focus:ring-1 focus:ring-primary/50 text-sm transition-colors duration-300"
-                />
-                <svg 
-                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-foreground/50" 
-                  width="16" 
-                  height="16" 
-                  viewBox="0 0 24 24" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  strokeWidth="2" 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round"
-                >
-                  <circle cx="11" cy="11" r="8"></circle>
-                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                </svg>
-                {searchQuery && (
-                  <button
-                    onClick={() => setSearchQuery('')}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-foreground/50 hover:text-foreground/80 min-h-[24px] min-w-[24px] cursor-pointer"
-                  >
-                    <svg 
-                      width="14" 
-                      height="14" 
-                      viewBox="0 0 24 24" 
-                      fill="none" 
-                      stroke="currentColor" 
-                      strokeWidth="2" 
-                      strokeLinecap="round" 
-                      strokeLinejoin="round"
-                    >
-                      <line x1="18" y1="6" x2="6" y2="18"></line>
-                      <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                  </button>
-                )}
-              </div>
-              
-              {/* category filters */}
-              <div className="flex flex-wrap gap-2">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div>
+              <h1 className="text-2xl md:text-3xl font-medium mb-1 text-foreground dark:text-white">
+                <span className="text-primary">Blog</span> & Resources
+              </h1>
+              <p className="text-sm text-foreground/70">
+                Explore our collection of articles on holistic healing and mental health.
+              </p>
+            </div>
+            
+            {/* search bar */}
+            <div className="relative w-full md:w-auto md:min-w-[280px]">
+              <input
+                type="text"
+                placeholder="Search articles..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full px-4 py-2 pl-10 rounded-md bg-card/30 border border-foreground/10 focus:border-primary/50 focus:outline-none focus:ring-1 focus:ring-primary/50 text-sm transition-colors duration-300"
+              />
+              <svg 
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-foreground/50" 
+                width="16" 
+                height="16" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                stroke="currentColor" 
+                strokeWidth="2" 
+                strokeLinecap="round" 
+                strokeLinejoin="round"
+              >
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              {searchQuery && (
                 <button
-                  onClick={() => setSelectedCategory(null)}
-                  className={`px-3 py-1.5 rounded-md text-xs sm:text-sm transition-colors duration-300 min-h-[44px] min-w-[44px] cursor-pointer ${
-                    selectedCategory === null 
-                      ? 'bg-primary text-white' 
-                      : 'bg-card/30 hover:bg-card/50 text-foreground/80'
-                  }`}
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-foreground/50 hover:text-foreground/80 text-xs underline cursor-pointer"
                 >
-                  All Categories
-                </button>
-                
-                {categories.map((category) => (
-                  <button
-                    key={category}
-                    onClick={() => setSelectedCategory(category)}
-                    className={`px-3 py-1.5 rounded-md text-xs sm:text-sm transition-colors duration-300 min-h-[44px] min-w-[44px] cursor-pointer ${
-                      selectedCategory === category 
-                        ? 'bg-primary text-white' 
-                        : 'bg-card/30 hover:bg-card/50 text-foreground/80'
-                    }`}
+                  <svg 
+                    width="14" 
+                    height="14" 
+                    viewBox="0 0 24 24" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    strokeWidth="2" 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round"
                   >
-                    {category}
-                  </button>
-                ))}
-              </div>
-              
-              {/* filter status */}
-              {(selectedCategory || searchQuery) && (
-                <div className="text-sm text-foreground/60 flex items-center gap-2">
-                  <span>
-                    Showing {filteredPosts.length} {filteredPosts.length === 1 ? 'result' : 'results'}
-                    {selectedCategory && <span> in <strong>{selectedCategory}</strong></span>}
-                    {searchQuery && <span> for "<strong>{searchQuery}</strong>"</span>}
-                  </span>
-                  {(selectedCategory || searchQuery) && (
-                    <button 
-                      onClick={() => {
-                        setSelectedCategory(null);
-                        setSearchQuery('');
-                      }}
-                      className="text-primary hover:text-primary/80 text-xs underline cursor-pointer"
-                    >
-                      Clear filters
-                    </button>
-                  )}
-                </div>
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                </button>
               )}
             </div>
           </div>
         </div>
       </section>
       
-      {/* featured article section */}
-      {featuredPost && (
-        <section className="py-8 md:py-12">
-          <div className="container mx-auto px-4">
-            <motion.h2 
-              className="text-2xl md:text-3xl font-light mb-6 inline-block relative"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <span>Featured Article</span>
-              <motion.span 
-                className="absolute bottom-0 left-0 h-[2px] bg-primary/30"
-                initial={{ width: 0 }}
-                animate={{ width: '100%' }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-              />
-            </motion.h2>
-            
-            <motion.div 
-              className="relative overflow-hidden rounded-xl shadow-lg group bg-card/40 backdrop-blur-sm"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              whileHover={{ y: -5 }}
-            >
-              <div className="grid grid-cols-1 lg:grid-cols-5 h-full">
-                {/* image - takes full width on mobile, side on desktop */}
-                <div className="lg:col-span-2 relative overflow-hidden">
-                  <div className="relative aspect-[16/9] lg:h-full w-full overflow-hidden">
-                    <Image
-                      src={featuredPost.imageSrc}
-                      alt={featuredPost.title}
-                      fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-105"
-                      sizes="(max-width: 1024px) 100vw, 40vw"
-                      priority
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent lg:via-black/40 lg:to-transparent"></div>
-                  </div>
-                </div>
-                
-                {/* content - larger portion */}
-                <div className="lg:col-span-3 p-5 sm:p-6 md:p-8 relative">
-                  <div className="flex flex-wrap items-center gap-3 mb-4">
-                    <button 
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        setSelectedCategory(featuredPost.category);
-                      }}
-                      className="px-3 py-1 bg-primary/90 text-white text-xs rounded-full hover:bg-primary transition-colors duration-300"
-                    >
-                      {featuredPost.category}
-                    </button>
-                    <span className="text-xs text-foreground/60">{featuredPost.date} · {featuredPost.readTime}</span>
-                  </div>
-                  
-                  <Link href={`/blog/${featuredPost.id}`} className="group">
-                    <h3 className="text-xl sm:text-2xl lg:text-3xl font-medium mb-3 sm:mb-4 group-hover:text-primary transition-colors duration-300">
-                      {featuredPost.title}
-                    </h3>
-                    
-                    <p className="text-sm sm:text-base text-foreground/80 mb-4 sm:mb-6 line-clamp-3 sm:line-clamp-4 lg:line-clamp-6">
-                      {featuredPost.excerpt}
-                    </p>
-                    
-                    <div className="flex flex-col gap-3 sm:gap-4 mb-4 sm:mb-6">
-                      <blockquote className="border-l-4 border-primary/50 pl-3 sm:pl-4 italic text-foreground/90 text-sm sm:text-base">
-                        "{featuredPost.content.split('.')[0]}."
-                      </blockquote>
-                      
-                      <p className="text-xs sm:text-sm text-foreground/70 hidden sm:block">
-                        {featuredPost.content.split('.')[1] ? featuredPost.content.split('.')[1] + '.' : ''}
-                      </p>
-                    </div>
-                    
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2 sm:gap-3">
-                        <div className="relative w-8 h-8 sm:w-10 sm:h-10 rounded-full overflow-hidden">
-                          <Image
-                            src={featuredPost.author.avatar}
-                            alt={featuredPost.author.name}
-                            fill
-                            className="object-cover"
-                            sizes="(max-width: 640px) 32px, 40px"
-                          />
-                        </div>
-                        <div>
-                          <p className="text-xs sm:text-sm font-medium">{featuredPost.author.name}</p>
-                          <p className="text-xs text-foreground/60 hidden sm:block">{featuredPost.author.role}</p>
-                        </div>
-                      </div>
-                      
-                      <div className="inline-flex items-center text-primary group-hover:translate-x-2 transition-transform duration-300">
-                        <span className="mr-2 text-sm sm:text-base">Read Full Article</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 sm:h-4 sm:w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                        </svg>
-                      </div>
-                    </div>
-                  </Link>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </section>
-      )}
-      
-      {/* blog content */}
-      <section className="py-10 md:py-16">
+      {/* simplified filter section */}
+      <section className="py-2 w-full relative">
         <div className="container mx-auto px-4">
-          {/* all posts grid */}
-          <div className="mb-8">
-            <motion.h2 
-              className="text-2xl md:text-3xl font-light mb-6 inline-block relative"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setSelectedType('all')}
+              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300 cursor-pointer flex items-center ${
+                selectedType === 'all' 
+                  ? 'bg-primary text-white shadow-sm shadow-primary/20 scale-105' 
+                  : 'bg-card/30 hover:bg-card/70 hover:shadow-sm active:scale-95 text-foreground/80 hover:text-foreground border border-transparent hover:border-foreground/10'
+              }`}
             >
-              <span>{selectedCategory ? `${selectedCategory} Articles` : searchQuery ? 'Search Results' : 'All Articles'}</span>
-              <motion.span 
-                className="absolute bottom-0 left-0 h-[2px] bg-primary/30"
-                initial={{ width: 0 }}
-                animate={{ width: '100%' }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-              />
-            </motion.h2>
+              All Posts
+              {selectedType === 'all' && (
+                <span className="ml-1.5 flex items-center justify-center bg-white/20 text-[10px] w-5 h-5 rounded-full">
+                  {filteredPosts.length}
+                </span>
+              )}
+            </button>
             
-            {filteredPosts.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-0 border-t border-l border-foreground/10">
-                {filteredPosts.map((post: BlogPost, index: number) => {
-                  // determine article size based on index
-                  const isLarge = index % 7 === 0; 
-                  const isMedium = index % 5 === 1; 
-                  const isWide = index % 9 === 2; 
-                  
-                  // calculate height based on content
-                  const heightClass = isLarge || isMedium ? 'row-span-2' : 'row-span-1';
-                  
-                  // calculate width based on content
-                  const widthClass = isLarge || isWide ? 'col-span-2' : 'col-span-1';
-                  
-                  // skip placeholder items (used for wide/large items)
-                  if (index > 0 && (
-                    (filteredPosts[index-1] && index % 7 === 1) || 
-                    (filteredPosts[index-1] && index % 9 === 3)    
-                  )) {
-                    return null;
-                  }
-                  
-                  return (
-                    <motion.div
-                      key={post.id}
-                      className={`group relative overflow-hidden border-r border-b border-foreground/10 bg-card/20 hover:bg-card/40 transition-colors duration-300 h-full flex flex-col ${heightClass} ${widthClass}`}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.3, delay: 0.02 * Math.min(index, 10) }}
-                    >
-                      {/* subtle background image */}
-                      <div className="absolute inset-0 w-full h-full opacity-[0.05] group-hover:opacity-[0.08] transition-opacity duration-500">
-                        <Image
-                          src={post.imageSrc}
-                          alt=""
-                          fill
-                          className="object-cover blur-[2px] group-hover:blur-[1px] transition-all duration-700"
-                          sizes={`(max-width: 640px) 50vw, ${isLarge || isWide ? '(max-width: 1024px) 50vw, 40vw' : '(max-width: 1024px) 33vw, 20vw'}`}
-                          priority={index < 4}
-                        />
-                      </div>
-                      
-                      {/* content - text-oriented approach */}
-                      <div className="p-3 flex flex-col h-full relative z-10">
-                        <Link href={`/blog/${post.id}`} className="group h-full flex flex-col">
-                          {/* category */}
-                          <button
-                            onClick={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              setSelectedCategory(post.category);
-                            }}
-                            className="self-start mb-2 text-[10px] text-primary font-medium hover:underline"
-                          >
-                            {post.category}
-                          </button>
-                          
-                          {/* title */}
-                          <h3 className={`${isLarge ? 'text-sm sm:text-base font-semibold' : 'text-xs font-medium'} mb-1.5 line-clamp-3 group-hover:text-primary transition-colors duration-300`}>
-                            {post.title}
-                          </h3>
-                          
-                          {/* excerpt */}
-                          <p className="text-[10px] text-foreground/70 mb-2 flex-grow line-clamp-3">
-                            {post.excerpt}
-                          </p>
-                          
-                          {/* author and date */}
-                          <div className="flex items-center justify-between mt-auto pt-2 border-t border-foreground/10 text-[9px] text-foreground/60">
-                            <div className="flex items-center gap-1.5">
-                              <div className="relative w-4 h-4 rounded-full overflow-hidden">
-                                <Image
-                                  src={post.author.avatar}
-                                  alt={post.author.name}
-                                  fill
-                                  className="object-cover"
-                                  sizes="16px"
-                                />
-                              </div>
-                              <span>{post.author.name}</span>
-                            </div>
-                            <span>{post.date}</span>
-                          </div>
-                        </Link>
-                      </div>
-                      
-                      {/* hover indicator */}
-                      <div className="absolute bottom-0 left-0 w-full h-0.5 bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
-                    </motion.div>
-                  );
-                })}
-              </div>
-            ) : (
-              <motion.div 
-                className="text-center py-16"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5 }}
-              >
-                <div className="mb-4 text-foreground/40">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-light text-foreground mb-2">No articles found</h3>
-                <p className="text-foreground/60">Try adjusting your search or filter criteria</p>
-                <button 
-                  onClick={() => {
-                    setSearchQuery('');
-                    setSelectedCategory('');
-                  }}
-                  className="mt-6 px-6 py-2 bg-primary/10 hover:bg-primary/20 text-primary rounded-full transition-colors duration-300 cursor-pointer"
-                >
-                  Clear filters
-                </button>
-              </motion.div>
-            )}
+            <button
+              onClick={() => setSelectedType('original')}
+              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300 cursor-pointer flex items-center ${
+                selectedType === 'original' 
+                  ? 'bg-primary text-white shadow-sm shadow-primary/20 scale-105' 
+                  : 'bg-card/30 hover:bg-card/70 hover:shadow-sm active:scale-95 text-foreground/80 hover:text-foreground border border-transparent hover:border-foreground/10'
+              }`}
+            >
+              Original Content
+              {selectedType === 'original' && (
+                <span className="ml-1.5 flex items-center justify-center bg-white/20 text-[10px] w-5 h-5 rounded-full">
+                  {filteredPosts.filter(post => post.type === 'original').length}
+                </span>
+              )}
+            </button>
+            
+            <button
+              onClick={() => setSelectedType('external')}
+              className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300 cursor-pointer flex items-center ${
+                selectedType === 'external' 
+                  ? 'bg-primary text-white shadow-sm shadow-primary/20 scale-105' 
+                  : 'bg-card/30 hover:bg-card/70 hover:shadow-sm active:scale-95 text-foreground/80 hover:text-foreground border border-transparent hover:border-foreground/10'
+              }`}
+            >
+              Shared Resources
+              {selectedType === 'external' && (
+                <span className="ml-1.5 flex items-center justify-center bg-white/20 text-[10px] w-5 h-5 rounded-full">
+                  {filteredPosts.filter(post => post.type === 'external').length}
+                </span>
+              )}
+            </button>
           </div>
           
-          {/* resource section */}
-          <div className="mt-16 md:mt-24"></div>
+          {/* filter status */}
+          {(selectedType !== 'all' || searchQuery) && (
+            <div className="text-xs text-foreground/60 mt-2 flex items-center gap-2">
+              <span>
+                {filteredPosts.length} {filteredPosts.length === 1 ? 'result' : 'results'}
+                {selectedType !== 'all' && <span> in <strong>{selectedType === 'original' ? 'Original Content' : 'Shared Resources'}</strong></span>}
+                {searchQuery && <span> for "<strong>{searchQuery}</strong>"</span>}
+              </span>
+              {(selectedType !== 'all' || searchQuery) && (
+                <button 
+                  onClick={() => {
+                    setSelectedType('all');
+                    setSearchQuery('');
+                  }}
+                  className="text-primary hover:text-primary/80 text-xs underline cursor-pointer"
+                >
+                  Clear
+                </button>
+              )}
+            </div>
+          )}
+        </div>
+      </section>
+      
+      {/* blog content - text-focused design with enhanced typography */}
+      <section className="py-10">
+        <div className="container mx-auto px-4">
+          {/* section heading with improved design */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8">
+            <div className="mb-4 sm:mb-0">
+              <span className="text-xs uppercase tracking-wider text-primary/80 font-medium mb-1 block">Explore Our Content</span>
+              <h2 className="text-2xl font-medium text-foreground/90">
+                {selectedType === 'all' ? 'All Articles' : selectedType === 'original' ? 'Original Content' : 'Shared Resources'}
+              </h2>
+            </div>
+            <div className="text-xs bg-card/40 px-3 py-1.5 rounded-full flex items-center">
+              <span className="w-2 h-2 rounded-full bg-primary/70 mr-2"></span>
+              <span className="text-foreground/70">{filteredPosts.length} {filteredPosts.length === 1 ? 'article' : 'articles'}</span>
+            </div>
+          </div>
+          
+          {/* text-focused article cards with enhanced typography */}
+          {filteredPosts.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+              {filteredPosts.map((post: BlogPost) => (
+                <Link 
+                  href={`/blog/${post.id}`}
+                  key={post.id}
+                  className="group"
+                >
+                  <article className="relative p-6 bg-card/30 hover:bg-card/50 border border-foreground/5 rounded-lg transition-all duration-300 h-full flex flex-col overflow-hidden">
+                    {/* Subtle background image for entire card */}
+                    <div className="absolute inset-0 w-full h-full opacity-[0.5] group-hover:opacity-[0.12] transition-opacity duration-300">
+                      <Image
+                        src={post.imageSrc}
+                        alt=""
+                        fill
+                        className="object-cover blur-[1px]"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-br from-card/80 to-card/70"></div>
+                    </div>
+                    
+                    {/* Content positioned above the background */}
+                    <div className="relative z-10 flex flex-col h-full">
+                      {/* Article metadata with enhanced typography */}
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center">
+                          <div className="w-7 h-7 rounded-full overflow-hidden relative mr-2.5 ring-2 ring-background/80">
+                            <Image 
+                              src={post.author.avatar} 
+                              alt={post.author.name}
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
+                          <span className="text-xs font-medium">{post.author.name}</span>
+                        </div>
+                        <span className={`text-xs px-2.5 py-1 rounded-full ${
+                          post.type === 'original' 
+                            ? 'bg-primary/10 text-primary' 
+                            : 'bg-foreground/10 text-foreground/70'
+                        }`}>
+                          {post.type === 'original' ? 'Original' : 'Shared'}
+                        </span>
+                      </div>
+                      
+                      {/* Title with dynamic sizing and improved typography */}
+                      <h3 className="text-lg font-semibold mb-3 group-hover:text-primary transition-colors duration-300 line-clamp-2">
+                        {post.title}
+                      </h3>
+                      
+                      {/* First paragraph of content with proper styling */}
+                      <div className="mb-4 flex-grow">
+                        <p className="text-sm text-foreground/70 leading-relaxed line-clamp-4">
+                          {post.excerpt}
+                        </p>
+                        
+                        {/* Pull quote - first sentence of content */}
+                        <blockquote className="mt-4 pl-3 border-l-2 border-primary/40 italic text-sm text-foreground/80">
+                          "{post.content.split('.')[0]}."
+                        </blockquote>
+                      </div>
+                      
+                      {/* Enhanced footer with date, read time and visual indicator */}
+                      <div className="flex items-center justify-between pt-4 border-t border-foreground/10 mt-auto">
+                        <div className="flex items-center gap-3">
+                          <span className="text-xs text-foreground/60">{post.date}</span>
+                          <span className="flex items-center text-xs text-foreground/60">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 mr-1 text-primary/70" viewBox="0 0 20 20" fill="currentColor">
+                              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
+                            </svg>
+                            {post.readTime}
+                          </span>
+                        </div>
+                        
+                        {/* Read more indicator with animation */}
+                        <div className="flex items-center text-primary text-xs font-medium group-hover:underline">
+                          Read more
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 ml-1 transform group-hover:translate-x-1 transition-transform duration-300" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                  </article>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <div className="py-16 text-center bg-card/20 rounded-lg border border-foreground/5">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-foreground/5 mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-foreground/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-medium mb-2">No articles found</h3>
+              <p className="text-foreground/60 max-w-md mx-auto">Try adjusting your search or filter criteria to find what you're looking for</p>
+              <button 
+                onClick={() => {
+                  setSelectedType('all');
+                  setSearchQuery('');
+                }}
+                className="mt-6 px-6 py-2 bg-primary/10 hover:bg-primary/20 text-primary rounded-full transition-colors duration-300 cursor-pointer"
+              >
+                View all articles
+              </button>
+            </div>
+          )}
+          
+          {/* Pagination placeholder - can be implemented later */}
+          {filteredPosts.length > 0 && (
+            <div className="mt-12 flex justify-center">
+              <div className="inline-flex rounded-md shadow-sm">
+                <button className="px-3 py-2 text-sm font-medium text-foreground/70 bg-card/30 rounded-l-md border border-foreground/10 hover:bg-card/50">
+                  Previous
+                </button>
+                <button className="px-3 py-2 text-sm font-medium text-white bg-primary rounded-none border-t border-b border-primary">
+                  1
+                </button>
+                <button className="px-3 py-2 text-sm font-medium text-foreground/70 bg-card/30 border border-foreground/10 hover:bg-card/50">
+                  2
+                </button>
+                <button className="px-3 py-2 text-sm font-medium text-foreground/70 bg-card/30 rounded-r-md border border-foreground/10 hover:bg-card/50">
+                  Next
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </section>
     </div>
