@@ -12,6 +12,7 @@ import { SectionHeading } from '../components/ui';
 // define blog post type
 interface BlogPost {
   id: number;
+  slug: string;
   title: string;
   excerpt: string;
   content: string;
@@ -33,6 +34,7 @@ interface BlogPost {
 const blogPosts: BlogPost[] = [
   {
     id: 1,
+    slug: 'understanding-mind-body-connection',
     title: 'Understanding the Mind-Body Connection in Therapy',
     excerpt: 'Explore how mental and physical health are interconnected and how holistic approaches to therapy can lead to more comprehensive healing.',
     content: 'The mind-body connection represents one of the most profound frontiers in modern therapeutic practice. Research consistently demonstrates that our thoughts and emotions directly influence our physical well-being, creating a feedback loop that can either promote healing or exacerbate illness. When we approach therapy with an integrated perspective, acknowledging both psychological and physiological dimensions, we unlock pathways to healing that remain inaccessible through compartmentalized treatment models.',
@@ -50,6 +52,7 @@ const blogPosts: BlogPost[] = [
   },
   {
     id: 2,
+    slug: 'benefits-energy-healing-chronic-pain',
     title: 'The Benefits of Energy Healing for Chronic Pain',
     excerpt: 'Learn how energy healing techniques can complement traditional pain management approaches for those suffering from chronic conditions.',
     content: 'Energy healing modalities offer a complementary approach to conventional pain management that addresses the multidimensional nature of chronic pain. Clinical observations suggest that practices like Reiki and therapeutic touch can modulate the nervous system\'s response to pain signals, potentially reducing inflammation and promoting the body\'s natural healing mechanisms. For many patients experiencing persistent discomfort, these approaches provide not only physical relief but also emotional regulation tools that transform their relationship with pain.',
@@ -66,6 +69,7 @@ const blogPosts: BlogPost[] = [
   },
   {
     id: 3,
+    slug: 'nutritional-approaches-mental-wellness',
     title: 'Nutritional Approaches to Mental Wellness',
     excerpt: 'Discover the growing evidence for how dietary choices can impact mental health and emotional wellbeing.',
     content: 'The emerging field of nutritional psychiatry has revealed compelling connections between our dietary patterns and mental health outcomes. The gut-brain axis, mediated through our microbiome, serves as a critical communication pathway that influences neurotransmitter production, inflammation levels, and neural function. Strategic nutritional interventions focusing on omega-3 fatty acids, antioxidants, and prebiotic-rich foods can significantly modulate mood disorders and cognitive function, offering a powerful adjunctive approach to conventional mental health treatments.',
@@ -82,6 +86,7 @@ const blogPosts: BlogPost[] = [
   },
   {
     id: 4,
+    slug: 'mindfulness-meditation-emotional-regulation',
     title: 'Mindfulness Meditation: A Path to Emotional Regulation',
     excerpt: 'Explore how regular mindfulness practice can help develop healthier emotional responses to life\'s challenges.',
     content: 'Mindfulness meditation represents a transformative practice that fundamentally alters our relationship with our emotional landscape. By cultivating present-moment awareness without judgment, we develop the capacity to observe our thoughts and feelings as transient experiences rather than absolute truths. This metacognitive skill creates a crucial space between stimulus and response, allowing for more intentional choices rather than reactive patterns. Neuroimaging studies confirm that consistent practice physically restructures brain regions associated with emotional regulation, attention, and self-awareness.',
@@ -99,6 +104,7 @@ const blogPosts: BlogPost[] = [
   },
   {
     id: 5,
+    slug: 'trauma-informed-somatic-practices',
     title: 'Trauma-Informed Somatic Practices for Healing',
     excerpt: 'Learn how body-centered approaches can help address and release trauma stored in the physical body.',
     content: 'Somatic approaches to trauma resolution acknowledge the fundamental truth that traumatic experiences are not merely psychological events but are deeply encoded in our physiological systems. The body keeps the score, maintaining patterns of tension, constriction, and dysregulation that persist long after the traumatic event has passed. Through mindful movement, breathwork, and interoceptive awareness practices, we can gently access and release these embodied trauma patterns, restoring the nervous system\'s natural capacity for regulation and resilience.',
@@ -115,6 +121,7 @@ const blogPosts: BlogPost[] = [
   },
   {
     id: 6,
+    slug: 'science-behind-sound-healing',
     title: 'The Science Behind Sound Healing Therapy',
     excerpt: 'Discover how sound frequencies can influence brainwave patterns and promote deep relaxation and healing.',
     content: 'Sound healing harnesses the profound physiological effects of acoustic vibrations on our neurological and cellular systems. Research demonstrates that specific sound frequencies can entrain brainwave patterns, shifting consciousness from alert beta states to more therapeutic alpha and theta rhythms associated with deep relaxation and healing. Beyond these neurological effects, the vibrational properties of instruments like singing bowls and tuning forks appear to influence cellular structures and tissue resonance, potentially facilitating physiological repair processes at the most fundamental levels.',
@@ -131,6 +138,7 @@ const blogPosts: BlogPost[] = [
   },
   {
     id: 7,
+    slug: 'integrating-eastern-western-healing',
     title: 'Integrating Eastern and Western Healing Modalities',
     excerpt: 'Explore how combining traditional Eastern practices with Western medicine can create a more comprehensive approach to wellness.',
     content: 'The integration of Eastern healing traditions with Western medical approaches represents a paradigm shift in healthcare that honors both the scientific rigor of evidence-based medicine and the holistic wisdom of ancient healing systems. This complementary framework recognizes that optimal health emerges from addressing not only physical symptoms but also the energetic, emotional, and spiritual dimensions of wellbeing. By bridging these seemingly disparate approaches, we can develop truly comprehensive treatment protocols that leverage the strengths of each tradition while compensating for their respective limitations.',
@@ -147,6 +155,7 @@ const blogPosts: BlogPost[] = [
   },
   {
     id: 8,
+    slug: 'role-breathwork-stress-reduction',
     title: 'The Role of Breathwork in Stress Reduction',
     excerpt: 'Learn how conscious breathing techniques can activate the parasympathetic nervous system and reduce chronic stress.',
     content: 'Conscious breathwork represents one of the most accessible yet profound tools for modulating our autonomic nervous system and counteracting the physiological effects of chronic stress. Through specific breathing patterns that emphasize extended exhalation and diaphragmatic engagement, we can directly activate the parasympathetic branch of the nervous system, triggering the body\'s relaxation response. This vagal stimulation cascades through multiple systems, reducing cortisol levels, decreasing inflammation, and restoring homeostatic balance to organs and tissues previously locked in stress-response patterns.',
@@ -364,7 +373,7 @@ export default function BlogPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
               {filteredPosts.map((post: BlogPost) => (
                 <Link 
-                  href={`/blog/${post.id}`}
+                  href={`/blog/${post.slug}`}
                   key={post.id}
                   className="group"
                 >

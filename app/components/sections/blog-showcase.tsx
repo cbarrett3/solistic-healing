@@ -9,6 +9,7 @@ import { useState } from 'react';
 const sampleBlogPosts = [
   {
     id: 1,
+    slug: 'understanding-mind-body-connection',
     title: 'Understanding the Mind-Body Connection in Therapy',
     excerpt: 'Exploring how our physical sensations influence our mental state and how integrated approaches can lead to more effective healing.',
     category: 'Mind-Body',
@@ -19,33 +20,37 @@ const sampleBlogPosts = [
   },
   {
     id: 2,
-    title: 'The Science Behind Ketamine-Assisted Therapy',
-    excerpt: 'Recent research findings on how ketamine affects neuroplasticity and creates opportunities for psychological breakthroughs.',
-    category: 'Research',
+    slug: 'benefits-energy-healing-chronic-pain',
+    title: 'The Benefits of Energy Healing for Chronic Pain',
+    excerpt: 'Recent research findings on how energy healing affects the body and creates opportunities for pain relief.',
+    category: 'Energy Healing',
     date: 'March 8, 2025',
     readTime: '8 min read',
     imageSrc: 'https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?q=80&w=800&auto=format&fit=crop',
   },
   {
     id: 3,
-    title: 'Mindfulness Practices for Daily Anxiety Management',
-    excerpt: 'Simple techniques you can incorporate into your routine to reduce anxiety and increase present-moment awareness.',
-    category: 'Mindfulness',
+    slug: 'nutritional-approaches-mental-wellness',
+    title: 'Nutritional Approaches to Mental Wellness',
+    excerpt: 'Simple techniques you can incorporate into your diet to improve mental health and increase wellbeing.',
+    category: 'Nutrition',
     date: 'February 28, 2025',
     readTime: '5 min read',
     imageSrc: 'https://images.unsplash.com/photo-1475483768296-6163e08872a1?q=80&w=800&auto=format&fit=crop',
   },
   {
     id: 4,
-    title: 'Trauma-Informed Care: A Compassionate Approach',
-    excerpt: 'How understanding the impact of trauma can transform therapeutic relationships and improve outcomes.',
-    category: 'Trauma',
+    slug: 'mindfulness-meditation-emotional-regulation',
+    title: 'Mindfulness Meditation: A Path to Emotional Regulation',
+    excerpt: 'How understanding the impact of mindfulness can transform therapeutic relationships and improve outcomes.',
+    category: 'Mindfulness',
     date: 'February 20, 2025',
     readTime: '7 min read',
     imageSrc: 'https://images.unsplash.com/photo-1508672019048-805c876b67e2?q=80&w=800&auto=format&fit=crop',
   },
   {
     id: 5,
+    slug: 'psychedelics-modern-psychotherapy',
     title: 'The Role of Psychedelics in Modern Psychotherapy',
     excerpt: 'An overview of current research and therapeutic applications of psychedelic medicines in mental health treatment.',
     category: 'Psychedelics',
@@ -89,7 +94,7 @@ export default function BlogShowcase() {
               onMouseEnter={() => setHoveredPostId(featuredPost.id)}
               onMouseLeave={() => setHoveredPostId(null)}
             >
-              <Link href="/blog" className="block h-full">
+              <Link href={`/blog/${featuredPost.slug}`} className="block h-full">
                 <div className="relative h-full overflow-hidden rounded-xl border-2 border-border/20 hover:border-primary/30 bg-card/30 backdrop-blur-md shadow-lg flex flex-col transition-all duration-300">
                   {/* Featured post image - subtle and small */}
                   <div className="relative w-full h-[140px] overflow-hidden">
@@ -167,7 +172,7 @@ export default function BlogShowcase() {
                 onMouseEnter={() => setHoveredPostId(post.id)}
                 onMouseLeave={() => setHoveredPostId(null)}
               >
-                <Link href="/blog" className="block h-full">
+                <Link href={`/blog/${post.slug}`} className="block h-full">
                   <div className="relative h-full overflow-hidden rounded-xl border-2 border-border/20 hover:border-primary/30 bg-card/30 backdrop-blur-md shadow-lg flex flex-col transition-all duration-300">
                     {/* Small image at top */}
                     <div className="relative w-full h-[80px] overflow-hidden">
@@ -233,7 +238,7 @@ export default function BlogShowcase() {
               >
                 View All
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7m7-7H3"></path>
                 </svg>
               </Link>
             </motion.div>
@@ -254,7 +259,7 @@ export default function BlogShowcase() {
                     transition: { duration: 0.1 }
                   }}
                 >
-                  <Link href="/blog">
+                  <Link href={`/blog/${post.slug}`}>
                     <div className="flex flex-row items-center gap-3">
                       {/* Tiny circular image */}
                       <div className="relative w-10 h-10 rounded-full overflow-hidden flex-shrink-0 border border-primary/20">
@@ -322,23 +327,22 @@ export default function BlogShowcase() {
         </div>
         
         {/* View all blog posts CTA */}
-        <div className="text-center mt-12">
-          <motion.div
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-            className="inline-block"
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="mt-8 text-center"
+        >
+          <Link 
+            href="/blog" 
+            className="inline-flex items-center justify-center px-6 py-3 rounded-full bg-primary/10 hover:bg-primary/20 text-primary font-medium transition-all duration-300"
           >
-            <Link 
-              href="/blog" 
-              className="inline-flex items-center justify-center text-primary border-2 border-primary px-6 py-2 rounded-full text-sm hover:bg-primary hover:text-black transition-all duration-300 group min-h-[44px]"
-            >
-              Explore All Articles
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-              </svg>
-            </Link>
-          </motion.div>
-        </div>
+            View All Articles
+            <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+            </svg>
+          </Link>
+        </motion.div>
       </div>
     </section>
   );

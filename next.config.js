@@ -16,6 +16,16 @@ const nextConfig = {
       },
     ],
   },
+  // Add redirects for blog posts
+  async redirects() {
+    return [
+      {
+        source: '/blog/:id(\\d+)',
+        destination: '/blog',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;

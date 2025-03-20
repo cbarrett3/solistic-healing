@@ -63,7 +63,7 @@ export default function PostItem({ post }: PostItemProps) {
           
           <div className="flex items-center gap-2">
             <Link 
-              href={`/blog/1`}
+              href={`/blog/${post.slug}`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block"

@@ -9,6 +9,7 @@ import { motion, useAnimationControls } from 'framer-motion';
 const sampleBlogPosts = [
   {
     id: 1,
+    slug: 'understanding-mind-body-connection',
     title: 'Understanding the Mind-Body Connection in Therapy',
     excerpt: 'Exploring how our physical sensations influence our mental state and how integrated approaches can lead to more effective healing. The mind-body connection is a powerful relationship that has been recognized by healers across cultures for thousands of years. Modern research continues to validate this ancient wisdom, showing how our thoughts and emotions can manifest physically, and how physical practices can transform our mental health.',
     content: 'The concept of the mind-body connection acknowledges that our thoughts, feelings, beliefs, and attitudes can positively or negatively affect our biological functioning. In other words, our minds can affect how healthy our bodies are. Conversely, what we do with our physical body (what we eat, how much we exercise, even our posture) can impact our mental state, positively or negatively.\n\nThis connection is the foundation of many integrative healing approaches. When we understand that psychological factors can directly influence our physical health, we can develop more holistic treatment plans that address both aspects simultaneously.',
@@ -20,8 +21,9 @@ const sampleBlogPosts = [
   },
   {
     id: 2,
-    title: 'The Science Behind Ketamine-Assisted Therapy',
-    excerpt: 'Recent research findings on how ketamine affects neuroplasticity and creates opportunities for psychological breakthroughs.',
+    slug: 'benefits-energy-healing-chronic-pain',
+    title: 'The Benefits of Energy Healing for Chronic Pain',
+    excerpt: 'Recent research findings on how energy healing affects the body and creates opportunities for pain relief.',
     category: 'Research',
     date: 'March 8, 2025',
     readTime: '8 min read',
@@ -29,30 +31,43 @@ const sampleBlogPosts = [
   },
   {
     id: 3,
-    title: 'Mindfulness Practices for Daily Anxiety Management',
-    excerpt: 'Simple techniques you can incorporate into your routine to reduce anxiety and increase present-moment awareness.',
-    category: 'Mindfulness',
+    slug: 'nutritional-approaches-mental-wellness',
+    title: 'Nutritional Approaches to Mental Wellness',
+    excerpt: 'Simple techniques you can incorporate into your diet to improve mental health and increase wellbeing.',
+    category: 'Nutrition',
     date: 'February 28, 2025',
     readTime: '5 min read',
     imageSrc: 'https://images.unsplash.com/photo-1475483768296-6163e08872a1?q=80&w=800&auto=format&fit=crop',
   },
   {
     id: 4,
-    title: 'Trauma-Informed Care: A Compassionate Approach',
-    excerpt: 'How understanding the impact of trauma can transform therapeutic relationships and improve outcomes.',
-    category: 'Trauma',
+    slug: 'mindfulness-meditation-emotional-regulation',
+    title: 'Mindfulness Meditation: A Path to Emotional Regulation',
+    excerpt: 'How understanding the impact of mindfulness can transform therapeutic relationships and improve outcomes.',
+    category: 'Mindfulness',
     date: 'February 20, 2025',
     readTime: '7 min read',
     imageSrc: 'https://images.unsplash.com/photo-1508672019048-805c876b67e2?q=80&w=800&auto=format&fit=crop',
   },
   {
     id: 5,
+    slug: 'psychedelics-modern-psychotherapy',
     title: 'The Role of Psychedelics in Modern Psychotherapy',
     excerpt: 'An overview of current research and therapeutic applications of psychedelic medicines in mental health treatment.',
     category: 'Psychedelics',
     date: 'February 12, 2025',
     readTime: '9 min read',
     imageSrc: 'https://images.unsplash.com/photo-1502230831726-fe5549140034?q=80&w=800&auto=format&fit=crop',
+  },
+  {
+    id: 6,
+    slug: 'trauma-informed-somatic-practices',
+    title: 'Trauma-Informed Somatic Practices for Healing',
+    excerpt: 'An overview of current research and therapeutic applications of somatic practices in mental health treatment.',
+    category: 'Trauma',
+    date: 'February 5, 2025',
+    readTime: '8 min read',
+    imageSrc: 'https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?q=80&w=800&auto=format&fit=crop',
   },
 ];
 
@@ -174,7 +189,7 @@ export default function AutoScrollPosts() {
             transition={{ duration: 0.7, delay: 0.2 }}
           >
             <div className="group cursor-pointer mx-auto">
-              <Link href="/blog" className="block h-full">
+              <Link href={`/blog/${featuredPost.slug}`} className="block h-full">
                 <div className="rounded-xl border border-border/20 hover:border-primary/30 shadow-md transition-all duration-300 overflow-hidden">
                   <div className="flex flex-col lg:flex-row">
                     {/* Left side - Content */}
@@ -281,6 +296,7 @@ export default function AutoScrollPosts() {
 interface PostCardProps {
   post: {
     id: number;
+    slug: string;
     title: string;
     excerpt: string;
     category: string;
@@ -303,7 +319,7 @@ function PostCard({ post }: PostCardProps) {
         transition: { duration: 0.1 }
       }}
     >
-      <Link href="/blog" className="block h-full">
+      <Link href={`/blog/${post.slug}`} className="block h-full">
         <div className="h-full overflow-hidden rounded-xl border border-border/20 hover:border-primary/30 bg-card/30 backdrop-blur-md shadow-md transition-all duration-300">
           {/* Image */}
           <div className="relative h-[160px] sm:h-[180px] overflow-hidden">
