@@ -148,10 +148,10 @@ export default function ServicesPricingSection() {
     <section id="services-pricing" data-section className="w-full py-16 md:py-24 bg-background relative">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-light text-foreground">
+          <h2 className="text-3xl md:text-4xl font-medium text-foreground">
             Core <span className="text-primary">Services</span>
           </h2>
-          <p className="mt-3 text-muted-foreground max-w-2xl mx-auto">
+          <p className="mt-3 text-foreground/90 max-w-2xl mx-auto font-medium">
             Comprehensive mental wellness services tailored to your unique needs and goals
           </p>
         </div>
@@ -160,7 +160,7 @@ export default function ServicesPricingSection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-16">
           {/* left side - image */}
           <motion.div
-            className="relative h-[400px] md:h-[500px] rounded-xl overflow-hidden"
+            className="relative h-[400px] md:h-[500px] rounded-xl overflow-hidden shadow-md"
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -176,8 +176,8 @@ export default function ServicesPricingSection() {
               priority
             />
             <div className="absolute bottom-0 left-0 p-6 md:p-8 z-20">
-              <h3 className="text-2xl md:text-3xl font-light text-white mb-2">Healing Environment</h3>
-              <p className="text-white/80 max-w-md">
+              <h3 className="text-2xl md:text-3xl font-medium text-white mb-2">Healing Environment</h3>
+              <p className="text-white/90 max-w-md font-medium">
                 Our practice provides a safe, comfortable space for your therapeutic journey
               </p>
             </div>
@@ -188,7 +188,7 @@ export default function ServicesPricingSection() {
             {services.map((service, index) => (
               <motion.div 
                 key={service.id}
-                className="bg-white/5 backdrop-blur-sm p-6 rounded-lg border border-white/10 hover:border-primary/30 transition-all duration-300 group cursor-pointer"
+                className="bg-white dark:bg-white/5 backdrop-blur-sm p-6 rounded-lg border border-gray-300 dark:border-white/10 hover:border-primary/30 hover:bg-gray-50 dark:hover:bg-white/10 transition-all duration-300 group cursor-pointer shadow-sm"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -200,10 +200,10 @@ export default function ServicesPricingSection() {
                     {service.icon}
                   </div>
                   <div>
-                    <h3 className="text-xl font-medium text-foreground mb-2 group-hover:text-primary transition-colors duration-300">
+                    <h3 className="text-xl font-semibold text-foreground mb-2 group-hover:text-primary transition-colors duration-300">
                       {service.name}
                     </h3>
-                    <p className="text-foreground/70 text-sm">
+                    <p className="text-foreground/80 dark:text-foreground/70 text-sm font-medium">
                       {service.description}
                     </p>
                   </div>
@@ -216,10 +216,10 @@ export default function ServicesPricingSection() {
         {/* service tabs */}
         <div className="flex flex-wrap justify-center gap-2 mb-10">
           <button
-            className={`px-4 py-2 rounded-full text-sm transition-all cursor-pointer ${
+            className={`px-4 py-2 rounded-full text-sm transition-all cursor-pointer border ${
               activeServiceTab === 'all'
-                ? 'bg-primary text-black'
-                : 'bg-white/5 text-foreground hover:bg-white/10'
+                ? 'bg-primary text-black border-primary font-medium'
+                : 'bg-white dark:bg-white/5 text-foreground hover:bg-gray-100 dark:hover:bg-white/10 border-gray-300 dark:border-white/10'
             }`}
             onClick={() => setActiveServiceTab('all')}
           >
@@ -228,10 +228,10 @@ export default function ServicesPricingSection() {
           {services.map((service) => (
             <button
               key={service.id}
-              className={`px-4 py-2 rounded-full text-sm transition-all cursor-pointer ${
+              className={`px-4 py-2 rounded-full text-sm transition-all cursor-pointer border ${
                 activeServiceTab === service.id
-                  ? 'bg-primary text-black'
-                  : 'bg-white/5 text-foreground hover:bg-white/10'
+                  ? 'bg-primary text-black border-primary font-medium'
+                  : 'bg-white dark:bg-white/5 text-foreground hover:bg-gray-100 dark:hover:bg-white/10 border-gray-300 dark:border-white/10'
               }`}
               onClick={() => setActiveServiceTab(service.id)}
             >
@@ -242,10 +242,10 @@ export default function ServicesPricingSection() {
 
         {/* pricing plans */}
         <div className="text-center mb-10">
-          <h3 className="text-2xl md:text-3xl font-light text-foreground">
+          <h3 className="text-2xl md:text-3xl font-medium text-foreground">
             Service <span className="text-primary">Options</span>
           </h3>
-          <p className="mt-3 text-muted-foreground max-w-2xl mx-auto">
+          <p className="mt-3 text-foreground/90 max-w-2xl mx-auto font-medium">
             Choose the service option that aligns with your healing journey
           </p>
         </div>
@@ -264,8 +264,8 @@ export default function ServicesPricingSection() {
               <motion.div
                 className={`relative rounded-xl overflow-hidden h-full flex flex-col transition-all duration-300 pricing-card ${
                   selectedPlan === plan.id
-                    ? 'ring-2 ring-primary shadow-lg shadow-primary/20'
-                    : 'bg-card shadow-md hover:shadow-lg hover:-translate-y-1'
+                    ? 'ring-2 ring-primary shadow-lg shadow-primary/20 bg-white dark:bg-card border border-primary'
+                    : 'bg-white dark:bg-card shadow-md hover:shadow-lg hover:-translate-y-1 border border-gray-300 dark:border-white/10'
                 }`}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -283,13 +283,13 @@ export default function ServicesPricingSection() {
                 )}
                 
                 <div className="p-6 flex-grow">
-                  <div className="text-sm text-muted-foreground mb-2">{plan.serviceType}</div>
-                  <h3 className="text-xl font-medium text-foreground mb-1">{plan.name}</h3>
+                  <div className="text-sm text-primary font-medium mb-2">{plan.serviceType}</div>
+                  <h3 className="text-xl font-semibold text-foreground mb-1">{plan.name}</h3>
                   <div className="flex items-baseline mb-4">
                     <span className="text-3xl font-semibold text-foreground">{plan.price}</span>
-                    <span className="text-sm text-muted-foreground ml-1">/ session</span>
+                    <span className="text-sm text-foreground/80 ml-1">/ session</span>
                   </div>
-                  <p className="text-sm text-muted-foreground mb-6">{plan.description}</p>
+                  <p className="text-sm text-foreground/90 mb-6 font-medium">{plan.description}</p>
                   
                   <ul className="space-y-3 mb-6">
                     {plan.features.map((feature, index) => (
@@ -302,7 +302,7 @@ export default function ServicesPricingSection() {
                         >
                           <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                         </svg>
-                        <span className="text-sm text-foreground/80">{feature}</span>
+                        <span className="text-sm text-foreground/90 dark:text-foreground/80 font-medium">{feature}</span>
                       </li>
                     ))}
                   </ul>
@@ -313,8 +313,8 @@ export default function ServicesPricingSection() {
                     onClick={() => handleSelectPlan(plan.id)}
                     className={`w-full py-2 rounded-lg transition-all duration-300 cursor-pointer ${
                       selectedPlan === plan.id
-                        ? 'bg-primary text-black'
-                        : 'bg-primary/10 text-primary hover:bg-primary/20'
+                        ? 'bg-primary text-black font-medium'
+                        : 'bg-primary/10 text-primary hover:bg-primary/20 border border-primary/30'
                     }`}
                   >
                     Select Plan
@@ -326,10 +326,10 @@ export default function ServicesPricingSection() {
         </div>
         
         <div className="text-center mt-10">
-          <p className="text-muted-foreground mb-4">
+          <p className="text-foreground/90 mb-4 font-medium">
             Need more information about our services? Contact us for a free consultation.
           </p>
-          <Link href="/contact" className="inline-block text-primary border border-primary px-6 py-2 rounded-full text-sm hover:bg-primary hover:text-black transition-all duration-300 cursor-pointer">
+          <Link href="/contact" className="inline-block text-primary border border-primary px-6 py-2 rounded-full text-sm hover:bg-primary hover:text-black transition-all duration-300 cursor-pointer font-medium shadow-sm">
             Schedule Consultation
           </Link>
         </div>

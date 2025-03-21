@@ -78,7 +78,7 @@ export default function FAQSection() {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl md:text-4xl font-light text-foreground mb-4 relative inline-block">
+          <h2 className="text-3xl md:text-4xl font-medium text-foreground mb-4 relative inline-block">
             Frequently Asked Questions
             <motion.span 
               className="absolute -bottom-2 left-0 h-0.5 bg-primary"
@@ -88,7 +88,7 @@ export default function FAQSection() {
               transition={{ delay: 0.4, duration: 0.8 }}
             />
           </h2>
-          <p className="text-foreground/70 mt-4 max-w-2xl mx-auto">
+          <p className="text-foreground/90 mt-4 max-w-2xl mx-auto font-medium">
             Find answers to common questions about our therapeutic approaches, sessions, and services.
           </p>
         </motion.div>
@@ -107,14 +107,19 @@ export default function FAQSection() {
               <motion.div 
                 className={`
                   relative overflow-hidden rounded-xl
-                  ${expandedIndex === index ? 'bg-gradient-to-r from-primary/10 to-primary/5' : 'bg-white/5'}
-                  backdrop-blur-sm border border-white/10
+                  ${expandedIndex === index 
+                    ? 'bg-primary/10 dark:bg-gradient-to-r dark:from-primary/10 dark:to-primary/5' 
+                    : 'bg-white dark:bg-white/5'}
+                  backdrop-blur-sm 
+                  border ${expandedIndex === index 
+                    ? 'border-primary/30 shadow-md' 
+                    : 'border-gray-200 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20'}
                   transition-all duration-500 ease-in-out
-                  hover:border-white/20 cursor-pointer
+                  cursor-pointer
                   group
                 `}
                 whileHover={{ 
-                  boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
+                  boxShadow: "0 4px 20px rgba(0, 0, 0, 0.08)",
                   y: -2
                 }}
                 whileTap={{ y: 0 }}
@@ -195,7 +200,7 @@ export default function FAQSection() {
                       />
                     </motion.div>
                     
-                    <h3 className="text-base sm:text-lg font-medium text-foreground pr-8">
+                    <h3 className="text-base sm:text-lg font-semibold text-foreground pr-8">
                       {faq.question}
                     </h3>
                   </div>
@@ -220,13 +225,15 @@ export default function FAQSection() {
                       transition={{ duration: 0.4, ease: "easeInOut" }}
                       className="overflow-hidden"
                     >
-                      <div className="px-6 pb-6 pt-2 text-foreground/80 leading-relaxed border-t border-white/5">
+                      <div className="px-6 pb-6 pt-2 border-t border-gray-200 dark:border-white/10">
                         <motion.div
                           initial={{ y: 10, opacity: 0 }}
                           animate={{ y: 0, opacity: 1 }}
                           transition={{ duration: 0.4, delay: 0.1 }}
                         >
-                          <p>{faq.answer}</p>
+                          <p className="text-foreground/90 dark:text-foreground/80 leading-relaxed font-medium">
+                            {faq.answer}
+                          </p>
                         </motion.div>
                       </div>
                     </motion.div>
@@ -241,11 +248,11 @@ export default function FAQSection() {
       {/* Custom Scroll Arrow to Contact Section */}
       <div className="flex justify-center items-center mt-8 mb-12">
         <div className="flex flex-col items-center cursor-pointer group">
-          <div className="text-[10px] text-primary/80 dark:text-white/60 font-light tracking-wider mb-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <div className="text-[10px] text-primary/80 dark:text-white/60 font-medium tracking-wider mb-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             Contact
           </div>
           <div 
-            className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-white/10 dark:bg-black/20 backdrop-blur-sm flex items-center justify-center border border-primary/30 dark:border-white/10 shadow-lg group-hover:bg-primary/20 group-hover:border-primary/30 transition-all duration-300"
+            className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-white dark:bg-black/20 backdrop-blur-sm flex items-center justify-center border border-primary/30 dark:border-white/10 shadow-lg group-hover:bg-primary/20 group-hover:border-primary/30 transition-all duration-300"
             onClick={() => {
               const contactSection = document.getElementById('contact');
               if (contactSection) {
