@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
@@ -58,7 +58,7 @@ export default function EditPostForm({ post }: { post: BlogPost }) {
           const data = await response.json();
           console.error('Error response:', data);
           throw new Error(data.message || `Failed to update post (Status: ${response.status})`);
-        } catch (jsonError) {
+        } catch {
           // If JSON parsing fails, use status text
           throw new Error(`Error: ${response.status} ${response.statusText}`);
         }

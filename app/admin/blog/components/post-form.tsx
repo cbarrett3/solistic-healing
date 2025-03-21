@@ -1,12 +1,11 @@
 'use client';
 
-import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { BlogPost, OriginalPost, ExternalPost } from '@/app/types/blog';
 import { Card, CardContent, Button, Input, Textarea, Tabs } from '../../components/ui';
-import { useToast } from '../../components/ui/toast';
+import { useToast } from '@/app/admin/components/ui/toast';
 import MarkdownPreview from '@/app/admin/components/markdown-preview';
 
 interface PostFormProps {
@@ -18,7 +17,7 @@ interface PostFormProps {
 export default function PostForm({ 
   post, 
   onSubmit, 
-  isSubmitting = false 
+  isSubmitting: submittingProp = false 
 }: PostFormProps) {
   const router = useRouter();
   const { addToast } = useToast();
@@ -47,13 +46,13 @@ export default function PostForm({
       : ''
   );
   const [excerpt, setExcerpt] = useState(post?.excerpt || '');
-  const [error, setError] = useState<string | null>(null);
   const [postType, setPostType] = useState<'original' | 'external'>(post?.type || 'original');
   const [featuredImageUrl, setFeaturedImageUrl] = useState(post?.featuredImage || '');
   const [isImageValid, setIsImageValid] = useState(false);
   const [isImageLoading, setIsImageLoading] = useState(false);
   const [imageError, setImageError] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<'split' | 'edit' | 'preview'>('split');
+  const [isSubmitting, setIsSubmitting] = useState(submittingProp);
   
   // Validate image URL when it changes
   useEffect(() => {
@@ -100,77 +99,29 @@ export default function PostForm({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (isSubmitting) return;
-    
-    // Validate form
-    if (!title || (!post && !slug)) {
-      addToast('Title and slug are required', 'error');
-      return;
-    }
-    
-    if (postType === 'original' && !content) {
-      addToast('Content is required for original posts', 'error');
-      return;
-    }
-    
-    if (postType === 'external' && (!externalUrl || !commentary)) {
-      addToast('URL and commentary are required for external posts', 'error');
-      return;
-    }
-    
     try {
-      // Create form data
-      const formData = new FormData();
-      formData.append('title', title);
+      setIsSubmitting(true);
       
-      // Always include the slug, whether creating or editing
-      formData.append('slug', slug);
+      // Create a FormData object from the form
+      const form = e.target as HTMLFormElement;
+      const formData = new FormData(form);
       
-      formData.append('type', postType);
-      
-      if (excerpt) {
-        formData.append('excerpt', excerpt);
-      }
-      
-      if (featuredImageUrl) {
-        formData.append('featuredImage', featuredImageUrl);
-      }
-      
-      // For original posts
-      if (postType === 'original') {
-        formData.append('content', content);
-        // Store as markdownContent for editing later
-        formData.append('markdownContent', content);
-      } 
-      // For external posts
-      else {
-        formData.append('externalUrl', externalUrl);
-        formData.append('commentary', commentary);
-        // Store as markdownCommentary for editing later
-        formData.append('markdownCommentary', commentary);
-        
-        if (sourceName) {
-          formData.append('sourceName', sourceName);
-        }
-      }
-      
-      // Debug log
-      console.log('Form data prepared:', {
-        title: formData.get('title'),
-        slug: formData.get('slug'),
-        type: formData.get('type'),
-        hasContent: formData.has('content'),
-        hasMarkdownContent: formData.has('markdownContent'),
-        hasCommentary: formData.has('commentary'),
-        hasMarkdownCommentary: formData.has('markdownCommentary')
-      });
+      // Add the post type
+      formData.set('type', postType);
       
       // Submit the form
       await onSubmit(formData);
       
-    } catch (error) {
-      console.error(`Error submitting post:`, error);
-      addToast('Failed to submit post', 'error');
+      // Show success toast
+      addToast(post ? 'Post updated successfully' : 'Post created successfully', 'success');
+      
+      // Redirect to blog admin page
+      router.push('/admin/blog');
+    } catch {
+      // Show error toast
+      addToast('Failed to save post. Please try again.', 'error');
+    } finally {
+      setIsSubmitting(false);
     }
   };
   

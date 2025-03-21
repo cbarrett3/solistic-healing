@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { BlogPost } from '@/app/types/blog';
@@ -10,7 +10,7 @@ import { Card, CardContent } from '../../components/ui';
 import { LinkButton } from '../../components/ui';
 import Link from 'next/link';
 
-export default function EditPostPage() {
+function EditPostContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const slug = searchParams.get('slug');
@@ -198,5 +198,13 @@ export default function EditPostPage() {
         />
       </div>
     </AdminLayout>
+  );
+}
+
+export default function EditPostPage() {
+  return (
+    <Suspense fallback={<div className="p-8 text-center">Loading...</div>}>
+      <EditPostContent />
+    </Suspense>
   );
 }
