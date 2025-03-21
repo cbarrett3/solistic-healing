@@ -105,7 +105,7 @@ export default function ConditionsSection() {
             </motion.div>
             
             <motion.h2 
-              className="section-title text-2xl sm:text-3xl md:text-4xl font-light relative inline-block mb-4"
+              className="section-title text-2xl sm:text-3xl md:text-4xl font-medium relative inline-block mb-4"
               initial={{ opacity: 0, y: -20 }}
               animate={isVisible ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6 }}
@@ -120,7 +120,7 @@ export default function ConditionsSection() {
             </motion.h2>
             
             <motion.p
-              className="text-foreground/70 max-w-2xl text-sm md:text-base"
+              className="text-foreground/90 max-w-2xl text-sm md:text-base font-medium"
               initial={{ opacity: 0, y: 20 }}
               animate={isVisible ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.2, duration: 0.6 }}
@@ -142,23 +142,23 @@ export default function ConditionsSection() {
               >
                 {/* Subtle hover effect - toned down from green to neutral */}
                 <div className="absolute inset-0 bg-foreground/5 rounded-xl -m-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="bg-card dark:bg-black/40 backdrop-blur-sm p-6 rounded-xl border border-border/30 transition-all duration-300 relative overflow-hidden h-full flex flex-col">
+                <div className="bg-white dark:bg-black/40 backdrop-blur-sm p-6 rounded-xl border border-gray-300 dark:border-border/30 shadow-sm transition-all duration-300 relative overflow-hidden h-full flex flex-col cursor-pointer">
                   {/* Card header with icon */}
                   <div className="flex items-center mb-3">
                     <div className="p-2 bg-primary/10 rounded-full mr-3">
                       {condition.icon}
                     </div>
-                    <h3 className="text-lg font-medium text-foreground">{condition.title}</h3>
+                    <h3 className="text-lg font-semibold text-foreground">{condition.title}</h3>
                   </div>
                   
                   {/* Card content */}
-                  <p className="text-foreground/70 text-sm mb-4 flex-grow">
+                  <p className="text-foreground/80 dark:text-foreground/70 text-sm mb-4 flex-grow font-medium">
                     {condition.description}
                   </p>
                   
                   {/* Helpful external resource links */}
                   <div className="space-y-2">
-                    <p className="text-xs text-foreground/50 font-medium uppercase tracking-wide">Helpful Resources:</p>
+                    <p className="text-xs text-foreground/70 dark:text-foreground/50 font-medium uppercase tracking-wide">Helpful Resources:</p>
                     <div className="flex flex-wrap gap-2">
                       {condition.resources.map((resource, i) => (
                         <a 
@@ -166,7 +166,7 @@ export default function ConditionsSection() {
                           href={resource.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center text-xs px-3 py-1.5 bg-foreground/5 hover:bg-foreground/10 text-foreground/80 rounded-full transition-colors duration-200"
+                          className="inline-flex items-center text-xs px-3 py-1.5 bg-gray-100 dark:bg-foreground/5 hover:bg-gray-200 dark:hover:bg-foreground/10 text-foreground/90 dark:text-foreground/80 rounded-full transition-colors duration-200 border border-gray-200 dark:border-transparent"
                         >
                           {resource.name}
                           <ArrowUpRight className="ml-1 w-3 h-3" />
@@ -181,19 +181,19 @@ export default function ConditionsSection() {
           
           {/* More professional CTA section */}
           <motion.div
-            className="bg-card/30 dark:bg-black/20 p-6 md:p-8 rounded-xl border border-border/30 flex flex-col md:flex-row items-center justify-between"
+            className="bg-white dark:bg-black/20 p-6 md:p-8 rounded-xl border border-gray-300 dark:border-border/30 flex flex-col md:flex-row items-center justify-between shadow-sm"
             initial={{ opacity: 0, y: 20 }}
             animate={isVisible ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.6, duration: 0.6 }}
           >
             <div className="mb-4 md:mb-0 md:mr-6">
-              <h3 className="text-lg font-medium mb-1">Contact us about treatment options</h3>
-              <p className="text-foreground/70 text-sm">Schedule a confidential consultation to discuss your needs.</p>
+              <h3 className="text-lg font-semibold mb-1 text-foreground">Contact us about treatment options</h3>
+              <p className="text-foreground/80 dark:text-foreground/70 text-sm font-medium">Schedule a confidential consultation to discuss your needs.</p>
             </div>
             
             <Link href="/#contact" className="inline-block shrink-0">
               <motion.div
-                className="px-5 py-2.5 rounded-lg text-sm font-medium inline-flex items-center justify-center bg-foreground text-background shadow-sm hover:shadow-md transition-all duration-300"
+                className="px-5 py-2.5 rounded-lg text-sm font-medium inline-flex items-center justify-center bg-primary text-white shadow-sm hover:shadow-md transition-all duration-300"
                 whileHover={{ 
                   scale: 1.02,
                 }}
@@ -209,9 +209,9 @@ export default function ConditionsSection() {
       
       {/* scroll arrow to next section */}
       <SectionScrollArrow 
-        targetSectionId="services" 
+        targetSectionId="media" 
         offset={-60}
-        nextSectionName="Services" 
+        nextSectionName="Media" 
       />
     </section>
   );
