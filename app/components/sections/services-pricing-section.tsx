@@ -329,7 +329,7 @@ export default function ServicesPricingSection() {
           <p className="text-foreground/90 mb-4 font-medium">
             Need more information about our services? Contact us for a free consultation.
           </p>
-          <Link href="/contact" className="inline-block text-primary border border-primary px-6 py-2 rounded-full text-sm hover:bg-primary hover:text-black transition-all duration-300 cursor-pointer font-medium shadow-sm">
+          <Link href="/#contact" className="inline-block text-primary border border-primary px-6 py-2 rounded-full text-sm hover:bg-primary hover:text-black transition-all duration-300 cursor-pointer font-medium shadow-sm">
             Schedule Consultation
           </Link>
         </div>
