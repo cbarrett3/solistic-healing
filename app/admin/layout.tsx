@@ -61,17 +61,15 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
               <div className="flex items-center space-x-4 md:space-x-6 lg:space-x-8">
                 <Link 
                   href="/" 
-                  className="relative text-sm font-light uppercase tracking-wider text-foreground hover:text-primary transition-colors duration-300"
+                  className="relative text-sm font-medium uppercase tracking-wider text-foreground/90 hover:text-primary transition-colors duration-300 bg-background/60 backdrop-blur-sm px-3 py-1.5 rounded border border-border/20 hover:border-primary/30"
                 >
                   Return to Main Site
-                  <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-primary transition-all duration-300 ease-out group-hover:w-full"></span>
                 </Link>
                 <Link 
                   href="/admin/logout" 
-                  className="relative text-sm font-light uppercase tracking-wider text-destructive/80 hover:text-destructive transition-colors duration-300"
+                  className="relative text-sm font-medium uppercase tracking-wider text-destructive/90 hover:text-destructive transition-colors duration-300 bg-background/60 backdrop-blur-sm px-3 py-1.5 rounded border border-border/20 hover:border-destructive/30"
                 >
                   Logout
-                  <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-destructive transition-all duration-300 ease-out group-hover:w-full"></span>
                 </Link>
               </div>
             </div>

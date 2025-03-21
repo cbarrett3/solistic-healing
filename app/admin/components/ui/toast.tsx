@@ -75,7 +75,7 @@ function ToastItem({ toast, onClose }: { toast: Toast; onClose: () => void }) {
               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
             </svg>
           ),
-          className: 'bg-green-50 border-green-200 text-green-800 dark:bg-green-900/30 dark:border-green-800 dark:text-green-300'
+          className: 'bg-green-50 border-green-200 text-green-800 dark:bg-green-950 dark:border-green-800 dark:text-green-200'
         };
       case 'error':
         return {
@@ -84,7 +84,7 @@ function ToastItem({ toast, onClose }: { toast: Toast; onClose: () => void }) {
               <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
             </svg>
           ),
-          className: 'bg-red-50 border-red-200 text-red-800 dark:bg-red-900/30 dark:border-red-800 dark:text-red-300'
+          className: 'bg-red-50 border-red-200 text-red-800 dark:bg-red-950 dark:border-red-800 dark:text-red-200'
         };
       case 'warning':
         return {
@@ -93,7 +93,7 @@ function ToastItem({ toast, onClose }: { toast: Toast; onClose: () => void }) {
               <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
             </svg>
           ),
-          className: 'bg-yellow-50 border-yellow-200 text-yellow-800 dark:bg-yellow-900/30 dark:border-yellow-800 dark:text-yellow-300'
+          className: 'bg-yellow-50 border-yellow-200 text-yellow-800 dark:bg-yellow-950 dark:border-yellow-800 dark:text-yellow-200'
         };
       case 'info':
       default:
@@ -103,7 +103,7 @@ function ToastItem({ toast, onClose }: { toast: Toast; onClose: () => void }) {
               <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zm-1 7a1 1 0 01-1-1v-3a1 1 0 112 0v3a1 1 0 01-1 1z" clipRule="evenodd" />
             </svg>
           ),
-          className: 'bg-blue-50 border-blue-200 text-blue-800 dark:bg-blue-900/30 dark:border-blue-800 dark:text-blue-300'
+          className: 'bg-blue-50 border-blue-200 text-blue-800 dark:bg-blue-950 dark:border-blue-800 dark:text-blue-200'
         };
     }
   };
@@ -119,7 +119,7 @@ function ToastItem({ toast, onClose }: { toast: Toast; onClose: () => void }) {
     >
       <div className="flex items-center">
         <span className="mr-2">{icon}</span>
-        <p className="flex-1">{toast.message}</p>
+        <p className="flex-1 font-medium">{toast.message}</p>
         <button
           onClick={onClose}
           className="ml-4 text-sm opacity-70 hover:opacity-100"

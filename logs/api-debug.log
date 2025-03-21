@@ -47,3 +47,60 @@ Data: {
   "type": "external"
 }
 
+[2025-03-21T02:14:55.253Z] Received create post request
+
+[2025-03-21T02:14:55.265Z] Form data received
+Data: {
+  "type": "external",
+  "fields": [
+    {
+      "key": "title",
+      "value": "Workers Raise Coming"
+    },
+    {
+      "key": "slug",
+      "value": "minne-post"
+    },
+    {
+      "key": "type",
+      "value": "external"
+    },
+    {
+      "key": "excerpt",
+      "value": "This is a brief summary of a mini post"
+    },
+    {
+      "key": "externalUrl",
+      "value": "https://www.minnpost.com/national/2025/03/postal-workers-rally-to-raise-alarm-about-trump-plans-to-privatize-postal-service/"
+    },
+    {
+      "key": "sourceName",
+      "value": "Minne Post"
+    },
+    {
+      "key": "commentary",
+      "value": "Great summary of the workers raise happening. I think this is very important."
+    }
+  ]
+}
+
+[2025-03-21T02:14:55.268Z] Created external post object
+Data: {
+  "title": "Workers Raise Coming",
+  "slug": "minne-post",
+  "externalUrl": "https://www.minnpost.com/national/2025/03/postal-workers-rally-to-raise-alarm-about-trump-plans-to-privatize-postal-service/",
+  "commentaryLength": 77
+}
+
+[2025-03-21T02:14:55.282Z] Attempting to save post
+Data: {
+  "slug": "minne-post",
+  "type": "external"
+}
+
+[2025-03-21T02:14:55.374Z] Post saved successfully
+Data: {
+  "slug": "minne-post",
+  "type": "external"
+}
+

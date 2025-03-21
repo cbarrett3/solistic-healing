@@ -37,13 +37,31 @@ export default function EditPostForm({ post }: { post: BlogPost }) {
       const response = await fetch('/api/admin/update-post', {
         method: 'POST',
         body: formData,
+        headers: {
+          'Accept': 'application/json'
+        }
       });
 
       if (response.ok) {
+        // Show success message via toast if available
+        if (typeof window !== 'undefined' && window.localStorage) {
+          window.localStorage.setItem('blog_toast', JSON.stringify({
+            type: 'success',
+            message: 'Post updated successfully'
+          }));
+        }
+        
+        // Always redirect to blog management page on success
         router.push('/admin/blog');
       } else {
-        const data = await response.json();
-        setError(data.message || 'Failed to update post');
+        // Try to parse error response as JSON
+        try {
+          const data = await response.json();
+          setError(data.message || 'Failed to update post');
+        } catch (jsonError) {
+          // If JSON parsing fails, use status text
+          setError(`Error: ${response.status} ${response.statusText}`);
+        }
       }
     } catch (err) {
       console.error('Error updating post:', err);

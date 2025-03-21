@@ -74,7 +74,7 @@ export async function POST(request: NextRequest) {
         ...existingPost,
         title,
         externalUrl,
-        commentary
+        commentary: commentary.trim() // Ensure commentary is properly trimmed
       } as ExternalPost;
     }
     
@@ -88,13 +88,26 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    // Redirect back to the blog admin
-    return NextResponse.redirect(new URL('/admin/blog', request.url));
+    // Return JSON response instead of redirect to avoid HTML parsing issues
+    return NextResponse.json(
+      { message: 'Post updated successfully', success: true },
+      { 
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    );
   } catch (error) {
     console.error('Error updating post:', error);
     return NextResponse.json(
-      { message: 'An error occurred' },
-      { status: 500 }
+      { message: 'An error occurred', success: false },
+      { 
+        status: 500,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
     );
   }
 }

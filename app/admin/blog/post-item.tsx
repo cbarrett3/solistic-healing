@@ -82,18 +82,35 @@ export default function PostItem({ post }: PostItemProps) {
               </Button>
             </Link>
             
+            <Link
+              href={`/admin/blog/edit-post?slug=${post.slug}`}
+              className="inline-block"
+            >
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-xs py-1 px-2 opacity-60 hover:opacity-100 hover:bg-primary/10 hover:text-primary transition-all duration-200 group-hover:scale-105 cursor-pointer"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5 mr-1">
+                  <path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
+                </svg>
+                Edit
+              </Button>
+            </Link>
+            
             <form 
-              action={`/api/admin/blog/${post.slug}/delete`} 
+              action="/api/admin/delete-post" 
               method="POST"
               className="inline-block"
             >
+              <input type="hidden" name="slug" value={post.slug} />
               <Button
                 type="button"
                 variant="ghost"
                 size="sm"
                 onClick={handleDeleteClick}
                 disabled={isDeleting}
-                className="text-xs py-1 px-2 opacity-60 hover:opacity-100 hover:bg-destructive/10 hover:text-destructive transition-all duration-200 group-hover:scale-105"
+                className="text-xs py-1 px-2 opacity-60 hover:opacity-100 hover:bg-destructive/10 hover:text-destructive transition-all duration-200 group-hover:scale-105 cursor-pointer"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5 mr-1">
                   <path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
@@ -102,18 +119,6 @@ export default function PostItem({ post }: PostItemProps) {
               </Button>
             </form>
             
-            <Link href={`/admin/blog/edit-post?slug=${post.slug}`}>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="text-xs py-1 px-2 opacity-60 hover:opacity-100 hover:bg-primary/10 hover:text-primary transition-all duration-200 group-hover:scale-105"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5 mr-1">
-                  <path d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
-                </svg>
-                Edit
-              </Button>
-            </Link>
           </div>
         </div>
       </div>
