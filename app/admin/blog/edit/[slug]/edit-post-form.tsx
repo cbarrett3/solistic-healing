@@ -41,16 +41,17 @@ export default function EditPostForm({ post }: { post: BlogPost }) {
       console.log('Response status:', response.status);
       
       if (response.ok) {
-        // Show success message
+        // Show success message immediately
         addToast('Post updated successfully', 'success');
         
-        // Show success animation before redirecting
+        // Show success animation
         setShowSuccess(true);
         
-        // Wait for animation to complete before redirecting
-        setTimeout(() => {
-          router.push('/admin/blog');
-        }, 1500);
+        // Force a small delay to ensure the toast is visible
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        // Redirect to blog management page
+        router.push('/admin/blog');
       } else {
         // Try to parse error response as JSON
         try {

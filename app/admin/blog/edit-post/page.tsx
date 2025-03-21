@@ -158,6 +158,31 @@ export default function EditPostPage() {
               console.log('Response status:', response.status);
               
               if (response.ok) {
+                // Show success message with toast if available
+                if (typeof window !== 'undefined') {
+                  // Create a toast notification
+                  const toast = document.createElement('div');
+                  toast.className = 'fixed top-4 right-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded z-50';
+                  toast.innerHTML = `
+                    <div class="flex items-center">
+                      <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                      </svg>
+                      <span>Post updated successfully!</span>
+                    </div>
+                  `;
+                  document.body.appendChild(toast);
+                  
+                  // Remove toast after 3 seconds
+                  setTimeout(() => {
+                    toast.remove();
+                  }, 3000);
+                }
+                
+                // Force a small delay to ensure the user sees the success message
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                // Redirect to blog management page
                 router.push('/admin/blog');
               } else {
                 const data = await response.json();
