@@ -13,12 +13,34 @@ interface PostItemProps {
 export default function PostItem({ post }: PostItemProps) {
   const [isDeleting, setIsDeleting] = useState(false);
   
-  const handleDeleteClick = (e: React.MouseEvent) => {
+  const handleDeleteClick = async (e: React.MouseEvent) => {
     e.preventDefault();
     if (confirm('Are you sure you want to delete this post?')) {
       setIsDeleting(true);
-      const form = e.currentTarget.closest('form');
-      if (form) form.submit();
+      
+      try {
+        const formData = new FormData();
+        formData.append('slug', post.slug);
+        
+        const response = await fetch('/api/admin/delete-post', {
+          method: 'POST',
+          body: formData,
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          // Refresh the page to show updated list
+          window.location.href = '/admin/blog';
+        } else {
+          alert(`Failed to delete post: ${result.message || 'Unknown error'}`);
+          setIsDeleting(false);
+        }
+      } catch (error) {
+        console.error('Error deleting post:', error);
+        alert('An error occurred while deleting the post');
+        setIsDeleting(false);
+      }
     }
   };
   
@@ -98,26 +120,19 @@ export default function PostItem({ post }: PostItemProps) {
               </Button>
             </Link>
             
-            <form 
-              action="/api/admin/delete-post" 
-              method="POST"
-              className="inline-block"
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={handleDeleteClick}
+              disabled={isDeleting}
+              className="text-xs py-1 px-2 opacity-60 hover:opacity-100 hover:bg-destructive/10 hover:text-destructive transition-all duration-200 group-hover:scale-105 cursor-pointer"
             >
-              <input type="hidden" name="slug" value={post.slug} />
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                onClick={handleDeleteClick}
-                disabled={isDeleting}
-                className="text-xs py-1 px-2 opacity-60 hover:opacity-100 hover:bg-destructive/10 hover:text-destructive transition-all duration-200 group-hover:scale-105 cursor-pointer"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5 mr-1">
-                  <path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-                </svg>
-                {isDeleting ? 'Deleting...' : 'Delete'}
-              </Button>
-            </form>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5 mr-1">
+                <path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+              </svg>
+              {isDeleting ? 'Deleting...' : 'Delete'}
+            </Button>
             
           </div>
         </div>
