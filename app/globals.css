@@ -293,6 +293,27 @@
     font-size: clamp(15px, 0.9375rem + 0.2vw, 18px);
   }
   
+  /* Prevent horizontal scrollbar on all devices */
+  html, body {
+    overflow-x: hidden;
+    width: 100%;
+    position: relative;
+  }
+  
+  /* Fix for mobile viewport issues */
+  @media (max-width: 767px) {
+    * {
+      max-width: 100vw;
+      box-sizing: border-box;
+    }
+    
+    .container {
+      padding-left: 1rem;
+      padding-right: 1rem;
+      width: 100%;
+    }
+  }
+  
   /* Section Styling */
   .conditions-section {
     @apply bg-white dark:bg-black relative overflow-hidden flex items-center;

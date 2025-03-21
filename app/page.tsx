@@ -163,7 +163,7 @@ export default function Home() {
             </div>
             
             {/* mobile-only watch story element - positioned at bottom of screen */}
-            <div className="flex md:hidden items-center justify-end fixed bottom-10 right-4 z-10">
+            <div className="hidden">
               <div className="mr-3 text-sm text-white text-right tracking-wide font-light drop-shadow-md">
                 Watch Our Story
               </div>
@@ -191,7 +191,7 @@ export default function Home() {
             </div>
             
             {/* mobile services button - shows a modal or navigates to services page */}
-            <div className="md:hidden fixed bottom-10 left-4 z-10">
+            <div className="hidden">
               <Link href="/services" className="bg-white text-black rounded-full px-5 py-3 flex items-center shadow-lg group relative overflow-hidden transition-all duration-300 active:scale-95 hover:shadow-[0_0_15px_rgba(255,255,255,0.4)] cursor-pointer">
                 <span className="font-medium text-sm relative z-10">View Services</span>
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-2 relative z-10 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -204,7 +204,7 @@ export default function Home() {
           </div>
           
           {/* mobile-only watch story element - positioned at bottom of screen */}
-          <div className="flex md:hidden items-center justify-end fixed bottom-10 right-4 z-10">
+          <div className="hidden">
             <div className="mr-3 text-sm text-white text-right tracking-wide font-light drop-shadow-md">
               Watch Our Story
             </div>
