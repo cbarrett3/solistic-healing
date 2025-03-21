@@ -2,27 +2,22 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { envConfig } from './env-config';
 
-// Environment variables schema
-const envSchema = z.object({
-  ADMIN_AUTH_SECRET: z.string().min(1),
-});
-
-// Cookie name for admin session
-const ADMIN_COOKIE_NAME = 'solistic_admin_session';
+// Admin auth cookie name
+const ADMIN_AUTH_COOKIE = 'admin_auth';
 
 /**
  * Create admin session
  */
 export async function createAdminSession() {
   try {
-    const { ADMIN_AUTH_SECRET } = envSchema.parse(process.env);
     const cookieStore = await cookies();
     
     // Set a secure HTTP-only cookie
     cookieStore.set({
-      name: ADMIN_COOKIE_NAME,
-      value: ADMIN_AUTH_SECRET,
+      name: ADMIN_AUTH_COOKIE,
+      value: envConfig.adminAuthSecret,
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
@@ -41,19 +36,19 @@ export async function createAdminSession() {
 /**
  * Check if user is authenticated as admin
  */
-export async function isAuthenticated(): Promise<boolean> {
+export async function isAdminAuthenticated(): Promise<boolean> {
   try {
-    const { ADMIN_AUTH_SECRET } = envSchema.parse(process.env);
     const cookieStore = await cookies();
-    const sessionCookie = cookieStore.get(ADMIN_COOKIE_NAME);
+    const authCookie = cookieStore.get(ADMIN_AUTH_COOKIE);
     
-    if (!sessionCookie) {
+    if (!authCookie) {
       return false;
     }
     
-    return sessionCookie.value === ADMIN_AUTH_SECRET;
+    // Compare with the admin auth secret
+    return authCookie.value === envConfig.adminAuthSecret;
   } catch (error) {
-    console.error('Auth check failed:', error);
+    console.error('Error checking admin authentication:', error);
     return false;
   }
 }
@@ -62,16 +57,15 @@ export async function isAuthenticated(): Promise<boolean> {
  * Middleware to protect admin routes
  */
 export function withAdminAuth(request: NextRequest) {
-  const { ADMIN_AUTH_SECRET } = process.env;
-  
-  if (!ADMIN_AUTH_SECRET) {
-    console.error('ADMIN_AUTH_SECRET not configured');
+  const validation = envConfig.validate();
+  if (!validation.isValid) {
+    console.error(`Missing required environment variables: ${validation.missingVars.join(', ')}`);
     return NextResponse.redirect(new URL('/admin/login', request.url));
   }
   
-  const sessionCookie = request.cookies.get(ADMIN_COOKIE_NAME);
+  const sessionCookie = request.cookies.get(ADMIN_AUTH_COOKIE);
   
-  if (!sessionCookie || sessionCookie.value !== ADMIN_AUTH_SECRET) {
+  if (!sessionCookie || sessionCookie.value !== envConfig.adminAuthSecret) {
     return NextResponse.redirect(new URL('/admin/login', request.url));
   }
   
@@ -79,10 +73,19 @@ export function withAdminAuth(request: NextRequest) {
 }
 
 /**
- * Auth guard for server components
+ * Admin auth guard for server components
+ * Redirects to login page if the user is not authenticated
  */
-export async function adminAuthGuard() {
-  if (!(await isAuthenticated())) {
+export async function adminAuthGuard(): Promise<void> {
+  // Validate environment configuration
+  const validation = envConfig.validate();
+  if (!validation.isValid) {
+    console.error(`Missing required environment variables: ${validation.missingVars.join(', ')}`);
+  }
+  
+  const isAuthenticated = await isAdminAuthenticated();
+  
+  if (!isAuthenticated) {
     redirect('/admin/login');
   }
 }
@@ -92,6 +95,6 @@ export async function adminAuthGuard() {
  */
 export async function endAdminSession() {
   const cookieStore = await cookies();
-  cookieStore.delete(ADMIN_COOKIE_NAME);
+  cookieStore.delete(ADMIN_AUTH_COOKIE);
   return true;
 }

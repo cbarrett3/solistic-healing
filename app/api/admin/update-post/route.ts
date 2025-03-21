@@ -55,11 +55,15 @@ export async function POST(request: NextRequest) {
     let updatedPost: BlogPost;
     
     // Get optional fields
-    const excerpt = formData.get('excerpt') as string || existingPost.excerpt;
-    const featuredImage = formData.get('featuredImage') as string || existingPost.featuredImage;
+    const excerpt = formData.get('excerpt') as string || existingPost.excerpt || '';
+    const featuredImage = formData.get('featuredImage') as string || existingPost.featuredImage || '';
+    const tagsString = formData.get('tags') as string || '';
+    const tags = tagsString 
+      ? tagsString.split(',').map(tag => tag.trim()).filter(Boolean) 
+      : existingPost.tags || [];
     
     if (type === 'original') {
-      const content = formData.get('content') as string;
+      const content = formData.get('content') as string || '';
       
       if (!content) {
         return NextResponse.json(
@@ -73,15 +77,16 @@ export async function POST(request: NextRequest) {
         title,
         content, // This will be used for HTML rendering
         markdownContent: content, // Store the raw markdown
-        excerpt,
-        featuredImage
+        excerpt: excerpt || undefined,
+        featuredImage: featuredImage || undefined,
+        tags: tags.length > 0 ? tags : undefined
       } as OriginalPost;
     } else {
-      const externalUrl = formData.get('externalUrl') as string;
-      const commentary = formData.get('commentary') as string;
+      const externalUrl = formData.get('externalUrl') as string || '';
+      const commentary = formData.get('commentary') as string || '';
       // For external posts, safely get sourceName
       const sourceName = formData.get('sourceName') as string || 
-        (existingPost.type === 'external' ? (existingPost as ExternalPost).sourceName : undefined);
+        (existingPost.type === 'external' ? (existingPost as ExternalPost).sourceName : '') || '';
       
       if (!externalUrl || !commentary) {
         return NextResponse.json(
@@ -96,9 +101,10 @@ export async function POST(request: NextRequest) {
         externalUrl,
         commentary: commentary.trim(), // For HTML rendering
         markdownCommentary: commentary.trim(), // Store the raw markdown
-        excerpt,
-        featuredImage,
-        sourceName
+        excerpt: excerpt || undefined,
+        featuredImage: featuredImage || undefined,
+        sourceName: sourceName || undefined,
+        tags: tags.length > 0 ? tags : undefined
       } as ExternalPost;
     }
     

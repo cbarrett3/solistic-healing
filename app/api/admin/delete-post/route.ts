@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
     
     if (!slug) {
       return NextResponse.json(
-        { message: 'Slug is required' },
+        { message: 'Slug is required', success: false },
         { status: 400 }
       );
     }
@@ -23,17 +23,29 @@ export async function POST(request: NextRequest) {
     
     if (!success) {
       return NextResponse.json(
-        { message: 'Failed to delete post' },
+        { message: 'Failed to delete post', success: false },
         { status: 500 }
       );
     }
     
-    // Redirect back to the blog admin
-    return NextResponse.redirect(new URL('/admin/blog', request.url));
+    // Return JSON response instead of redirect
+    return NextResponse.json(
+      { 
+        message: 'Post deleted successfully', 
+        success: true,
+        redirectUrl: '/admin/blog' // Client can use this to navigate
+      },
+      { 
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    );
   } catch (error) {
     console.error('Error deleting post:', error);
     return NextResponse.json(
-      { message: 'An error occurred' },
+      { message: 'An error occurred', success: false },
       { status: 500 }
     );
   }

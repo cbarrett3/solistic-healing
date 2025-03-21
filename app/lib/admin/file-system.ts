@@ -4,23 +4,38 @@ import matter from 'gray-matter';
 import { remark } from 'remark';
 import html from 'remark-html';
 import { BlogPost, OriginalPost, ExternalPost } from '@/app/types/blog';
+import { 
+  getAllBlogFilesFromGitHub, 
+  getFileFromGitHub, 
+  createOrUpdateFileInGitHub,
+  deleteFileFromGitHub
+} from './github-service';
+import { envConfig } from './env-config';
 
 // Constants
 const BLOG_DIR = path.join(process.cwd(), 'app', 'content', 'blog');
 const IMAGES_DIR = path.join(process.cwd(), 'app', 'content', 'assets', 'images');
+const BLOG_CONTENT_PATH = envConfig.blogContentPath;
+const IMAGES_CONTENT_PATH = envConfig.imagesContentPath;
+
+// Determine if we're in development or production
+const isDevelopment = envConfig.isDevelopment;
 
 /**
  * Ensure content directories exist
  */
 export async function ensureContentDirs() {
-  try {
-    await fs.mkdir(BLOG_DIR, { recursive: true });
-    await fs.mkdir(IMAGES_DIR, { recursive: true });
-    return true;
-  } catch (error) {
-    console.error('Failed to create content directories:', error);
-    return false;
+  if (isDevelopment) {
+    try {
+      await fs.mkdir(BLOG_DIR, { recursive: true });
+      await fs.mkdir(IMAGES_DIR, { recursive: true });
+      return true;
+    } catch (error) {
+      console.error('Failed to create content directories:', error);
+      return false;
+    }
   }
+  return true; // In production, we don't need to create directories
 }
 
 /**
@@ -30,13 +45,38 @@ export async function getAllPosts(options?: { raw?: boolean }): Promise<BlogPost
   try {
     await ensureContentDirs();
     
-    const files = await fs.readdir(BLOG_DIR);
-    const mdxFiles = files.filter(file => file.endsWith('.mdx'));
+    let mdxFiles: string[] = [];
+    
+    if (isDevelopment) {
+      // In development, read from local file system
+      const files = await fs.readdir(BLOG_DIR);
+      mdxFiles = files.filter(file => file.endsWith('.mdx'));
+    } else {
+      // In production, read from GitHub
+      mdxFiles = await getAllBlogFilesFromGitHub();
+    }
     
     const postsWithNulls = await Promise.all(
       mdxFiles.map(async (file) => {
-        const filePath = path.join(BLOG_DIR, file);
-        const content = await fs.readFile(filePath, 'utf8');
+        let content: string;
+        
+        if (isDevelopment) {
+          // In development, read from local file system
+          const filePath = path.join(BLOG_DIR, file);
+          content = await fs.readFile(filePath, 'utf8');
+        } else {
+          // In production, read from GitHub
+          const filePath = `${BLOG_CONTENT_PATH}/${file}`;
+          const fileData = await getFileFromGitHub(filePath);
+          
+          if (!fileData) {
+            console.warn(`File ${filePath} not found in GitHub`);
+            return null;
+          }
+          
+          content = fileData.content;
+        }
+        
         const { data, content: markdownContent } = matter(content);
         
         // Process markdown to HTML (only if not requesting raw content)
@@ -107,36 +147,70 @@ export async function savePost(post: BlogPost): Promise<boolean> {
     const { slug, type } = post;
     const filePath = path.join(BLOG_DIR, `${slug}.mdx`);
     
-    // Extract content/commentary from the post object
-    let content: string;
-    const frontmatter: Record<string, any> = { ...post };
+    // Initialize content variable
+    let content = '';
     
+    // Create frontmatter object with only the metadata fields
+    // Filter out undefined values to prevent YAML serialization errors
+    const frontmatter: Record<string, any> = {
+      type,
+      title: post.title,
+      slug: post.slug,
+      date: post.date,
+    };
+    
+    // Add optional fields only if they exist
+    if (post.excerpt) frontmatter.excerpt = post.excerpt;
+    if (post.featuredImage) frontmatter.featuredImage = post.featuredImage;
+    if (post.category) frontmatter.category = post.category;
+    if (post.tags && post.tags.length > 0) frontmatter.tags = post.tags;
+    if (post.featured) frontmatter.featured = post.featured;
+    
+    // Add type-specific fields
     if (type === 'original') {
       const originalPost = post as OriginalPost;
-      // Use markdownContent if available, otherwise use content
-      content = originalPost.markdownContent || originalPost.content;
-      
-      // Remove HTML content and processed fields from frontmatter
-      delete frontmatter.content;
-      delete frontmatter.markdownContent;
-    } else {
+      content = originalPost.markdownContent || originalPost.content || '';
+    } else if (type === 'external') {
       const externalPost = post as ExternalPost;
-      // Use markdownCommentary if available, otherwise use commentary
-      content = externalPost.markdownCommentary || externalPost.commentary;
+      content = externalPost.markdownCommentary || externalPost.commentary || '';
       
-      // Remove HTML content and processed fields from frontmatter
-      delete frontmatter.commentary;
-      delete frontmatter.markdownCommentary;
+      // Add external-specific fields
+      if (externalPost.externalUrl) frontmatter.externalUrl = externalPost.externalUrl;
+      if (externalPost.sourceName) frontmatter.sourceName = externalPost.sourceName;
+      if (externalPost.sourceAuthor) frontmatter.sourceAuthor = externalPost.sourceAuthor;
     }
     
     console.log('Saving post with slug:', slug, 'and type:', type);
+    console.log('Frontmatter:', JSON.stringify(frontmatter, null, 2));
     
     // Create MDX content with frontmatter
-    const mdxContent = matter.stringify(content, frontmatter);
+    const mdxContent = matter.stringify(content || '', frontmatter);
     
-    // Write to file
-    await fs.mkdir(path.dirname(filePath), { recursive: true });
-    await fs.writeFile(filePath, mdxContent, 'utf8');
+    if (isDevelopment) {
+      // In development, write to local file system
+      await fs.mkdir(path.dirname(filePath), { recursive: true });
+      await fs.writeFile(filePath, mdxContent, 'utf8');
+    } else {
+      // In production, write to GitHub
+      const githubPath = `${BLOG_CONTENT_PATH}/${slug}.mdx`;
+      
+      // Check if file already exists to get its SHA
+      const existingFile = await getFileFromGitHub(githubPath);
+      const existingSha = existingFile ? existingFile.sha : undefined;
+      
+      // Create commit message
+      const commitMessage = existingSha 
+        ? `Update blog post: ${slug}`
+        : `Create blog post: ${slug}`;
+      
+      // Save to GitHub
+      await createOrUpdateFileInGitHub(
+        githubPath,
+        mdxContent,
+        commitMessage,
+        existingSha
+      );
+    }
     
     return true;
   } catch (error) {
@@ -150,8 +224,23 @@ export async function savePost(post: BlogPost): Promise<boolean> {
  */
 export async function deletePost(slug: string): Promise<boolean> {
   try {
-    const filePath = path.join(BLOG_DIR, `${slug}.mdx`);
-    await fs.unlink(filePath);
+    if (isDevelopment) {
+      // In development, delete from local file system
+      const filePath = path.join(BLOG_DIR, `${slug}.mdx`);
+      await fs.unlink(filePath);
+    } else {
+      // In production, delete from GitHub
+      const githubPath = `${BLOG_CONTENT_PATH}/${slug}.mdx`;
+      const success = await deleteFileFromGitHub(
+        githubPath,
+        `Delete blog post: ${slug}`
+      );
+      
+      if (!success) {
+        throw new Error(`Failed to delete post from GitHub: ${slug}`);
+      }
+    }
+    
     return true;
   } catch (error) {
     console.error(`Failed to delete post with slug ${slug}:`, error);
@@ -176,7 +265,31 @@ export async function saveImage(
     const filePath = path.join(IMAGES_DIR, finalFilename);
     const buffer = Buffer.from(await file.arrayBuffer());
     
-    await fs.writeFile(filePath, buffer);
+    if (isDevelopment) {
+      // In development, write to local file system
+      await fs.writeFile(filePath, buffer);
+    } else {
+      // In production, write to GitHub
+      const githubPath = `${IMAGES_CONTENT_PATH}/${finalFilename}`;
+      
+      // Create commit message
+      const commitMessage = `Upload image: ${finalFilename}`;
+      
+      // Convert buffer to base64 for GitHub API
+      const base64Content = buffer.toString('base64');
+      
+      // Create or update file in GitHub
+      const success = await createOrUpdateFileInGitHub(
+        githubPath,
+        base64Content,
+        commitMessage,
+        undefined
+      );
+      
+      if (!success) {
+        throw new Error(`Failed to save image to GitHub: ${finalFilename}`);
+      }
+    }
     
     // Return the path relative to the public directory
     return `/content/assets/images/${finalFilename}`;
@@ -193,10 +306,23 @@ export async function getAllImages(): Promise<string[]> {
   try {
     await ensureContentDirs();
     
-    const files = await fs.readdir(IMAGES_DIR);
-    return files.filter(file => 
-      /\.(jpg|jpeg|png|gif|webp)$/i.test(file)
-    ).map(file => `/content/assets/images/${file}`);
+    let files: string[] = [];
+    
+    if (isDevelopment) {
+      // In development, read from local file system
+      const fileNames = await fs.readdir(IMAGES_DIR);
+      files = fileNames.filter(file => 
+        /\.(jpg|jpeg|png|gif|webp)$/i.test(file)
+      ).map(file => `/content/assets/images/${file}`);
+    } else {
+      // In production, read from GitHub
+      const githubFiles = await getAllBlogFilesFromGitHub();
+      files = githubFiles.filter(file => 
+        /\.(jpg|jpeg|png|gif|webp)$/i.test(file)
+      ).map(file => `/content/assets/images/${file}`);
+    }
+    
+    return files;
   } catch (error) {
     console.error('Failed to get images:', error);
     return [];

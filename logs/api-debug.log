@@ -104,3 +104,294 @@ Data: {
   "type": "external"
 }
 
+[2025-03-21T19:12:05.036Z] Received create post request
+
+[2025-03-21T19:12:05.046Z] Form data received
+Data: {
+  "type": "external",
+  "fields": [
+    {
+      "key": "title",
+      "value": "TEST"
+    },
+    {
+      "key": "slug",
+      "value": "test"
+    },
+    {
+      "key": "type",
+      "value": "external"
+    },
+    {
+      "key": "excerpt",
+      "value": "TEST"
+    },
+    {
+      "key": "externalUrl",
+      "value": "https://www.terrasos.co/wp-content/uploads/terrasos-logo-mobile.webp"
+    },
+    {
+      "key": "commentary",
+      "value": "TEST"
+    },
+    {
+      "key": "markdownCommentary",
+      "value": "TEST"
+    },
+    {
+      "key": "sourceName",
+      "value": "TEST"
+    }
+  ]
+}
+
+[2025-03-21T19:12:05.048Z] Created external post object
+Data: {
+  "title": "TEST",
+  "slug": "test",
+  "externalUrl": "https://www.terrasos.co/wp-content/uploads/terrasos-logo-mobile.webp",
+  "commentaryLength": 4
+}
+
+[2025-03-21T19:12:05.049Z] Attempting to save post
+Data: {
+  "slug": "test",
+  "type": "external"
+}
+
+[2025-03-21T19:12:05.202Z] Failed to save post
+Data: {
+  "slug": "test",
+  "type": "external"
+}
+
+[2025-03-21T19:13:53.919Z] Received create post request
+
+[2025-03-21T19:13:53.936Z] Form data received
+Data: {
+  "type": "original",
+  "fields": [
+    {
+      "key": "title",
+      "value": "TEST"
+    },
+    {
+      "key": "slug",
+      "value": "test"
+    },
+    {
+      "key": "type",
+      "value": "original"
+    },
+    {
+      "key": "excerpt",
+      "value": "TEST"
+    },
+    {
+      "key": "content",
+      "value": "yoooo"
+    },
+    {
+      "key": "markdownContent",
+      "value": "yoooo"
+    }
+  ]
+}
+
+[2025-03-21T19:13:53.948Z] Created original post object
+Data: {
+  "title": "TEST",
+  "slug": "test",
+  "contentLength": 5
+}
+
+[2025-03-21T19:13:53.964Z] Attempting to save post
+Data: {
+  "slug": "test",
+  "type": "original"
+}
+
+[2025-03-21T19:13:54.175Z] Failed to save post
+Data: {
+  "slug": "test",
+  "type": "original"
+}
+
+[2025-03-21T19:14:18.827Z] Received create post request
+
+[2025-03-21T19:14:18.831Z] Form data received
+Data: {
+  "type": "external",
+  "fields": [
+    {
+      "key": "title",
+      "value": "TEST"
+    },
+    {
+      "key": "slug",
+      "value": "test"
+    },
+    {
+      "key": "type",
+      "value": "external"
+    },
+    {
+      "key": "excerpt",
+      "value": "TEST"
+    },
+    {
+      "key": "externalUrl",
+      "value": "https://www.terrasos.co/wp-content/uploads/terrasos-logo-mobile.webp"
+    },
+    {
+      "key": "commentary",
+      "value": "TEST"
+    },
+    {
+      "key": "markdownCommentary",
+      "value": "TEST"
+    },
+    {
+      "key": "sourceName",
+      "value": "TEST"
+    }
+  ]
+}
+
+[2025-03-21T19:14:18.833Z] Created external post object
+Data: {
+  "title": "TEST",
+  "slug": "test",
+  "externalUrl": "https://www.terrasos.co/wp-content/uploads/terrasos-logo-mobile.webp",
+  "commentaryLength": 4
+}
+
+[2025-03-21T19:14:18.835Z] Attempting to save post
+Data: {
+  "slug": "test",
+  "type": "external"
+}
+
+[2025-03-21T19:14:18.953Z] Failed to save post
+Data: {
+  "slug": "test",
+  "type": "external"
+}
+
+[2025-03-21T19:16:33.605Z] Received create post request
+
+[2025-03-21T19:16:33.621Z] Form data received
+Data: {
+  "type": "original",
+  "fields": [
+    {
+      "key": "title",
+      "value": "TEST"
+    },
+    {
+      "key": "slug",
+      "value": "test"
+    },
+    {
+      "key": "type",
+      "value": "original"
+    },
+    {
+      "key": "excerpt",
+      "value": "TEST"
+    },
+    {
+      "key": "content",
+      "value": "test"
+    },
+    {
+      "key": "markdownContent",
+      "value": "test"
+    }
+  ]
+}
+
+[2025-03-21T19:16:33.626Z] Created original post object
+Data: {
+  "title": "TEST",
+  "slug": "test",
+  "contentLength": 4
+}
+
+[2025-03-21T19:16:33.639Z] Attempting to save post
+Data: {
+  "slug": "test",
+  "type": "original"
+}
+
+[2025-03-21T19:16:33.870Z] Post saved successfully
+Data: {
+  "slug": "test",
+  "type": "original"
+}
+
+[2025-03-21T19:18:40.953Z] Received create post request
+
+[2025-03-21T19:18:40.960Z] Form data received
+Data: {
+  "type": "external",
+  "fields": [
+    {
+      "key": "title",
+      "value": "NPR News"
+    },
+    {
+      "key": "slug",
+      "value": "npr-news"
+    },
+    {
+      "key": "type",
+      "value": "external"
+    },
+    {
+      "key": "excerpt",
+      "value": "Crazy NPR News"
+    },
+    {
+      "key": "featuredImage",
+      "value": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    },
+    {
+      "key": "externalUrl",
+      "value": "https://www.npr.org/2025/03/21/nx-s1-5336330/trump-education-department-student-loans-special-education-fsa"
+    },
+    {
+      "key": "commentary",
+      "value": "This is a really interesting breakdown...\r\n\r\nMy thoughts:\r\n- good\r\n- bad \r\n- ugly"
+    },
+    {
+      "key": "markdownCommentary",
+      "value": "This is a really interesting breakdown...\r\n\r\nMy thoughts:\r\n- good\r\n- bad \r\n- ugly"
+    },
+    {
+      "key": "sourceName",
+      "value": "NPR"
+    }
+  ]
+}
+
+[2025-03-21T19:18:40.963Z] Created external post object
+Data: {
+  "title": "NPR News",
+  "slug": "npr-news",
+  "externalUrl": "https://www.npr.org/2025/03/21/nx-s1-5336330/trump-education-department-student-loans-special-education-fsa",
+  "commentaryLength": 81
+}
+
+[2025-03-21T19:18:40.966Z] Attempting to save post
+Data: {
+  "slug": "npr-news",
+  "type": "external"
+}
+
+[2025-03-21T19:18:40.998Z] Post saved successfully
+Data: {
+  "slug": "npr-news",
+  "type": "external"
+}
+

@@ -61,13 +61,15 @@ export async function POST(request: NextRequest) {
     const date = formData.get('date') as string || new Date().toISOString().split('T')[0];
     
     // Get optional fields
-    const excerpt = formData.get('excerpt') as string || undefined;
-    const featuredImage = formData.get('featuredImage') as string || undefined;
+    const excerpt = formData.get('excerpt') as string || '';
+    const featuredImage = formData.get('featuredImage') as string || '';
+    const tagsString = formData.get('tags') as string || '';
+    const tags = tagsString ? tagsString.split(',').map(tag => tag.trim()).filter(Boolean) : [];
     
     let post: BlogPost;
     
     if (type === 'original') {
-      const content = formData.get('content') as string;
+      const content = formData.get('content') as string || '';
       
       if (!content) {
         await logDebug('Content is required for original posts');
@@ -83,15 +85,17 @@ export async function POST(request: NextRequest) {
         slug,
         date,
         content,
-        excerpt,
-        featuredImage
+        markdownContent: content, // Ensure markdownContent is set
+        excerpt: excerpt || undefined,
+        featuredImage: featuredImage || undefined,
+        tags: tags.length > 0 ? tags : undefined
       } as OriginalPost;
       
       await logDebug('Created original post object', { title, slug, contentLength: content.length });
     } else {
-      const externalUrl = formData.get('externalUrl') as string;
-      const commentary = formData.get('commentary') as string;
-      const sourceName = formData.get('sourceName') as string || undefined;
+      const externalUrl = formData.get('externalUrl') as string || '';
+      const commentary = formData.get('commentary') as string || '';
+      const sourceName = formData.get('sourceName') as string || '';
       
       if (!externalUrl || !commentary) {
         await logDebug('URL and commentary are required for external posts', { externalUrl: !!externalUrl, commentary: !!commentary });
@@ -108,9 +112,11 @@ export async function POST(request: NextRequest) {
         date,
         externalUrl,
         commentary,
-        excerpt,
-        featuredImage,
-        sourceName
+        markdownCommentary: commentary, // Ensure markdownCommentary is set
+        excerpt: excerpt || undefined,
+        featuredImage: featuredImage || undefined,
+        sourceName: sourceName || undefined,
+        tags: tags.length > 0 ? tags : undefined
       } as ExternalPost;
       
       await logDebug('Created external post object', { title, slug, externalUrl, commentaryLength: commentary.length });
