@@ -214,7 +214,7 @@ export default function BlogPage() {
       <Navbar onMobileMenuToggle={handleMobileMenuToggle} forceDarkMode={true} />
       
       {/* hero section with integrated search */}
-      <section className="pt-16 md:pt-20 pb-2 w-full relative">
+      <section className="pt-24 md:pt-32 pb-2 w-full relative">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
             <div>
