@@ -20,6 +20,36 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Blog Content Management
+
+This project uses a Git-based CMS approach for managing blog content. Blog posts are stored as MDX files in the `app/content/blog` directory and are committed to the repository when created or updated through the admin interface.
+
+### Setting Up GitHub Integration
+
+To enable the GitHub integration for the blog CMS, you need to:
+
+1. Create a GitHub Personal Access Token with `repo` permissions
+   - Go to [GitHub Settings > Developer Settings > Personal Access Tokens](https://github.com/settings/tokens)
+   - Click "Generate new token (classic)"
+   - Give it a descriptive name like "Solistic Healing Blog CMS"
+   - Select the `repo` scope
+   - Click "Generate token" and copy the token
+
+2. Add the token to your environment variables:
+   - For local development, create a `.env.local` file in the project root with:
+     ```
+     GITHUB_TOKEN=your_token_here
+     ADMIN_AUTH_SECRET=your_admin_secret_here
+     ```
+   - For production (Vercel), add the `GITHUB_TOKEN` and `ADMIN_AUTH_SECRET` environment variables in the Vercel dashboard
+
+### How It Works
+
+- In development mode, blog posts are saved to the local file system
+- In production mode, blog posts are committed directly to the GitHub repository
+- When a post is created or updated in production, it triggers a new deployment on Vercel
+- This approach ensures that content changes are versioned and can be rolled back if needed
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
