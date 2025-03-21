@@ -140,7 +140,8 @@ export default function ConditionsSection() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-primary/5 rounded-xl -m-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                {/* Subtle hover effect - toned down from green to neutral */}
+                <div className="absolute inset-0 bg-foreground/5 rounded-xl -m-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="bg-card dark:bg-black/40 backdrop-blur-sm p-6 rounded-xl border border-border/30 transition-all duration-300 relative overflow-hidden h-full flex flex-col">
                   {/* Card header with icon */}
                   <div className="flex items-center mb-3">
@@ -165,7 +166,7 @@ export default function ConditionsSection() {
                           href={resource.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center text-xs px-3 py-1.5 bg-primary/10 hover:bg-primary/20 text-primary rounded-full transition-colors duration-200"
+                          className="inline-flex items-center text-xs px-3 py-1.5 bg-foreground/5 hover:bg-foreground/10 text-foreground/80 rounded-full transition-colors duration-200"
                         >
                           {resource.name}
                           <ArrowUpRight className="ml-1 w-3 h-3" />
@@ -178,28 +179,27 @@ export default function ConditionsSection() {
             ))}
           </div>
           
-          {/* CTA section with more visual interest */}
+          {/* More professional CTA section */}
           <motion.div
-            className="bg-gradient-to-r from-primary/10 to-transparent p-6 md:p-8 rounded-xl border border-primary/20 flex flex-col md:flex-row items-center justify-between"
+            className="bg-card/30 dark:bg-black/20 p-6 md:p-8 rounded-xl border border-border/30 flex flex-col md:flex-row items-center justify-between"
             initial={{ opacity: 0, y: 20 }}
             animate={isVisible ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.6, duration: 0.6 }}
           >
             <div className="mb-4 md:mb-0 md:mr-6">
-              <h3 className="text-xl font-medium mb-2">Ready to begin your healing journey?</h3>
-              <p className="text-foreground/70 text-sm">Our compassionate team is here to guide you through each step of the process.</p>
+              <h3 className="text-lg font-medium mb-1">Contact us about treatment options</h3>
+              <p className="text-foreground/70 text-sm">Schedule a confidential consultation to discuss your needs.</p>
             </div>
             
             <Link href="/#contact" className="inline-block shrink-0">
               <motion.div
-                className="px-6 py-3 rounded-lg text-sm font-medium inline-flex items-center justify-center bg-primary text-white shadow-lg hover:shadow-primary/20 transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0"
+                className="px-5 py-2.5 rounded-lg text-sm font-medium inline-flex items-center justify-center bg-foreground text-background shadow-sm hover:shadow-md transition-all duration-300"
                 whileHover={{ 
-                  scale: 1.05,
-                  boxShadow: "0 10px 15px -3px rgba(var(--color-primary-rgb), 0.3)"
+                  scale: 1.02,
                 }}
-                whileTap={{ scale: 0.95 }}
+                whileTap={{ scale: 0.98 }}
               >
-                Begin Your Journey
+                Contact Us
                 <ArrowRight className="ml-2 w-4 h-4" />
               </motion.div>
             </Link>
