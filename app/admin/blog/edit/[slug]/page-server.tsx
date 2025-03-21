@@ -8,10 +8,10 @@ export const dynamic = 'force-dynamic';
 
 export default async function EditPostPage({ params }: { params: { slug: string } }) {
   // Server-side auth check
-  adminAuthGuard();
+  await adminAuthGuard();
   
-  // Get post data
-  const post = await getPostBySlug(params.slug);
+  // Get post data with raw markdown content
+  const post = await getPostBySlug(params.slug, { raw: true });
   
   // If post not found, show 404
   if (!post) {

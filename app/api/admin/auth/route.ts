@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Create session
-    const success = createAdminSession();
+    const success = await createAdminSession();
 
     if (!success) {
       return NextResponse.json(

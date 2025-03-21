@@ -6,29 +6,39 @@ import { BlogPost, OriginalPost, ExternalPost } from '@/app/types/blog';
 export async function POST(request: NextRequest) {
   try {
     // Check authentication
-    adminAuthGuard();
+    await adminAuthGuard();
     
     // Get form data
     const formData = await request.formData();
     const type = formData.get('type') as 'original' | 'external';
     const slug = formData.get('slug') as string;
     
+    // Log form data for debugging
+    console.log('Received form data:', {
+      type,
+      slug,
+      title: formData.get('title'),
+      content: formData.has('content') ? 'Content present' : 'No content',
+      commentary: formData.has('commentary') ? 'Commentary present' : 'No commentary',
+      externalUrl: formData.get('externalUrl'),
+    });
+    
     // Validate required fields
     const title = formData.get('title') as string;
     
     if (!title || !slug || !type) {
       return NextResponse.json(
-        { message: 'Missing required fields' },
+        { message: `Missing required fields: ${!title ? 'title' : ''} ${!slug ? 'slug' : ''} ${!type ? 'type' : ''}`.trim() },
         { status: 400 }
       );
     }
     
     // Get existing post to preserve fields that aren't being updated
-    const existingPost = await getPostBySlug(slug);
+    const existingPost = await getPostBySlug(slug, { raw: true });
     
     if (!existingPost) {
       return NextResponse.json(
-        { message: 'Post not found' },
+        { message: `Post not found with slug: ${slug}` },
         { status: 404 }
       );
     }
@@ -61,7 +71,8 @@ export async function POST(request: NextRequest) {
       updatedPost = {
         ...existingPost,
         title,
-        content,
+        content, // This will be used for HTML rendering
+        markdownContent: content, // Store the raw markdown
         excerpt,
         featuredImage
       } as OriginalPost;
@@ -83,7 +94,8 @@ export async function POST(request: NextRequest) {
         ...existingPost,
         title,
         externalUrl,
-        commentary: commentary.trim(), // Ensure commentary is properly trimmed
+        commentary: commentary.trim(), // For HTML rendering
+        markdownCommentary: commentary.trim(), // Store the raw markdown
         excerpt,
         featuredImage,
         sourceName

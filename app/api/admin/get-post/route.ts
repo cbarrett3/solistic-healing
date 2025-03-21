@@ -5,7 +5,7 @@ import { adminAuthGuard } from '@/app/lib/admin/auth';
 export async function GET(request: NextRequest) {
   try {
     // Check authentication
-    adminAuthGuard();
+    await adminAuthGuard();
     
     // Get the slug from query params
     const { searchParams } = new URL(request.url);

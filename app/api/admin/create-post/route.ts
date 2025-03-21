@@ -32,7 +32,7 @@ async function logDebug(message: string, data?: any) {
 export async function POST(request: NextRequest) {
   try {
     // Check authentication
-    adminAuthGuard();
+    await adminAuthGuard();
     
     await logDebug('Received create post request');
     

@@ -12,13 +12,14 @@ export default async function AdminBlogPage({
   searchParams: { type?: string };
 }) {
   // Server-side auth check
-  adminAuthGuard();
+  await adminAuthGuard();
   
   // Get all posts
   const allPosts = await getAllPosts();
   
   // Filter posts by type if specified
-  const { type } = searchParams;
+  const params = await searchParams;
+  const { type } = params;
   const filteredPosts = type 
     ? allPosts.filter(post => post.type === type)
     : allPosts;

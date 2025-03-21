@@ -49,7 +49,7 @@ const blogPostSchema = z.discriminatedUnion('type', [
  */
 export async function createOrUpdatePost(formData: FormData) {
   // Check authentication
-  adminAuthGuard();
+  await adminAuthGuard();
 
   try {
     // Extract and validate post data
@@ -106,7 +106,7 @@ export async function createOrUpdatePost(formData: FormData) {
  */
 export async function deleteBlogPost(formData: FormData) {
   // Check authentication
-  adminAuthGuard();
+  await adminAuthGuard();
   
   const slug = formData.get('slug') as string;
   
@@ -137,7 +137,7 @@ export async function deleteBlogPost(formData: FormData) {
  */
 export async function uploadImage(formData: FormData) {
   // Check authentication
-  adminAuthGuard();
+  await adminAuthGuard();
   
   const file = formData.get('file') as File;
   

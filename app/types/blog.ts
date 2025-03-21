@@ -17,7 +17,8 @@ export interface BasePost {
 // Original content post
 export interface OriginalPost extends BasePost {
   type: 'original';
-  content: string;
+  content: string; // HTML content for rendering
+  markdownContent?: string; // Raw markdown content for editing
 }
 
 // External link post
@@ -26,7 +27,8 @@ export interface ExternalPost extends BasePost {
   externalUrl: string;
   sourceName?: string;
   sourceAuthor?: string;
-  commentary: string;
+  commentary: string; // HTML content for rendering
+  markdownCommentary?: string; // Raw markdown content for editing
 }
 
 // Union type for all post types

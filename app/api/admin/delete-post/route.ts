@@ -5,7 +5,7 @@ import { adminAuthGuard } from '@/app/lib/admin/auth';
 export async function POST(request: NextRequest) {
   try {
     // Check authentication
-    adminAuthGuard();
+    await adminAuthGuard();
     
     // Get form data
     const formData = await request.formData();

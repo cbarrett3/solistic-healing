@@ -26,10 +26,26 @@ export default function PostForm({
   // Form state
   const [title, setTitle] = useState(post?.title || '');
   const [slug, setSlug] = useState(post?.slug || '');
-  const [content, setContent] = useState(post?.type === 'original' ? (post as OriginalPost).content : '');
-  const [externalUrl, setExternalUrl] = useState(post?.type === 'external' ? (post as ExternalPost).externalUrl : '');
-  const [sourceName, setSourceName] = useState(post?.type === 'external' ? (post as ExternalPost).sourceName || '' : '');
-  const [commentary, setCommentary] = useState(post?.type === 'external' ? (post as ExternalPost).commentary : '');
+  const [content, setContent] = useState(
+    post?.type === 'original' 
+      ? (post as OriginalPost).markdownContent || (post as OriginalPost).content 
+      : ''
+  );
+  const [externalUrl, setExternalUrl] = useState(
+    post?.type === 'external' 
+      ? (post as ExternalPost).externalUrl 
+      : ''
+  );
+  const [sourceName, setSourceName] = useState(
+    post?.type === 'external' 
+      ? (post as ExternalPost).sourceName || '' 
+      : ''
+  );
+  const [commentary, setCommentary] = useState(
+    post?.type === 'external' 
+      ? (post as ExternalPost).markdownCommentary || (post as ExternalPost).commentary 
+      : ''
+  );
   const [excerpt, setExcerpt] = useState(post?.excerpt || '');
   const [error, setError] = useState<string | null>(null);
   const [postType, setPostType] = useState<'original' | 'external'>(post?.type || 'original');
@@ -81,7 +97,7 @@ export default function PostForm({
   };
   
   // Handle form submission
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (isSubmitting) return;
@@ -107,34 +123,54 @@ export default function PostForm({
       const formData = new FormData();
       formData.append('title', title);
       
-      if (!post) {
-        formData.append('slug', slug);
-      }
+      // Always include the slug, whether creating or editing
+      formData.append('slug', slug);
       
       formData.append('type', postType);
-      formData.append('excerpt', excerpt);
+      
+      if (excerpt) {
+        formData.append('excerpt', excerpt);
+      }
       
       if (featuredImageUrl) {
         formData.append('featuredImage', featuredImageUrl);
       }
       
+      // For original posts
       if (postType === 'original') {
         formData.append('content', content);
-      } else {
+        // Store as markdownContent for editing later
+        formData.append('markdownContent', content);
+      } 
+      // For external posts
+      else {
         formData.append('externalUrl', externalUrl);
         formData.append('commentary', commentary);
+        // Store as markdownCommentary for editing later
+        formData.append('markdownCommentary', commentary);
         
         if (sourceName) {
           formData.append('sourceName', sourceName);
         }
       }
       
+      // Debug log
+      console.log('Form data prepared:', {
+        title: formData.get('title'),
+        slug: formData.get('slug'),
+        type: formData.get('type'),
+        hasContent: formData.has('content'),
+        hasMarkdownContent: formData.has('markdownContent'),
+        hasCommentary: formData.has('commentary'),
+        hasMarkdownCommentary: formData.has('markdownCommentary')
+      });
+      
       // Submit the form
       await onSubmit(formData);
       
     } catch (error) {
       console.error(`Error submitting post:`, error);
-      addToast(error instanceof Error ? error.message : 'An error occurred', 'error');
+      addToast('Failed to submit post', 'error');
     }
   };
   

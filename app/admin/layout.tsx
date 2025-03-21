@@ -3,6 +3,12 @@ import { ReactNode } from 'react';
 import { motion } from 'framer-motion';
 import { ToastProvider } from './components/ui/toast';
 import NavigationLinks from './components/navigation-links';
+import { Metadata } from 'next';
+
+// Define viewport for Next.js 15
+export const viewport = {
+  colorScheme: "light dark",
+};
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
   return (

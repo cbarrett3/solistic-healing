@@ -138,16 +138,31 @@ export default function EditPostPage() {
           post={post} 
           onSubmit={async (formData) => {
             try {
+              setError(null);
+              
+              // Log form data for debugging
+              console.log('Submitting form data:', {
+                slug: formData.get('slug'),
+                title: formData.get('title'),
+                type: formData.get('type'),
+                hasContent: formData.has('content'),
+                hasCommentary: formData.has('commentary')
+              });
+              
               const response = await fetch('/api/admin/update-post', {
                 method: 'POST',
                 body: formData,
               });
               
+              // Log response status
+              console.log('Response status:', response.status);
+              
               if (response.ok) {
                 router.push('/admin/blog');
               } else {
                 const data = await response.json();
-                setError(data.message || 'Failed to update post');
+                console.error('Error response:', data);
+                setError(data.message || `Failed to update post (Status: ${response.status})`);
               }
             } catch (err) {
               console.error('Error updating post:', err);

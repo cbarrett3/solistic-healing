@@ -23,6 +23,9 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: "Solistic Healing",
   description: "Your path to holistic wellness and natural healing",
+};
+
+export const viewport = {
   colorScheme: "light dark",
 };
 

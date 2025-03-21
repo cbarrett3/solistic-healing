@@ -26,7 +26,7 @@ export async function ensureContentDirs() {
 /**
  * Get all blog posts
  */
-export async function getAllPosts(): Promise<BlogPost[]> {
+export async function getAllPosts(options?: { raw?: boolean }): Promise<BlogPost[]> {
   try {
     await ensureContentDirs();
     
@@ -39,11 +39,14 @@ export async function getAllPosts(): Promise<BlogPost[]> {
         const content = await fs.readFile(filePath, 'utf8');
         const { data, content: markdownContent } = matter(content);
         
-        // Process markdown to HTML
-        const processedContent = await remark()
-          .use(html)
-          .process(markdownContent);
-        const contentHtml = processedContent.toString();
+        // Process markdown to HTML (only if not requesting raw content)
+        let contentHtml = '';
+        if (!options?.raw) {
+          const processedContent = await remark()
+            .use(html)
+            .process(markdownContent);
+          contentHtml = processedContent.toString();
+        }
         
         // Basic validation
         if (!data.title || !data.slug || !data.date || !data.type) {
@@ -54,12 +57,14 @@ export async function getAllPosts(): Promise<BlogPost[]> {
         if (data.type === 'original') {
           return {
             ...data,
-            content: contentHtml, // Use HTML instead of raw markdown
+            content: options?.raw ? markdownContent : contentHtml, 
+            markdownContent: markdownContent, 
           } as OriginalPost;
         } else if (data.type === 'external') {
           return {
             ...data,
-            commentary: contentHtml, // Use HTML instead of raw markdown
+            commentary: options?.raw ? markdownContent : contentHtml, 
+            markdownCommentary: markdownContent, 
           } as ExternalPost;
         }
         
@@ -68,13 +73,13 @@ export async function getAllPosts(): Promise<BlogPost[]> {
     );
     
     // Filter out null values and sort by date (newest first)
-    const posts = postsWithNulls.filter((post): post is BlogPost => post !== null);
+    const posts = postsWithNulls
+      .filter((post): post is BlogPost => post !== null)
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
     
-    return posts.sort((a, b) => 
-      new Date(b.date).getTime() - new Date(a.date).getTime()
-    );
+    return posts;
   } catch (error) {
-    console.error('Failed to get blog posts:', error);
+    console.error('Failed to get posts:', error);
     return [];
   }
 }
@@ -82,9 +87,9 @@ export async function getAllPosts(): Promise<BlogPost[]> {
 /**
  * Get a single blog post by slug
  */
-export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
+export async function getPostBySlug(slug: string, options?: { raw?: boolean }): Promise<BlogPost | null> {
   try {
-    const posts = await getAllPosts();
+    const posts = await getAllPosts(options);
     return posts.find(post => post.slug === slug) || null;
   } catch (error) {
     console.error(`Failed to get post with slug ${slug}:`, error);
@@ -107,12 +112,24 @@ export async function savePost(post: BlogPost): Promise<boolean> {
     const frontmatter: Record<string, any> = { ...post };
     
     if (type === 'original') {
-      content = (post as OriginalPost).content;
+      const originalPost = post as OriginalPost;
+      // Use markdownContent if available, otherwise use content
+      content = originalPost.markdownContent || originalPost.content;
+      
+      // Remove HTML content and processed fields from frontmatter
       delete frontmatter.content;
+      delete frontmatter.markdownContent;
     } else {
-      content = (post as ExternalPost).commentary;
+      const externalPost = post as ExternalPost;
+      // Use markdownCommentary if available, otherwise use commentary
+      content = externalPost.markdownCommentary || externalPost.commentary;
+      
+      // Remove HTML content and processed fields from frontmatter
       delete frontmatter.commentary;
+      delete frontmatter.markdownCommentary;
     }
+    
+    console.log('Saving post with slug:', slug, 'and type:', type);
     
     // Create MDX content with frontmatter
     const mdxContent = matter.stringify(content, frontmatter);

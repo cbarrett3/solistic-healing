@@ -20,6 +20,15 @@ export default function EditPostForm({ post }: { post: BlogPost }) {
     setIsSubmitting(true);
 
     try {
+      // Log form data for debugging
+      console.log('Submitting form data:', {
+        slug: formData.get('slug'),
+        title: formData.get('title'),
+        type: formData.get('type'),
+        hasContent: formData.has('content'),
+        hasCommentary: formData.has('commentary')
+      });
+      
       // Submit the form
       const response = await fetch('/api/admin/update-post', {
         method: 'POST',
@@ -29,6 +38,8 @@ export default function EditPostForm({ post }: { post: BlogPost }) {
         }
       });
 
+      console.log('Response status:', response.status);
+      
       if (response.ok) {
         // Show success message
         addToast('Post updated successfully', 'success');
@@ -44,7 +55,8 @@ export default function EditPostForm({ post }: { post: BlogPost }) {
         // Try to parse error response as JSON
         try {
           const data = await response.json();
-          throw new Error(data.message || 'Failed to update post');
+          console.error('Error response:', data);
+          throw new Error(data.message || `Failed to update post (Status: ${response.status})`);
         } catch (jsonError) {
           // If JSON parsing fails, use status text
           throw new Error(`Error: ${response.status} ${response.statusText}`);

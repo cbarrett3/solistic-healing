@@ -14,10 +14,10 @@ const ADMIN_COOKIE_NAME = 'solistic_admin_session';
 /**
  * Create admin session
  */
-export function createAdminSession() {
+export async function createAdminSession() {
   try {
     const { ADMIN_AUTH_SECRET } = envSchema.parse(process.env);
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     
     // Set a secure HTTP-only cookie
     cookieStore.set({
@@ -41,10 +41,10 @@ export function createAdminSession() {
 /**
  * Check if user is authenticated as admin
  */
-export function isAuthenticated(): boolean {
+export async function isAuthenticated(): Promise<boolean> {
   try {
     const { ADMIN_AUTH_SECRET } = envSchema.parse(process.env);
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const sessionCookie = cookieStore.get(ADMIN_COOKIE_NAME);
     
     if (!sessionCookie) {
@@ -81,8 +81,8 @@ export function withAdminAuth(request: NextRequest) {
 /**
  * Auth guard for server components
  */
-export function adminAuthGuard() {
-  if (!isAuthenticated()) {
+export async function adminAuthGuard() {
+  if (!(await isAuthenticated())) {
     redirect('/admin/login');
   }
 }
@@ -90,8 +90,8 @@ export function adminAuthGuard() {
 /**
  * End admin session
  */
-export function endAdminSession() {
-  const cookieStore = cookies();
+export async function endAdminSession() {
+  const cookieStore = await cookies();
   cookieStore.delete(ADMIN_COOKIE_NAME);
   return true;
 }

@@ -9,7 +9,7 @@ export default async function EditBlogPostPage({
   params: { slug: string };
 }) {
   // Server-side auth check
-  adminAuthGuard();
+  await adminAuthGuard();
   
   // Get the post data
   const post = await getPostBySlug(params.slug);
