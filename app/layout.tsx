@@ -32,7 +32,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${montserrat.variable} ${poppins.variable}`}>
+    <html lang="en" className={`${montserrat.variable} ${poppins.variable}`} suppressHydrationWarning>
       <head>
         <ThemeScript />
       </head>

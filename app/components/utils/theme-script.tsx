@@ -3,27 +3,40 @@
 import { useEffect } from "react";
 
 export default function ThemeScript() {
-  useEffect(() => {
-    // On page load or when changing themes, best to add inline in `head` to avoid FOUC
-    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-    
-    // Add listener to respond to system theme changes
-    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-    const handleChange = (e: MediaQueryListEvent) => {
-      if (e.matches) {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-      }
-    };
-    
-    mediaQuery.addEventListener("change", handleChange);
-    return () => mediaQuery.removeEventListener("change", handleChange);
-  }, []);
-
-  return null;
+  // This script component renders a script tag that runs immediately before React hydration
+  // This prevents flash of unstyled content (FOUC) when navigating between pages
+  
+  return (
+    <script
+      id="theme-script"
+      dangerouslySetInnerHTML={{
+        __html: `
+          (function() {
+            // Remove any existing theme class to prevent hydration mismatch
+            document.documentElement.classList.remove('dark');
+            
+            // Only use system preference for theme
+            const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            
+            // Apply dark mode immediately based on system preference only
+            if (systemPrefersDark) {
+              document.documentElement.classList.add('dark');
+            }
+            
+            // Set up listener for system preference changes
+            function handleSystemThemeChange(e) {
+              if (e.matches) {
+                document.documentElement.classList.add('dark');
+              } else {
+                document.documentElement.classList.remove('dark');
+              }
+            }
+            
+            // Add event listener for system theme changes
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', handleSystemThemeChange);
+          })();
+        `,
+      }}
+    />
+  );
 }
