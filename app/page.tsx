@@ -50,7 +50,7 @@ export default function Home() {
         {/* background image */}
         <div className="absolute inset-0 z-0">
           <Image 
-            src="https://images.unsplash.com/photo-1466968157647-7b02122317f9?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            src="https://images.unsplash.com/photo-1480701052301-e48ba86a6a40?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             alt="Serene forest path"
             fill
             priority
