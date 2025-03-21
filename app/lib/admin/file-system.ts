@@ -1,6 +1,8 @@
 import fs from 'fs/promises';
 import path from 'path';
 import matter from 'gray-matter';
+import { remark } from 'remark';
+import html from 'remark-html';
 import { BlogPost, OriginalPost, ExternalPost } from '@/app/types/blog';
 
 // Constants
@@ -37,6 +39,12 @@ export async function getAllPosts(): Promise<BlogPost[]> {
         const content = await fs.readFile(filePath, 'utf8');
         const { data, content: markdownContent } = matter(content);
         
+        // Process markdown to HTML
+        const processedContent = await remark()
+          .use(html)
+          .process(markdownContent);
+        const contentHtml = processedContent.toString();
+        
         // Basic validation
         if (!data.title || !data.slug || !data.date || !data.type) {
           console.warn(`Invalid post metadata in ${file}`);
@@ -46,12 +54,12 @@ export async function getAllPosts(): Promise<BlogPost[]> {
         if (data.type === 'original') {
           return {
             ...data,
-            content: markdownContent,
+            content: contentHtml, // Use HTML instead of raw markdown
           } as OriginalPost;
         } else if (data.type === 'external') {
           return {
             ...data,
-            commentary: markdownContent,
+            commentary: contentHtml, // Use HTML instead of raw markdown
           } as ExternalPost;
         }
         
