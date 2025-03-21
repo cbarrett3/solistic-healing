@@ -6,15 +6,13 @@ import { createOrUpdatePost } from '@/app/actions/blog-actions';
 import { BlogPost } from '@/app/types/blog';
 
 export default function EditBlogPost({
-  params,
   post,
 }: {
-  params: { slug: string };
+  params?: { slug: string };
   post: BlogPost;
 }) {
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
-  const [postType, setPostType] = useState<'original' | 'external'>(post?.type || 'original');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [urlPreview, setUrlPreview] = useState<{
@@ -75,7 +73,7 @@ export default function EditBlogPost({
       }
 
       // Add post type
-      formData.set('type', postType);
+      formData.set('type', post.type);
 
       // Submit the form
       const result = await createOrUpdatePost(formData);
@@ -138,7 +136,7 @@ export default function EditBlogPost({
                 type="radio"
                 name="postType"
                 value="original"
-                checked={postType === 'original'}
+                checked={post.type === 'original'}
                 disabled
                 className="mr-2"
               />
@@ -149,7 +147,7 @@ export default function EditBlogPost({
                 type="radio"
                 name="postType"
                 value="external"
-                checked={postType === 'external'}
+                checked={post.type === 'external'}
                 disabled
                 className="mr-2"
               />
@@ -253,7 +251,7 @@ export default function EditBlogPost({
           </div>
 
           {/* External Link Fields */}
-          {postType === 'external' && 'externalUrl' in post && (
+          {post.type === 'external' && 'externalUrl' in post && (
             <>
               <div>
                 <label htmlFor="externalUrl" className="block text-sm font-medium mb-1">
@@ -347,7 +345,7 @@ export default function EditBlogPost({
           )}
 
           {/* Original Content Fields */}
-          {postType === 'original' && 'content' in post && (
+          {post.type === 'original' && 'content' in post && (
             <div>
               <label htmlFor="content" className="block text-sm font-medium mb-1">
                 Content *

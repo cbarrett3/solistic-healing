@@ -3,7 +3,6 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
-import { BlogPost, OriginalPost, ExternalPost } from '@/app/types/blog';
 import { savePost, deletePost, saveImage } from '@/app/lib/admin/file-system';
 import { adminAuthGuard } from '@/app/lib/admin/auth';
 
@@ -53,7 +52,7 @@ export async function createOrUpdatePost(formData: FormData) {
 
   try {
     // Extract and validate post data
-    const rawData: Record<string, any> = Object.fromEntries(formData.entries());
+    const rawData: Record<string, FormDataEntryValue | string[]> = Object.fromEntries(formData.entries());
     
     // Handle tags (convert from comma-separated string to array)
     if (rawData.tags && typeof rawData.tags === 'string') {
@@ -63,10 +62,15 @@ export async function createOrUpdatePost(formData: FormData) {
     }
     
     // Handle featured flag
-    rawData.featured = rawData.featured === 'true';
+    const featured = rawData.featured === 'true';
     
     // Parse and validate with zod
-    const postData = blogPostSchema.parse(rawData);
+    const postData = blogPostSchema.parse({
+      ...rawData,
+      featured,
+      // Ensure other types match what zod expects
+      type: rawData.type as 'original' | 'external',
+    });
     
     // Save the post
     const success = await savePost(postData);
@@ -85,9 +89,9 @@ export async function createOrUpdatePost(formData: FormData) {
     console.error('Error creating/updating post:', error);
     
     if (error instanceof z.ZodError) {
-      const fieldErrors = error.errors.map(err => ({
-        field: err.path.join('.'),
-        message: err.message,
+      const fieldErrors = error.issues.map((issue) => ({
+        field: issue.path.join('.'),
+        message: issue.message,
       }));
       
       return { 
@@ -108,7 +112,7 @@ export async function deleteBlogPost(formData: FormData) {
   // Check authentication
   await adminAuthGuard();
   
-  const slug = formData.get('slug') as string;
+  const { slug } = Object.fromEntries(formData.entries()) as { slug: string };
   
   if (!slug) {
     return { success: false, error: 'Slug is required' };
