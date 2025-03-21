@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 
 // component imports
@@ -23,17 +23,17 @@ export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // prevent background scrolling when menu is open
-  useEffect(() => {
-    if (mobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
+  // useEffect(() => {
+  //   if (mobileMenuOpen) {
+  //     document.body.style.overflow = 'hidden';
+  //   } else {
+  //     document.body.style.overflow = '';
+  //   }
     
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [mobileMenuOpen]);
+  //   return () => {
+  //     document.body.style.overflow = '';
+  //   };
+  // }, [mobileMenuOpen]);
 
   // sync with navbar component
   const handleMobileMenuToggle = (isOpen: boolean) => {
@@ -50,11 +50,11 @@ export default function Home() {
         {/* background image */}
         <div className="absolute inset-0 z-0">
           <Image 
-            src="https://images.unsplash.com/photo-1551992315-907fbf183932?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-            alt="Aerial view of forest path"
+            src="https://images.unsplash.com/photo-1738762389087-35bcc2b03b2d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            alt="Serene forest landscape"
             fill
             priority
-            className="object-cover"
+            className="object-cover object-top"
           />
           {/* Overall darkening overlay */}
           <div className="absolute inset-0 bg-black/40 mix-blend-multiply"></div>
@@ -272,7 +272,6 @@ export default function Home() {
                       "I received my M.A in Counseling and Psychological Services from Saint Mary's University of Minnesota with a Graduate Certificate in Addiction Studies.",
                       "My approach to healing is informed by cognitive-behavioral therapy, transpersonal psychology, person-centered therapy, & somatic and mindfulness-based therapies."
                     ]}
-                    imageSrc="/eric-cutout.png"
                   />
                 </motion.div>
               </div>

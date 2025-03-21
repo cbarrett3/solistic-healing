@@ -8,10 +8,9 @@ interface TherapistCardProps {
   name: string;
   title: string;
   bio: string[];
-  imageSrc: string;
 }
 
-export default function TherapistCard({ name, title, bio, imageSrc }: TherapistCardProps) {
+export default function TherapistCard({ name, title, bio }: TherapistCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   
   return (

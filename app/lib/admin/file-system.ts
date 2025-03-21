@@ -152,7 +152,7 @@ export async function savePost(post: BlogPost): Promise<boolean> {
     
     // Create frontmatter object with only the metadata fields
     // Filter out undefined values to prevent YAML serialization errors
-    const frontmatter: Record<string, any> = {
+    const frontmatter: Record<string, unknown> = {
       type,
       title: post.title,
       slug: post.slug,

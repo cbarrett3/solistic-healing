@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Poppins, Montserrat } from "next/font/google";
+import { Poppins, Montserrat } from "next/font/google";
 import "./globals.css";
 import { ThemeScript } from "./components/utils";
 import { Footer } from "./components/layout";

@@ -1,7 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
-
 export default function ThemeScript() {
   // This script component renders a script tag that runs immediately before React hydration
   // This prevents flash of unstyled content (FOUC) when navigating between pages
