@@ -3,36 +3,23 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { BlogPost, OriginalPost, ExternalPost } from '@/app/types/blog';
+import { motion } from 'framer-motion';
+import { BlogPost } from '@/app/types/blog';
+import PostForm from '../../components/post-form';
+import { useToast } from '@/app/admin/components/ui/toast';
+import { CheckCircle, ExternalLink } from 'lucide-react';
 
 export default function EditPostForm({ post }: { post: BlogPost }) {
   const router = useRouter();
-  const [postType, setPostType] = useState<'original' | 'external'>(post.type);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  // Generate a slug from the title
-  const generateSlug = (title: string) => {
-    return title
-      .toLowerCase()
-      .replace(/[^\w\s-]/g, '')
-      .replace(/\s+/g, '-')
-      .replace(/-+/g, '-')
-      .trim();
-  };
+  const [showSuccess, setShowSuccess] = useState(false);
+  const { addToast } = useToast();
 
   // Handle form submission
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = async (formData: FormData) => {
     setIsSubmitting(true);
-    setError(null);
 
     try {
-      const formData = new FormData(e.currentTarget);
-      
-      // Add post type
-      formData.set('type', postType);
-
       // Submit the form
       const response = await fetch('/api/admin/update-post', {
         method: 'POST',
@@ -43,189 +30,108 @@ export default function EditPostForm({ post }: { post: BlogPost }) {
       });
 
       if (response.ok) {
-        // Show success message via toast if available
-        if (typeof window !== 'undefined' && window.localStorage) {
-          window.localStorage.setItem('blog_toast', JSON.stringify({
-            type: 'success',
-            message: 'Post updated successfully'
-          }));
-        }
+        // Show success message
+        addToast('Post updated successfully', 'success');
         
-        // Always redirect to blog management page on success
-        router.push('/admin/blog');
+        // Show success animation before redirecting
+        setShowSuccess(true);
+        
+        // Wait for animation to complete before redirecting
+        setTimeout(() => {
+          router.push('/admin/blog');
+        }, 1500);
       } else {
         // Try to parse error response as JSON
         try {
           const data = await response.json();
-          setError(data.message || 'Failed to update post');
+          throw new Error(data.message || 'Failed to update post');
         } catch (jsonError) {
           // If JSON parsing fails, use status text
-          setError(`Error: ${response.status} ${response.statusText}`);
+          throw new Error(`Error: ${response.status} ${response.statusText}`);
         }
       }
     } catch (err) {
       console.error('Error updating post:', err);
-      setError('An unexpected error occurred');
-    } finally {
+      addToast(err instanceof Error ? err.message : 'An unexpected error occurred', 'error');
       setIsSubmitting(false);
     }
   };
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold">Edit Blog Post</h1>
-        <p className="text-muted-foreground mt-2">Update your blog post</p>
+    <div className="relative p-6 max-w-4xl mx-auto">
+      {/* View on Site Button */}
+      <div className="absolute top-4 right-4 z-10">
+        <Link 
+          href={`/blog/${post.slug}`} 
+          target="_blank"
+          className="inline-flex items-center gap-1.5 px-3.5 py-2 text-sm font-medium text-primary hover:text-primary-foreground bg-background hover:bg-primary border border-muted-foreground/20 hover:border-primary rounded-md transition-all shadow-sm"
+          aria-label="View this post on the public site"
+        >
+          <span>View on Site</span>
+          <ExternalLink size={14} className="ml-0.5" />
+        </Link>
       </div>
 
-      {error && (
-        <div className="mb-6 p-4 bg-destructive/10 border border-destructive/20 rounded-md text-destructive">
-          {error}
-        </div>
-      )}
-
-      <div className="bg-card rounded-lg shadow-sm p-6">
-        {/* Post Type Selector (disabled in edit mode) */}
-        <div className="mb-6">
-          <label className="block text-sm font-medium mb-2">Post Type</label>
-          <div className="flex gap-4">
-            <label className="flex items-center">
-              <input
-                type="radio"
-                name="postType"
-                value="original"
-                checked={postType === 'original'}
-                disabled
-                className="mr-2"
-              />
-              <span>Original Content</span>
-            </label>
-            <label className="flex items-center">
-              <input
-                type="radio"
-                name="postType"
-                value="external"
-                checked={postType === 'external'}
-                disabled
-                className="mr-2"
-              />
-              <span>External Link</span>
-            </label>
-          </div>
-          <p className="text-xs text-muted-foreground mt-1">
-            Post type cannot be changed after creation
-          </p>
-        </div>
-
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Hidden slug field */}
-          <input type="hidden" name="slug" value={post.slug} />
-          
-          {/* Common Fields */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label htmlFor="title" className="block text-sm font-medium mb-1">
-                Title *
-              </label>
-              <input
-                id="title"
-                name="title"
-                type="text"
-                required
-                defaultValue={post.title}
-                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-            </div>
-            <div>
-              <label htmlFor="displaySlug" className="block text-sm font-medium mb-1">
-                Slug
-              </label>
-              <input
-                id="displaySlug"
-                type="text"
-                disabled
-                value={post.slug}
-                className="w-full px-3 py-2 border rounded-md bg-muted/50"
-              />
-              <p className="text-xs text-muted-foreground mt-1">
-                Slug cannot be changed after creation
-              </p>
-            </div>
-          </div>
-
-          {/* External Link Fields */}
-          {postType === 'external' && (
-            <>
-              <div>
-                <label htmlFor="externalUrl" className="block text-sm font-medium mb-1">
-                  External URL *
-                </label>
-                <input
-                  id="externalUrl"
-                  name="externalUrl"
-                  type="url"
-                  required
-                  defaultValue={(post as ExternalPost).externalUrl}
-                  className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                  placeholder="https://example.com/article"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="commentary" className="block text-sm font-medium mb-1">
-                  Your Commentary *
-                </label>
-                <textarea
-                  id="commentary"
-                  name="commentary"
-                  rows={10}
-                  required
-                  defaultValue={(post as ExternalPost).commentary}
-                  className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                  placeholder="Add your thoughts, analysis, or commentary about this external content"
-                />
-              </div>
-            </>
-          )}
-
-          {/* Original Content Fields */}
-          {postType === 'original' && (
-            <div>
-              <label htmlFor="content" className="block text-sm font-medium mb-1">
-                Content *
-              </label>
-              <textarea
-                id="content"
-                name="content"
-                rows={20}
-                required
-                defaultValue={(post as OriginalPost).content}
-                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary font-mono"
-                placeholder="Write your blog post content in Markdown..."
-              />
-              <p className="text-xs text-muted-foreground mt-1">
-                Supports Markdown formatting
-              </p>
-            </div>
-          )}
-
-          <div className="flex items-center gap-4 pt-4">
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-colors disabled:opacity-70"
+      {showSuccess ? (
+        <motion.div 
+          className="fixed inset-0 flex items-center justify-center bg-background/80 backdrop-blur-sm z-50"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
+        >
+          <motion.div
+            className="flex flex-col items-center justify-center p-8 bg-card rounded-lg shadow-lg"
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.1, type: "spring", stiffness: 300 }}
+          >
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 300 }}
             >
-              {isSubmitting ? 'Updating...' : 'Update Post'}
-            </button>
-            <Link
-              href="/admin/blog"
-              className="px-4 py-2 bg-muted hover:bg-muted/80 rounded-md transition-colors"
+              <CheckCircle className="w-16 h-16 text-primary mb-4" />
+            </motion.div>
+            <motion.h2 
+              className="text-xl font-semibold mb-2"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
             >
-              Cancel
+              Post Updated!
+            </motion.h2>
+            <motion.p 
+              className="text-muted-foreground text-center"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+            >
+              Redirecting to blog management...
+            </motion.p>
+          </motion.div>
+        </motion.div>
+      ) : (
+        <>
+          <div className="mb-8 flex justify-between items-center">
+            <div>
+              <h1 className="text-3xl font-bold">Edit Blog Post</h1>
+              <p className="text-muted-foreground mt-2">Update your blog post</p>
+            </div>
+            <Link 
+              href="/admin/blog" 
+              className="px-4 py-2 bg-muted/50 hover:bg-muted text-muted-foreground hover:text-foreground rounded-md transition-colors text-sm"
+            >
+              Back to Posts
             </Link>
           </div>
-        </form>
-      </div>
+
+          <PostForm 
+            post={post} 
+            onSubmit={handleSubmit} 
+            isSubmitting={isSubmitting} 
+          />
+        </>
+      )}
     </div>
   );
 }

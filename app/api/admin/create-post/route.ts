@@ -60,6 +60,10 @@ export async function POST(request: NextRequest) {
     // Prepare post data
     const date = formData.get('date') as string || new Date().toISOString().split('T')[0];
     
+    // Get optional fields
+    const excerpt = formData.get('excerpt') as string || undefined;
+    const featuredImage = formData.get('featuredImage') as string || undefined;
+    
     let post: BlogPost;
     
     if (type === 'original') {
@@ -78,13 +82,16 @@ export async function POST(request: NextRequest) {
         title,
         slug,
         date,
-        content
+        content,
+        excerpt,
+        featuredImage
       } as OriginalPost;
       
       await logDebug('Created original post object', { title, slug, contentLength: content.length });
     } else {
       const externalUrl = formData.get('externalUrl') as string;
       const commentary = formData.get('commentary') as string;
+      const sourceName = formData.get('sourceName') as string || undefined;
       
       if (!externalUrl || !commentary) {
         await logDebug('URL and commentary are required for external posts', { externalUrl: !!externalUrl, commentary: !!commentary });
@@ -100,7 +107,10 @@ export async function POST(request: NextRequest) {
         slug,
         date,
         externalUrl,
-        commentary
+        commentary,
+        excerpt,
+        featuredImage,
+        sourceName
       } as ExternalPost;
       
       await logDebug('Created external post object', { title, slug, externalUrl, commentaryLength: commentary.length });

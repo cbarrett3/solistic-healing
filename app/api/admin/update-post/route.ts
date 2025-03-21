@@ -44,6 +44,10 @@ export async function POST(request: NextRequest) {
     // Prepare updated post data
     let updatedPost: BlogPost;
     
+    // Get optional fields
+    const excerpt = formData.get('excerpt') as string || existingPost.excerpt;
+    const featuredImage = formData.get('featuredImage') as string || existingPost.featuredImage;
+    
     if (type === 'original') {
       const content = formData.get('content') as string;
       
@@ -57,11 +61,16 @@ export async function POST(request: NextRequest) {
       updatedPost = {
         ...existingPost,
         title,
-        content
+        content,
+        excerpt,
+        featuredImage
       } as OriginalPost;
     } else {
       const externalUrl = formData.get('externalUrl') as string;
       const commentary = formData.get('commentary') as string;
+      // For external posts, safely get sourceName
+      const sourceName = formData.get('sourceName') as string || 
+        (existingPost.type === 'external' ? (existingPost as ExternalPost).sourceName : undefined);
       
       if (!externalUrl || !commentary) {
         return NextResponse.json(
@@ -74,7 +83,10 @@ export async function POST(request: NextRequest) {
         ...existingPost,
         title,
         externalUrl,
-        commentary: commentary.trim() // Ensure commentary is properly trimmed
+        commentary: commentary.trim(), // Ensure commentary is properly trimmed
+        excerpt,
+        featuredImage,
+        sourceName
       } as ExternalPost;
     }
     

@@ -8,6 +8,7 @@ import AdminLayout from '../../components/admin-layout';
 import PostForm from '../components/post-form';
 import { Card, CardContent } from '../../components/ui';
 import { LinkButton } from '../../components/ui';
+import Link from 'next/link';
 
 export default function EditPostPage() {
   const router = useRouter();
@@ -106,6 +107,20 @@ export default function EditPostPage() {
             </svg>
             Back to Posts
           </button>
+          
+          <Link 
+            href={`/blog/${post.slug}`} 
+            target="_blank"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 text-sm font-medium text-primary hover:text-primary-foreground bg-background hover:bg-primary border border-muted-foreground/20 hover:border-primary rounded-md transition-all shadow-sm"
+            aria-label="View this post on the public site"
+          >
+            <span>View on Site</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="ml-0.5">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <line x1="10" y1="14" x2="21" y2="3"></line>
+            </svg>
+          </Link>
         </div>
         
         {error && (
@@ -119,7 +134,28 @@ export default function EditPostPage() {
           </motion.div>
         )}
         
-        <PostForm post={post} isEditing={true} />
+        <PostForm 
+          post={post} 
+          onSubmit={async (formData) => {
+            try {
+              const response = await fetch('/api/admin/update-post', {
+                method: 'POST',
+                body: formData,
+              });
+              
+              if (response.ok) {
+                router.push('/admin/blog');
+              } else {
+                const data = await response.json();
+                setError(data.message || 'Failed to update post');
+              }
+            } catch (err) {
+              console.error('Error updating post:', err);
+              setError('An unexpected error occurred');
+            }
+          }}
+          isSubmitting={isLoading}
+        />
       </div>
     </AdminLayout>
   );
