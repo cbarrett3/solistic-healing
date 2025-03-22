@@ -173,6 +173,7 @@ export default function PostForm({
               </label>
               <Input
                 id="title"
+                name="title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 onBlur={() => {
@@ -190,13 +191,17 @@ export default function PostForm({
                 Slug
               </label>
               {post ? (
-                <div className="px-3 py-2 border rounded-md bg-muted/50 text-muted-foreground">
-                  {slug}
+                <div className="relative">
+                  <div className="px-3 py-2 border rounded-md bg-muted/50 text-muted-foreground">
+                    {slug}
+                  </div>
+                  <input type="hidden" name="slug" value={slug} />
                 </div>
               ) : (
                 <div className="flex">
                   <Input
                     id="slug"
+                    name="slug"
                     value={slug}
                     onChange={(e) => setSlug(e.target.value)}
                     placeholder="post-slug"
@@ -227,6 +232,7 @@ export default function PostForm({
             </label>
             <Input
               id="excerpt"
+              name="excerpt"
               value={excerpt}
               onChange={(e) => setExcerpt(e.target.value)}
               placeholder="Brief summary of your post (optional)"
@@ -243,6 +249,7 @@ export default function PostForm({
               <div className="flex-1">
                 <Input
                   id="featuredImageUrl"
+                  name="featuredImage"
                   value={featuredImageUrl}
                   onChange={(e) => setFeaturedImageUrl(e.target.value)}
                   placeholder="https://example.com/image.jpg"
@@ -316,6 +323,7 @@ export default function PostForm({
                   <div className={viewMode === 'split' ? '' : 'mb-4'}>
                     <Textarea
                       id="content"
+                      name="content"
                       value={content}
                       onChange={(e) => setContent(e.target.value)}
                       placeholder="Write your post content in Markdown..."
@@ -351,6 +359,7 @@ export default function PostForm({
                       </div>
                       <Input
                         id="externalUrl"
+                        name="externalUrl"
                         value={externalUrl}
                         onChange={(e) => setExternalUrl(e.target.value)}
                         placeholder="https://example.com/article"
@@ -381,6 +390,7 @@ export default function PostForm({
                   </label>
                   <Input
                     id="sourceName"
+                    name="sourceName"
                     value={sourceName}
                     onChange={(e) => setSourceName(e.target.value)}
                     placeholder="New York Times, Medium, etc."
@@ -424,6 +434,7 @@ export default function PostForm({
                     <div className={viewMode === 'split' ? '' : 'mb-4'}>
                       <Textarea
                         id="commentary"
+                        name="commentary"
                         value={commentary}
                         onChange={(e) => setCommentary(e.target.value)}
                         placeholder="Add your thoughts, analysis, or commentary about this external content..."
