@@ -802,3 +802,116 @@ Data: {
   "type": "original"
 }
 
+[2025-03-22T03:14:37.713Z] Received create post request
+
+[2025-03-22T03:14:37.717Z] Form data received
+Data: {
+  "type": "original",
+  "fields": [
+    {
+      "key": "title",
+      "value": "original post"
+    },
+    {
+      "key": "slug",
+      "value": "original-post"
+    },
+    {
+      "key": "excerpt",
+      "value": "original post"
+    },
+    {
+      "key": "featuredImage",
+      "value": ""
+    },
+    {
+      "key": "content",
+      "value": "content"
+    },
+    {
+      "key": "type",
+      "value": "original"
+    }
+  ]
+}
+
+[2025-03-22T03:14:37.719Z] Created original post object
+Data: {
+  "title": "original post",
+  "slug": "original-post",
+  "contentLength": 7
+}
+
+[2025-03-22T03:14:37.722Z] Attempting to save post
+Data: {
+  "slug": "original-post",
+  "type": "original"
+}
+
+[2025-03-22T03:14:37.737Z] Post saved successfully
+Data: {
+  "slug": "original-post",
+  "type": "original"
+}
+
+[2025-03-22T03:15:24.689Z] Received create post request
+
+[2025-03-22T03:15:24.695Z] Form data received
+Data: {
+  "type": "external",
+  "fields": [
+    {
+      "key": "title",
+      "value": "bbc"
+    },
+    {
+      "key": "slug",
+      "value": "bbc"
+    },
+    {
+      "key": "excerpt",
+      "value": "bbc"
+    },
+    {
+      "key": "featuredImage",
+      "value": ""
+    },
+    {
+      "key": "externalUrl",
+      "value": "https://www.bbc.com/news/articles/ckg8ez8201yo"
+    },
+    {
+      "key": "sourceName",
+      "value": "bbc"
+    },
+    {
+      "key": "commentary",
+      "value": "bbc omment"
+    },
+    {
+      "key": "type",
+      "value": "external"
+    }
+  ]
+}
+
+[2025-03-22T03:15:24.698Z] Created external post object
+Data: {
+  "title": "bbc",
+  "slug": "bbc",
+  "externalUrl": "https://www.bbc.com/news/articles/ckg8ez8201yo",
+  "commentaryLength": 10
+}
+
+[2025-03-22T03:15:24.701Z] Attempting to save post
+Data: {
+  "slug": "bbc",
+  "type": "external"
+}
+
+[2025-03-22T03:15:24.722Z] Post saved successfully
+Data: {
+  "slug": "bbc",
+  "type": "external"
+}
+
