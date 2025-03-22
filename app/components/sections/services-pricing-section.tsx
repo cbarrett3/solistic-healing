@@ -166,7 +166,11 @@ export default function ServicesPricingSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10 rounded-xl"></div>
+            {/* Border similar to therapist card */}
+            <div className="absolute -inset-0.5 rounded-xl bg-primary/40 z-0"></div>
+            
+            {/* Enhanced gradient overlay with stronger bottom fade */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent z-10 rounded-xl"></div>
             <Image 
               src="/practice.jpeg" 
               alt="Solistic Healing Practice" 

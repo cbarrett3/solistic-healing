@@ -2,7 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { X } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 
 interface NavbarProps {
   onMobileMenuToggle?: (isOpen: boolean) => void;
@@ -15,15 +17,42 @@ export default function Navbar({ onMobileMenuToggle, forceDarkMode = false }: Na
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const pathname = usePathname();
 
   // Handle mobile menu toggle
   const toggleMobileMenu = () => {
     const newState = !mobileMenuOpen;
     setMobileMenuOpen(newState);
+    
+    if (newState) {
+      // Store current scroll position
+      setScrollPosition(window.scrollY);
+      // Add fixed positioning to body
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${window.scrollY}px`;
+      document.body.style.width = '100%';
+    } else {
+      // Restore scroll position
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      window.scrollTo(0, scrollPosition);
+    }
+    
     if (onMobileMenuToggle) {
       onMobileMenuToggle(newState);
     }
   };
+
+  // Cleanup body styles when component unmounts
+  useEffect(() => {
+    return () => {
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+    };
+  }, []);
 
   // Handle scroll detection for background change
   useEffect(() => {
@@ -64,6 +93,11 @@ export default function Navbar({ onMobileMenuToggle, forceDarkMode = false }: Na
 
   // Handle section link click
   const handleSectionLinkClick = (e: React.MouseEvent, href: string, isSection: boolean) => {
+    // Close mobile menu first if open
+    if (mobileMenuOpen) {
+      toggleMobileMenu();
+    }
+    
     if (isSection) {
       e.preventDefault();
       
@@ -121,11 +155,6 @@ export default function Navbar({ onMobileMenuToggle, forceDarkMode = false }: Na
         });
       }
     }
-    
-    // Close mobile menu if open
-    if (mobileMenuOpen) {
-      toggleMobileMenu();
-    }
   };
 
   // Handler functions for icon interactions
@@ -133,6 +162,57 @@ export default function Navbar({ onMobileMenuToggle, forceDarkMode = false }: Na
   const handleIconMouseLeave = () => setHoveredIcon(null);
   const handleIconMouseDown = (index: number) => setPressedIcon(index);
   const handleIconMouseUp = () => setPressedIcon(null);
+
+  // Animation variants
+  const menuVariants = {
+    closed: {
+      opacity: 0,
+      y: -20,
+      transition: {
+        duration: 0.3,
+        ease: "easeInOut"
+      }
+    },
+    open: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.4,
+        ease: "easeOut",
+        delayChildren: 0.2 // Delay children animations
+      }
+    }
+  };
+
+  const overlayVariants = {
+    closed: {
+      opacity: 0,
+      transition: {
+        duration: 0.3,
+        ease: "easeInOut"
+      }
+    },
+    open: {
+      opacity: 1,
+      transition: {
+        duration: 0.2, // Faster transition for the overlay
+        ease: "easeOut"
+      }
+    }
+  };
+
+  const itemVariants = {
+    closed: { opacity: 0, y: 20 },
+    open: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: i * 0.05,
+        duration: 0.5,
+        ease: "easeOut"
+      }
+    })
+  };
 
   // Navigation items array
   const navItems = [
@@ -143,6 +223,14 @@ export default function Navbar({ onMobileMenuToggle, forceDarkMode = false }: Na
     { name: 'FAQ', href: '/#faq', isSection: true },
     { name: 'Contact', href: '/#contact', isSection: true }
   ];
+
+  // Check if a nav item is active based on the current path
+  const isActive = (href: string) => {
+    if (href === '/blog') {
+      return pathname === '/blog' || pathname.startsWith('/blog/');
+    }
+    return false;
+  };
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -192,18 +280,20 @@ export default function Navbar({ onMobileMenuToggle, forceDarkMode = false }: Na
             </h1>
           </Link>
 
-          {/* Mobile Menu Button */}
-          <button 
-            className="block sm:hidden cursor-pointer relative group p-2 -m-2 rounded-lg transition-all duration-300 hover:bg-primary/10 focus:outline-none focus:ring-2 focus:ring-primary/30"
-            onClick={toggleMobileMenu}
-            aria-label="Toggle menu"
-          >
-            <div className="w-6 h-5 flex flex-col justify-between">
-              <span className={`w-full h-0.5 bg-primary transition-all duration-300 ${mobileMenuOpen ? 'rotate-45 translate-y-2' : 'group-hover:w-5 group-hover:translate-x-1'}`}></span>
-              <span className={`w-full h-0.5 bg-primary transition-all duration-300 ${mobileMenuOpen ? 'opacity-0' : 'opacity-100 group-hover:w-4 group-hover:translate-x-2'}`}></span>
-              <span className={`w-full h-0.5 bg-primary transition-all duration-300 ${mobileMenuOpen ? '-rotate-45 -translate-y-2' : 'group-hover:w-5 group-hover:translate-x-1'}`}></span>
-            </div>
-          </button>
+          {/* Mobile Menu Button - Only visible when menu is closed */}
+          {!mobileMenuOpen && (
+            <button 
+              className="block sm:hidden cursor-pointer relative group p-2 -m-2 rounded-lg transition-all duration-300 hover:bg-primary/10 focus:outline-none focus:ring-2 focus:ring-primary/30 z-50"
+              onClick={toggleMobileMenu}
+              aria-label="Open menu"
+            >
+              <div className="w-6 h-5 flex flex-col justify-between">
+                <span className="w-full h-0.5 bg-primary transition-all duration-300 group-hover:w-5 group-hover:translate-x-1"></span>
+                <span className="w-full h-0.5 bg-primary transition-all duration-300 group-hover:w-4 group-hover:translate-x-2"></span>
+                <span className="w-full h-0.5 bg-primary transition-all duration-300 group-hover:w-5 group-hover:translate-x-1"></span>
+              </div>
+            </button>
+          )}
 
           {/* Desktop Navigation */}
           <nav className="hidden sm:flex items-center space-x-4 md:space-x-6 lg:space-x-8">
@@ -212,6 +302,7 @@ export default function Navbar({ onMobileMenuToggle, forceDarkMode = false }: Na
                 key={index}
                 href={item.href}
                 className={`relative text-sm font-light uppercase tracking-wider cursor-pointer ${
+                  isActive(item.href) ? 'text-primary' : 
                   !scrolled && !forceDarkMode ? 'text-white' : forceDarkMode ? (isDarkMode ? 'text-white' : 'text-foreground') : isDarkMode ? 'text-white' : 'text-foreground'
                 } hover:text-primary transition-colors duration-300`}
                 onMouseEnter={() => handleIconMouseEnter(index)}
@@ -224,52 +315,79 @@ export default function Navbar({ onMobileMenuToggle, forceDarkMode = false }: Na
                 <motion.span
                   className="absolute -bottom-1 left-0 h-[1px] bg-primary"
                   initial={{ width: 0 }}
-                  animate={{ width: hoveredIcon === index ? '100%' : 0 }}
+                  animate={{ width: isActive(item.href) ? '100%' : hoveredIcon === index ? '100%' : 0 }}
                   transition={{ duration: 0.3 }}
                 />
               </Link>
             ))}
           </nav>
+        </div>
+      </div>
 
-          {/* Mobile Navigation */}
-          {mobileMenuOpen && (
+      {/* Mobile Navigation - Separate from header with AnimatePresence for smooth transitions */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <div className="sm:hidden">
+            {/* Dark overlay with animation */}
             <motion.div 
-              className={`fixed inset-0 top-16 ${
-                forceDarkMode ? (isDarkMode ? 'bg-gradient-to-b from-background/95 to-background/90' : 'bg-white/95') : isDarkMode ? 'bg-gradient-to-b from-background/95 to-background/90' : 'bg-white/95'
-              } backdrop-blur-md z-40 sm:hidden`}
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.3 }}
+              className="fixed inset-0 z-40 bg-black/80 backdrop-blur-sm"
+              initial="closed"
+              animate="open"
+              exit="closed"
+              variants={overlayVariants}
+              onClick={toggleMobileMenu}
+            ></motion.div>
+            
+            {/* Menu content with animation */}
+            <motion.div 
+              className={`fixed inset-0 z-50 pt-16 ${
+                forceDarkMode ? (isDarkMode ? 'bg-background/95' : 'bg-white/95') : isDarkMode ? 'bg-background/95' : 'bg-white/95'
+              }`}
+              initial="closed"
+              animate="open"
+              exit="closed"
+              variants={menuVariants}
             >
-              <nav className="flex flex-col items-center justify-center h-full py-10">
+              {/* Close button */}
+              <button
+                className="absolute top-4 right-5 p-2 rounded-full bg-primary/10 hover:bg-primary/20 transition-colors duration-300 z-50 cursor-pointer"
+                onClick={toggleMobileMenu}
+                aria-label="Close menu"
+              >
+                <X className="w-6 h-6 text-primary" />
+              </button>
+              
+              <nav className="flex flex-col items-center justify-center h-full">
                 {navItems.map((item, index) => (
                   <motion.div
                     key={index}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3, delay: index * 0.05 }}
-                    className="w-full"
+                    custom={index}
+                    initial="closed"
+                    animate="open"
+                    exit="closed"
+                    variants={itemVariants}
+                    className="w-full text-center py-4"
                   >
                     <Link
                       href={item.href}
                       className={`text-lg font-light uppercase tracking-wider ${
+                        isActive(item.href) ? 'text-primary' :
                         forceDarkMode ? (isDarkMode ? 'text-white' : 'text-foreground') : isDarkMode ? 'text-white' : 'text-foreground'
-                      } hover:text-primary my-5 transition-all duration-300 cursor-pointer flex flex-col items-center`}
+                      } hover:text-primary transition-all duration-300 cursor-pointer inline-block`}
                       onClick={(e) => handleSectionLinkClick(e, item.href, item.isSection)}
                     >
-                      <span>{item.name}</span>
-                      <span className={`h-[1px] ${
-                        forceDarkMode ? (isDarkMode ? 'bg-white/10' : 'bg-foreground/10') : isDarkMode ? 'bg-white/10' : 'bg-foreground/10'
-                      } w-16 mt-5`}></span>
+                      {item.name}
                     </Link>
+                    <div className={`h-[1px] ${
+                      forceDarkMode ? (isDarkMode ? 'bg-white/10' : 'bg-foreground/10') : isDarkMode ? 'bg-white/10' : 'bg-foreground/10'
+                    } w-16 mx-auto mt-4`}></div>
                   </motion.div>
                 ))}
               </nav>
             </motion.div>
-          )}
-        </div>
-      </div>
+          </div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }

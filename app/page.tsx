@@ -63,13 +63,13 @@ export default function Home() {
           <div className="absolute inset-y-0 left-0 w-full md:w-1/2 lg:w-2/5 bg-gradient-to-r from-black/70 to-transparent z-10"></div>
         </div>
         
-        <div className="container mx-auto px-4 relative pt-16">
+        <div className="container mx-auto px-4 relative pt-16 sm:pt-20 md:pt-28 lg:pt-32 xl:pt-36">
           {/* main content container */}
           <div className="flex flex-col md:flex-row md:items-start md:justify-between">
             {/* left side content */}
             <div className="w-full md:w-1/2 lg:w-1/2">
-              {/* subtitle */}
-              <div className="text-white/80 text-xs uppercase tracking-[0.25em]">
+              {/* subtitle - hidden on medium screens and larger */}
+              <div className="text-white/80 text-xs uppercase tracking-[0.25em] block md:hidden">
                 SOLISTIC HEALING - MENTAL WELLNESS
               </div>
               
@@ -102,8 +102,8 @@ export default function Home() {
             
             {/* right side content - desktop only */}
             <div className="hidden md:block md:w-1/2 lg:w-1/2 relative md:pt-0">
-              {/* watch story element */}
-              <div className="flex items-center justify-end mb-6">
+              {/* watch story element - hidden as requested */}
+              <div className="hidden">
                 <div className="mr-4 text-sm text-white text-right tracking-wide font-light">
                   Watch Our Story
                 </div>
@@ -130,8 +130,8 @@ export default function Home() {
                 </a>
               </div>
               
-              {/* services card - desktop only */}
-              <div className="w-[220px] sm:w-[260px] lg:w-[280px] ml-auto">
+              {/* services card - desktop only - hidden as requested */}
+              <div className="hidden">
                 <div className="bg-white dark:bg-neutral-900 rounded-2xl shadow-lg overflow-hidden transition-colors duration-300">
                   <div className="p-4 sm:p-5">
                     <div className="flex justify-between items-center mb-3">
@@ -162,7 +162,7 @@ export default function Home() {
               </div>
             </div>
             
-            {/* mobile-only watch story element - positioned at bottom of screen */}
+            {/* mobile-only watch story element - positioned at bottom of screen - already hidden */}
             <div className="hidden">
               <div className="mr-3 text-sm text-white text-right tracking-wide font-light drop-shadow-md">
                 Watch Our Story
@@ -203,7 +203,7 @@ export default function Home() {
             </div>
           </div>
           
-          {/* mobile-only watch story element - positioned at bottom of screen */}
+          {/* mobile-only watch story element - positioned at bottom of screen - already hidden */}
           <div className="hidden">
             <div className="mr-3 text-sm text-white text-right tracking-wide font-light drop-shadow-md">
               Watch Our Story
