@@ -24,8 +24,6 @@ export default function NewBlogPostPage() {
       });
       
       if (response.ok) {
-        addToast('Post created successfully', 'success');
-        
         // Show success animation before redirecting
         setShowSuccess(true);
         

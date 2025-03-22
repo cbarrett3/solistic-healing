@@ -112,9 +112,6 @@ export default function PostForm({
       // Submit the form
       await onSubmit(formData);
       
-      // Show success toast
-      addToast(post ? 'Post updated successfully' : 'Post created successfully', 'success');
-      
       // Redirect to blog admin page
       router.push('/admin/blog');
     } catch {

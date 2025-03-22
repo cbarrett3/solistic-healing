@@ -395,3 +395,410 @@ Data: {
   "type": "external"
 }
 
+[2025-03-22T02:53:38.676Z] Received create post request
+
+[2025-03-22T02:53:38.686Z] Form data received
+Data: {
+  "type": "external",
+  "fields": [
+    {
+      "key": "title",
+      "value": "CONNOR"
+    },
+    {
+      "key": "slug",
+      "value": "connor"
+    },
+    {
+      "key": "excerpt",
+      "value": "connor"
+    },
+    {
+      "key": "featuredImage",
+      "value": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    },
+    {
+      "key": "externalUrl",
+      "value": "https://www.npr.org/2025/03/21/nx-s1-5336330/trump-education-department-student-loans-special-education-fsa"
+    },
+    {
+      "key": "sourceName",
+      "value": "connor npr"
+    },
+    {
+      "key": "type",
+      "value": "external"
+    }
+  ]
+}
+
+[2025-03-22T02:53:38.688Z] URL and commentary are required for external posts
+Data: {
+  "externalUrl": true,
+  "commentary": false
+}
+
+[2025-03-22T02:53:53.064Z] Received create post request
+
+[2025-03-22T02:53:53.067Z] Form data received
+Data: {
+  "type": "external",
+  "fields": [
+    {
+      "key": "title",
+      "value": "CONNOR"
+    },
+    {
+      "key": "slug",
+      "value": "connor"
+    },
+    {
+      "key": "excerpt",
+      "value": "connor"
+    },
+    {
+      "key": "featuredImage",
+      "value": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    },
+    {
+      "key": "externalUrl",
+      "value": "https://www.npr.org/2025/03/21/nx-s1-5336330/trump-education-department-student-loans-special-education-fsa"
+    },
+    {
+      "key": "sourceName",
+      "value": "connor npr"
+    },
+    {
+      "key": "type",
+      "value": "external"
+    }
+  ]
+}
+
+[2025-03-22T02:53:53.069Z] URL and commentary are required for external posts
+Data: {
+  "externalUrl": true,
+  "commentary": false
+}
+
+[2025-03-22T02:54:37.893Z] Received create post request
+
+[2025-03-22T02:54:37.899Z] Form data received
+Data: {
+  "type": "external",
+  "fields": [
+    {
+      "key": "title",
+      "value": "CONNOR"
+    },
+    {
+      "key": "slug",
+      "value": "connor"
+    },
+    {
+      "key": "excerpt",
+      "value": "connor"
+    },
+    {
+      "key": "featuredImage",
+      "value": ""
+    },
+    {
+      "key": "externalUrl",
+      "value": "https://www.bbc.com/news/articles/ckg8ez8201yo"
+    },
+    {
+      "key": "sourceName",
+      "value": "foreman"
+    },
+    {
+      "key": "commentary",
+      "value": "foreman passed away"
+    },
+    {
+      "key": "type",
+      "value": "external"
+    }
+  ]
+}
+
+[2025-03-22T02:54:37.902Z] Created external post object
+Data: {
+  "title": "CONNOR",
+  "slug": "connor",
+  "externalUrl": "https://www.bbc.com/news/articles/ckg8ez8201yo",
+  "commentaryLength": 19
+}
+
+[2025-03-22T02:54:37.905Z] Attempting to save post
+Data: {
+  "slug": "connor",
+  "type": "external"
+}
+
+[2025-03-22T02:54:37.927Z] Post saved successfully
+Data: {
+  "slug": "connor",
+  "type": "external"
+}
+
+[2025-03-22T02:57:59.661Z] Received create post request
+
+[2025-03-22T02:57:59.668Z] Form data received
+Data: {
+  "type": "original",
+  "fields": [
+    {
+      "key": "title",
+      "value": "original post"
+    },
+    {
+      "key": "slug",
+      "value": "original-post"
+    },
+    {
+      "key": "excerpt",
+      "value": "original post"
+    },
+    {
+      "key": "featuredImage",
+      "value": ""
+    },
+    {
+      "key": "content",
+      "value": "original post content"
+    },
+    {
+      "key": "type",
+      "value": "original"
+    }
+  ]
+}
+
+[2025-03-22T02:57:59.670Z] Created original post object
+Data: {
+  "title": "original post",
+  "slug": "original-post",
+  "contentLength": 21
+}
+
+[2025-03-22T02:57:59.672Z] Attempting to save post
+Data: {
+  "slug": "original-post",
+  "type": "original"
+}
+
+[2025-03-22T02:57:59.695Z] Post saved successfully
+Data: {
+  "slug": "original-post",
+  "type": "original"
+}
+
+[2025-03-22T03:00:30.732Z] Received create post request
+
+[2025-03-22T03:00:30.736Z] Form data received
+Data: {
+  "type": "original",
+  "fields": [
+    {
+      "key": "title",
+      "value": "original post"
+    },
+    {
+      "key": "slug",
+      "value": "original-post"
+    },
+    {
+      "key": "excerpt",
+      "value": "original post"
+    },
+    {
+      "key": "featuredImage",
+      "value": ""
+    },
+    {
+      "key": "content",
+      "value": "original content"
+    },
+    {
+      "key": "type",
+      "value": "original"
+    }
+  ]
+}
+
+[2025-03-22T03:00:30.738Z] Created original post object
+Data: {
+  "title": "original post",
+  "slug": "original-post",
+  "contentLength": 16
+}
+
+[2025-03-22T03:00:30.740Z] Attempting to save post
+Data: {
+  "slug": "original-post",
+  "type": "original"
+}
+
+[2025-03-22T03:00:30.762Z] Post saved successfully
+Data: {
+  "slug": "original-post",
+  "type": "original"
+}
+
+[2025-03-22T03:01:39.527Z] Received create post request
+
+[2025-03-22T03:01:39.554Z] Form data received
+Data: {
+  "type": "original",
+  "fields": [
+    {
+      "key": "title",
+      "value": "original post"
+    },
+    {
+      "key": "slug",
+      "value": "original-post"
+    },
+    {
+      "key": "excerpt",
+      "value": "original post"
+    },
+    {
+      "key": "featuredImage",
+      "value": ""
+    },
+    {
+      "key": "content",
+      "value": "original content"
+    },
+    {
+      "key": "type",
+      "value": "original"
+    }
+  ]
+}
+
+[2025-03-22T03:01:39.562Z] Created original post object
+Data: {
+  "title": "original post",
+  "slug": "original-post",
+  "contentLength": 16
+}
+
+[2025-03-22T03:01:39.574Z] Attempting to save post
+Data: {
+  "slug": "original-post",
+  "type": "original"
+}
+
+[2025-03-22T03:01:39.758Z] Post saved successfully
+Data: {
+  "slug": "original-post",
+  "type": "original"
+}
+
+[2025-03-22T03:02:16.184Z] Received create post request
+
+[2025-03-22T03:02:16.202Z] Form data received
+Data: {
+  "type": "original",
+  "fields": [
+    {
+      "key": "title",
+      "value": "original post"
+    },
+    {
+      "key": "slug",
+      "value": "original-post"
+    },
+    {
+      "key": "excerpt",
+      "value": "original post"
+    },
+    {
+      "key": "featuredImage",
+      "value": ""
+    },
+    {
+      "key": "content",
+      "value": "orign"
+    },
+    {
+      "key": "type",
+      "value": "original"
+    }
+  ]
+}
+
+[2025-03-22T03:02:16.219Z] Created original post object
+Data: {
+  "title": "original post",
+  "slug": "original-post",
+  "contentLength": 5
+}
+
+[2025-03-22T03:02:16.231Z] Attempting to save post
+Data: {
+  "slug": "original-post",
+  "type": "original"
+}
+
+[2025-03-22T03:02:16.447Z] Post saved successfully
+Data: {
+  "slug": "original-post",
+  "type": "original"
+}
+
+[2025-03-22T03:07:58.601Z] Received create post request
+
+[2025-03-22T03:07:58.604Z] Form data received
+Data: {
+  "type": "original",
+  "fields": [
+    {
+      "key": "title",
+      "value": "original post"
+    },
+    {
+      "key": "slug",
+      "value": "original-post"
+    },
+    {
+      "key": "excerpt",
+      "value": "original post"
+    },
+    {
+      "key": "featuredImage",
+      "value": ""
+    },
+    {
+      "key": "content",
+      "value": "original"
+    },
+    {
+      "key": "type",
+      "value": "original"
+    }
+  ]
+}
+
+[2025-03-22T03:07:58.607Z] Created original post object
+Data: {
+  "title": "original post",
+  "slug": "original-post",
+  "contentLength": 8
+}
+
+[2025-03-22T03:07:58.609Z] Attempting to save post
+Data: {
+  "slug": "original-post",
+  "type": "original"
+}
+
+[2025-03-22T03:07:58.630Z] Post saved successfully
+Data: {
+  "slug": "original-post",
+  "type": "original"
+}
+
