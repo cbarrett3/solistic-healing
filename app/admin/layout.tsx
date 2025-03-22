@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { ToastProvider } from './components/ui/toast';
 import NavigationLinks from './components/navigation-links';
 import { Metadata } from 'next';
+import ScrollToTop from './components/scroll-to-top';
 
 // Define viewport for Next.js 15
 export const viewport = {
@@ -13,6 +14,7 @@ export const viewport = {
 export default function AdminLayout({ children }: { children: ReactNode }) {
   return (
     <ToastProvider>
+      <ScrollToTop />
       <div className="min-h-screen flex flex-col bg-background">
         {/* Admin Header */}
         <header className="bg-background/90 backdrop-blur-sm border-b border-border/5 sticky top-0 z-10 shadow-sm">
@@ -67,15 +69,18 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
               <div className="flex items-center space-x-4 md:space-x-6 lg:space-x-8">
                 <Link 
                   href="/" 
-                  className="relative text-sm font-medium uppercase tracking-wider text-foreground/90 hover:text-primary transition-colors duration-300 bg-background/60 backdrop-blur-sm px-3 py-1.5 rounded border border-border/20 hover:border-primary/30"
+                  className="relative text-xs font-medium uppercase tracking-wider text-foreground/90 hover:text-primary transition-colors duration-300 bg-background/60 backdrop-blur-sm px-3 py-1.5 rounded border border-border/20 hover:border-primary/30 hover:shadow-sm cursor-pointer"
                 >
-                  Return to Main Site
+                  Main Site
                 </Link>
                 <Link 
                   href="/admin/logout" 
-                  className="relative text-sm font-medium uppercase tracking-wider text-destructive/90 hover:text-destructive transition-colors duration-300 bg-background/60 backdrop-blur-sm px-3 py-1.5 rounded border border-border/20 hover:border-destructive/30"
+                  className="relative text-xs font-medium uppercase tracking-wider text-destructive/90 hover:text-destructive transition-all duration-300 bg-background/60 backdrop-blur-sm px-3 py-1.5 rounded border border-border/20 hover:border-destructive/30 hover:shadow-sm hover:scale-105 hover:bg-destructive/5 cursor-pointer group"
                 >
-                  Logout
+                  <span className="flex items-center">
+                    Logout
+                    <span className="ml-1 opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:translate-x-0.5">→</span>
+                  </span>
                 </Link>
               </div>
             </div>

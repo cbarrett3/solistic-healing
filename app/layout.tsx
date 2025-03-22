@@ -23,6 +23,9 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: "Solistic Healing",
   description: "Your path to holistic wellness and natural healing",
+  icons: {
+    icon: '/favicon.svg',
+  }
 };
 
 export const viewport = {
@@ -39,7 +42,7 @@ export default function RootLayout({
       <head>
         <ThemeScript />
       </head>
-      <body className="flex flex-col min-h-screen">
+      <body className="flex flex-col min-h-screen" suppressHydrationWarning>
         {children}
         <Footer />
       </body>

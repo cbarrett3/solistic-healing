@@ -48,10 +48,10 @@ export default function AdminLogin() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col pt-16 sm:pt-24 items-center bg-background">
+    <div className="h-screen flex flex-col items-center bg-background overflow-hidden pt-[5vh]">
       <div className="w-full max-w-sm px-4">
-        <Link href="/" className="inline-flex items-center text-sm text-foreground/60 hover:text-foreground mb-8 transition-colors">
-          <ArrowLeft className="w-4 h-4 mr-1" />
+        <Link href="/" className="inline-flex items-center text-xs text-foreground/60 hover:text-foreground mb-6 transition-colors">
+          <ArrowLeft className="w-3 h-3 mr-1" />
           Return to site
         </Link>
         
@@ -61,9 +61,9 @@ export default function AdminLogin() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
         >
-          <div className="mb-6">
-            <h1 className="text-xl font-medium">Admin Access</h1>
-            <p className="text-foreground/60 text-sm mt-1">Security verification required</p>
+          <div className="mb-4">
+            <h1 className="text-lg font-medium">Admin Access</h1>
+            <p className="text-foreground/60 text-xs mt-1">Security verification required</p>
           </div>
 
           {error && (
@@ -80,7 +80,7 @@ export default function AdminLogin() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label htmlFor="answer" className="block text-sm font-medium mb-1.5">
-                What town did Eric grow up in?
+                What is the secret?
               </label>
               <input
                 id="answer"
