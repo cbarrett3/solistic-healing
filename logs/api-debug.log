@@ -915,3 +915,55 @@ Data: {
   "type": "external"
 }
 
+[2025-03-22T21:36:36.560Z] Received create post request
+
+[2025-03-22T21:36:36.571Z] Form data received
+Data: {
+  "type": "original",
+  "fields": [
+    {
+      "key": "title",
+      "value": "original post"
+    },
+    {
+      "key": "slug",
+      "value": "original-post"
+    },
+    {
+      "key": "excerpt",
+      "value": "original post"
+    },
+    {
+      "key": "featuredImage",
+      "value": ""
+    },
+    {
+      "key": "content",
+      "value": "origami"
+    },
+    {
+      "key": "type",
+      "value": "original"
+    }
+  ]
+}
+
+[2025-03-22T21:36:36.573Z] Created original post object
+Data: {
+  "title": "original post",
+  "slug": "original-post",
+  "contentLength": 7
+}
+
+[2025-03-22T21:36:36.575Z] Attempting to save post
+Data: {
+  "slug": "original-post",
+  "type": "original"
+}
+
+[2025-03-22T21:36:36.604Z] Post saved successfully
+Data: {
+  "slug": "original-post",
+  "type": "original"
+}
+
