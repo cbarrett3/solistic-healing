@@ -158,34 +158,48 @@ export default function ServicesPricingSection() {
 
         {/* services overview with image */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-16">
-          {/* left side - image */}
+          {/* left side - image (hidden on mobile) */}
           <motion.div
-            className="relative h-[400px] md:h-[500px] rounded-xl overflow-hidden shadow-md"
+            className="relative h-[400px] md:h-[500px] rounded-xl overflow-hidden shadow-md hidden md:block"
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            {/* Border similar to therapist card */}
-            <div className="absolute -inset-0.5 rounded-xl bg-primary/40 z-0"></div>
+            {/* Green border with increased visibility */}
+            <div className="absolute -inset-1.5 rounded-xl bg-primary z-0"></div>
             
-            {/* Enhanced gradient overlay with stronger bottom fade */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent z-10 rounded-xl"></div>
-            <Image 
-              src="/practice.jpeg" 
-              alt="Solistic Healing Practice" 
-              fill 
-              className="object-cover rounded-xl"
-              sizes="(max-width: 768px) 100vw, 50vw"
-              priority
-            />
+            {/* Enhanced gradient overlay with stronger fade */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/70 to-transparent z-10 rounded-xl"></div>
+            
+            {/* Image container */}
+            <div className="absolute inset-[3px] z-5 rounded-lg overflow-hidden">
+              <Image 
+                src="/practice.jpeg" 
+                alt="Solistic Healing Practice" 
+                fill 
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 50vw"
+                priority
+              />
+            </div>
+            
+            {/* Text content with improved readability */}
             <div className="absolute bottom-0 left-0 p-6 md:p-8 z-20">
-              <h3 className="text-2xl md:text-3xl font-medium text-white mb-2">Healing Environment</h3>
-              <p className="text-white/90 max-w-md font-medium">
+              <h3 className="text-2xl md:text-3xl font-medium text-white mb-2 drop-shadow-md">Healing Environment</h3>
+              <p className="text-white/90 max-w-md font-medium drop-shadow-md">
                 Our practice provides a safe, comfortable space for your therapeutic journey
               </p>
             </div>
           </motion.div>
+
+          {/* Mobile-only services intro text */}
+          <div className="md:hidden mb-4">
+            <h3 className="text-xl font-medium text-primary mb-2">Healing Environment</h3>
+            <p className="text-foreground/80 text-sm">
+              Our practice provides a safe, comfortable space for your therapeutic journey
+            </p>
+          </div>
 
           {/* right side - services */}
           <div className="grid grid-cols-1 gap-6">
