@@ -89,14 +89,77 @@ export default function BlogPostPage() {
     return (
       <div className="min-h-screen bg-background">
         <Navbar onMobileMenuToggle={handleMobileMenuToggle} forceDarkMode={true} />
-        <div className="container mx-auto px-4">
-          <div className="animate-pulse">
-            <div className="h-8 bg-card/50 rounded w-3/4 mb-4"></div>
-            <div className="h-4 bg-card/30 rounded w-1/4 mb-8"></div>
-            <div className="h-96 bg-card/20 rounded mb-8"></div>
-            <div className="h-4 bg-card/30 rounded w-full mb-2"></div>
-            <div className="h-4 bg-card/30 rounded w-full mb-2"></div>
-            <div className="h-4 bg-card/30 rounded w-5/6"></div>
+        <div className="container mx-auto px-4 py-12">
+          <div className="max-w-3xl mx-auto">
+            {/* Header loading animation */}
+            <div className="flex flex-col items-center justify-center mb-12">
+              <div className="animate-pulse h-8 bg-card/30 rounded w-3/4 mb-4"></div>
+              <div className="animate-pulse h-4 bg-card/20 rounded w-1/4 mb-8"></div>
+              
+              {/* Loading spinner */}
+              <div className="flex justify-center my-8">
+                <svg className="w-16 h-16 text-primary" viewBox="0 0 24 24">
+                  {/* Circle */}
+                  <circle 
+                    cx="12" 
+                    cy="12" 
+                    r="10" 
+                    className="stroke-primary/20" 
+                    strokeWidth="1" 
+                    fill="none" 
+                  />
+                  
+                  {/* Animated arc */}
+                  <path
+                    d="M12 2a10 10 0 0 1 10 10"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    className="animate-spin origin-center"
+                    style={{ animationDuration: '1.5s' }}
+                  />
+                  
+                  {/* Tree/peace symbol */}
+                  <path 
+                    d="M12 6V18" 
+                    stroke="currentColor" 
+                    strokeWidth="1.5" 
+                    strokeLinecap="round" 
+                    className="animate-pulse"
+                    style={{ animationDuration: '2s' }}
+                  />
+                  
+                  {/* Branches/peace lines */}
+                  <path 
+                    d="M12 9L9 12M12 9L15 12" 
+                    stroke="currentColor" 
+                    strokeWidth="1.5" 
+                    strokeLinecap="round" 
+                    className="animate-pulse"
+                    style={{ animationDuration: '2s' }}
+                  />
+                  
+                  <path 
+                    d="M12 14L9 17M12 14L15 17" 
+                    stroke="currentColor" 
+                    strokeWidth="1.5" 
+                    strokeLinecap="round" 
+                    className="animate-pulse"
+                    style={{ animationDuration: '2s' }}
+                  />
+                </svg>
+              </div>
+            
+              {/* Content loading animation */}
+              <div className="w-full space-y-4 mt-8">
+                <div className="h-4 bg-card/30 rounded w-full"></div>
+                <div className="h-4 bg-card/30 rounded w-full"></div>
+                <div className="h-4 bg-card/30 rounded w-5/6"></div>
+                <div className="h-4 bg-card/30 rounded w-full"></div>
+                <div className="h-4 bg-card/30 rounded w-4/5"></div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

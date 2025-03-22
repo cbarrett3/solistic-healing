@@ -228,12 +228,61 @@ export default function BlogPage() {
           {/* text-focused article cards with enhanced typography */}
           {isLoading ? (
             <div className="py-16 text-center bg-card/20 rounded-lg border border-foreground/5">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-foreground/5 mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-foreground/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              <div className="inline-flex items-center justify-center mb-4">
+                <svg className="w-16 h-16 text-primary" viewBox="0 0 24 24">
+                  {/* Circle */}
+                  <circle 
+                    cx="12" 
+                    cy="12" 
+                    r="10" 
+                    className="stroke-primary/20" 
+                    strokeWidth="1" 
+                    fill="none" 
+                  />
+                  
+                  {/* Animated arc */}
+                  <path
+                    d="M12 2a10 10 0 0 1 10 10"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    className="animate-spin origin-center"
+                    style={{ animationDuration: '1.5s' }}
+                  />
+                  
+                  {/* Tree/peace symbol */}
+                  <path 
+                    d="M12 6V18" 
+                    stroke="currentColor" 
+                    strokeWidth="1.5" 
+                    strokeLinecap="round" 
+                    className="animate-pulse"
+                    style={{ animationDuration: '2s' }}
+                  />
+                  
+                  {/* Branches/peace lines */}
+                  <path 
+                    d="M12 9L9 12M12 9L15 12" 
+                    stroke="currentColor" 
+                    strokeWidth="1.5" 
+                    strokeLinecap="round" 
+                    className="animate-pulse"
+                    style={{ animationDuration: '2s' }}
+                  />
+                  
+                  <path 
+                    d="M12 14L9 17M12 14L15 17" 
+                    stroke="currentColor" 
+                    strokeWidth="1.5" 
+                    strokeLinecap="round" 
+                    className="animate-pulse"
+                    style={{ animationDuration: '2s' }}
+                  />
                 </svg>
               </div>
               <h3 className="text-lg font-medium mb-2">Loading articles...</h3>
+              <p className="text-sm text-foreground/60">Please wait while we gather the latest content</p>
             </div>
           ) : filteredPosts.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
