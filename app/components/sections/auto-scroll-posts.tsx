@@ -4,88 +4,43 @@ import { useRef, useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion, useAnimationControls } from 'framer-motion';
-
-// Sample blog data - this would typically come from a CMS or API
-const sampleBlogPosts = [
-  {
-    id: 1,
-    slug: 'understanding-mind-body-connection',
-    title: 'Understanding the Mind-Body Connection in Therapy',
-    excerpt: 'Exploring how our physical sensations influence our mental state and how integrated approaches can lead to more effective healing. The mind-body connection is a powerful relationship that has been recognized by healers across cultures for thousands of years. Modern research continues to validate this ancient wisdom, showing how our thoughts and emotions can manifest physically, and how physical practices can transform our mental health.',
-    content: 'The concept of the mind-body connection acknowledges that our thoughts, feelings, beliefs, and attitudes can positively or negatively affect our biological functioning. In other words, our minds can affect how healthy our bodies are. Conversely, what we do with our physical body (what we eat, how much we exercise, even our posture) can impact our mental state, positively or negatively.\n\nThis connection is the foundation of many integrative healing approaches. When we understand that psychological factors can directly influence our physical health, we can develop more holistic treatment plans that address both aspects simultaneously.',
-    category: 'Mind-Body',
-    date: 'March 15, 2025',
-    readTime: '6 min read',
-    imageSrc: 'https://images.unsplash.com/photo-1559595500-e15296bdbb48?q=80&w=800&auto=format&fit=crop',
-    featured: true,
-  },
-  {
-    id: 2,
-    slug: 'benefits-energy-healing-chronic-pain',
-    title: 'The Benefits of Energy Healing for Chronic Pain',
-    excerpt: 'Recent research findings on how energy healing affects the body and creates opportunities for pain relief.',
-    category: 'Research',
-    date: 'March 8, 2025',
-    readTime: '8 min read',
-    imageSrc: 'https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?q=80&w=800&auto=format&fit=crop',
-  },
-  {
-    id: 3,
-    slug: 'nutritional-approaches-mental-wellness',
-    title: 'Nutritional Approaches to Mental Wellness',
-    excerpt: 'Simple techniques you can incorporate into your diet to improve mental health and increase wellbeing.',
-    category: 'Nutrition',
-    date: 'February 28, 2025',
-    readTime: '5 min read',
-    imageSrc: 'https://images.unsplash.com/photo-1475483768296-6163e08872a1?q=80&w=800&auto=format&fit=crop',
-  },
-  {
-    id: 4,
-    slug: 'mindfulness-meditation-emotional-regulation',
-    title: 'Mindfulness Meditation: A Path to Emotional Regulation',
-    excerpt: 'How understanding the impact of mindfulness can transform therapeutic relationships and improve outcomes.',
-    category: 'Mindfulness',
-    date: 'February 20, 2025',
-    readTime: '7 min read',
-    imageSrc: 'https://images.unsplash.com/photo-1508672019048-805c876b67e2?q=80&w=800&auto=format&fit=crop',
-  },
-  {
-    id: 5,
-    slug: 'psychedelics-modern-psychotherapy',
-    title: 'The Role of Psychedelics in Modern Psychotherapy',
-    excerpt: 'An overview of current research and therapeutic applications of psychedelic medicines in mental health treatment.',
-    category: 'Psychedelics',
-    date: 'February 12, 2025',
-    readTime: '9 min read',
-    imageSrc: 'https://images.unsplash.com/photo-1502230831726-fe5549140034?q=80&w=800&auto=format&fit=crop',
-  },
-  {
-    id: 6,
-    slug: 'trauma-informed-somatic-practices',
-    title: 'Trauma-Informed Somatic Practices for Healing',
-    excerpt: 'An overview of current research and therapeutic applications of somatic practices in mental health treatment.',
-    category: 'Trauma',
-    date: 'February 5, 2025',
-    readTime: '8 min read',
-    imageSrc: 'https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?q=80&w=800&auto=format&fit=crop',
-  },
-];
-
-// Duplicate posts to create a seamless loop
-const duplicatedPosts = [...sampleBlogPosts, ...sampleBlogPosts];
+import { BlogPost } from '@/app/types/blog';
 
 export default function AutoScrollPosts() {
   const containerRef = useRef<HTMLDivElement>(null);
   const controls = useAnimationControls();
   const [hoveredPostId, setHoveredPostId] = useState<number | null>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   
   // Find featured post and regular posts
-  const featuredPost = sampleBlogPosts.find(post => post.featured);
-  const regularPosts = sampleBlogPosts.filter(post => !post.featured);
+  const featuredPost = posts.length > 0 ? posts[0] : null;
+  const regularPosts = posts.length > 0 ? posts.slice(1) : [];
   
   // Duplicate regular posts to create a seamless loop
   const duplicatedRegularPosts = [...regularPosts, ...regularPosts];
+  
+  // Fetch blog posts from API
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await fetch('/api/blog/posts');
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success && data.posts) {
+            setPosts(data.posts);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching blog posts:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchPosts();
+  }, []);
   
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -112,7 +67,7 @@ export default function AutoScrollPosts() {
   useEffect(() => {
     const animate = async () => {
       // Get the width of the container and its content
-      if (!containerRef.current) return;
+      if (!containerRef.current || duplicatedRegularPosts.length === 0) return;
       
       const containerWidth = containerRef.current.offsetWidth;
       const contentWidth = containerRef.current.scrollWidth / 2; // Half because we duplicated the content
@@ -132,7 +87,9 @@ export default function AutoScrollPosts() {
       });
     };
     
-    animate();
+    if (!isLoading && duplicatedRegularPosts.length > 0) {
+      animate();
+    }
     
     // Pause animation on hover
     const container = containerRef.current;
@@ -150,7 +107,23 @@ export default function AutoScrollPosts() {
         container.removeEventListener('mouseleave', handleMouseLeave);
       }
     };
-  }, [controls]);
+  }, [controls, isLoading, duplicatedRegularPosts.length]);
+  
+  if (isLoading) {
+    return (
+      <section data-section="blog" className="w-full py-12 sm:py-16 md:py-20 lg:py-24 bg-gradient-to-b from-background to-background/95 overflow-hidden">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="flex justify-center items-center py-16">
+            <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full"></div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+  
+  if (posts.length === 0) {
+    return null; // Don't show the section if there are no posts
+  }
   
   return (
     <section data-section="blog" className="w-full py-12 sm:py-16 md:py-20 lg:py-24 bg-gradient-to-b from-background to-background/95 overflow-hidden">
@@ -195,11 +168,15 @@ export default function AutoScrollPosts() {
                     {/* Left side - Content */}
                     <div className="p-5 sm:p-6 md:p-8 lg:p-10 lg:w-3/5 xl:w-2/3 flex flex-col">
                       <div className="flex items-center text-xs text-muted-foreground mb-3 sm:mb-4">
-                        <span className="text-primary font-medium">{featuredPost.category}</span>
+                        <span className="text-primary font-medium">{featuredPost.category || 'Article'}</span>
                         <span className="mx-2">•</span>
-                        <span>{featuredPost.date}</span>
+                        <span>{new Date(featuredPost.date).toLocaleDateString('en-US', { 
+                          year: 'numeric', 
+                          month: 'long', 
+                          day: 'numeric' 
+                        })}</span>
                         <span className="mx-2">•</span>
-                        <span>{featuredPost.readTime}</span>
+                        <span>{featuredPost.readTime || '5 min read'}</span>
                       </div>
                       
                       <h3 className="text-xl sm:text-2xl md:text-3xl font-medium text-foreground mb-3 sm:mb-4 md:mb-5 group-hover:text-primary transition-colors duration-300">
@@ -207,13 +184,8 @@ export default function AutoScrollPosts() {
                       </h3>
                       
                       <p className="text-muted-foreground text-sm sm:text-base mb-4 sm:mb-5 md:mb-6">
-                        {featuredPost.excerpt}
+                        {featuredPost.excerpt || featuredPost.description || 'Read this article to learn more about holistic healing approaches.'}
                       </p>
-                      
-                      <div className="mt-2 space-y-4 text-sm text-muted-foreground/90 hidden md:block">
-                        <p>{featuredPost.content?.split('\n\n')[0]}</p>
-                        <p className="line-clamp-3">{featuredPost.content?.split('\n\n')[1]}</p>
-                      </div>
                       
                       <div className="flex items-center text-primary text-sm font-medium mt-6 group-hover:translate-x-1 transition-transform duration-300">
                         Read Full Article
@@ -238,7 +210,7 @@ export default function AutoScrollPosts() {
                           onMouseLeave={() => setHoveredPostId(null)}
                         >
                           <Image
-                            src={featuredPost.imageSrc}
+                            src={featuredPost.coverImage || 'https://images.unsplash.com/photo-1559595500-e15296bdbb48?q=80&w=800&auto=format&fit=crop'}
                             alt={featuredPost.title}
                             fill
                             className="object-cover opacity-80 group-hover:opacity-95 transition-opacity duration-300"
@@ -274,36 +246,29 @@ export default function AutoScrollPosts() {
       </div>
       
       {/* Auto-scrolling posts container */}
-      <div className="container mx-auto px-4 sm:px-6 overflow-hidden">
-        <div 
-          ref={containerRef} 
-          className="relative w-full"
-        >
-          <motion.div 
-            className="flex gap-4 sm:gap-5 md:gap-6 py-3 sm:py-4"
-            animate={controls}
+      {regularPosts.length > 0 && (
+        <div className="container mx-auto px-4 sm:px-6 overflow-hidden">
+          <div 
+            ref={containerRef} 
+            className="relative w-full"
           >
-            {duplicatedRegularPosts.map((post, index) => (
-              <PostCard key={`${post.id}-${index}`} post={post} />
-            ))}
-          </motion.div>
+            <motion.div 
+              className="flex gap-4 sm:gap-5 md:gap-6 py-3 sm:py-4"
+              animate={controls}
+            >
+              {duplicatedRegularPosts.map((post, index) => (
+                <PostCard key={`${post.id || post.slug}-${index}`} post={post} />
+              ))}
+            </motion.div>
+          </div>
         </div>
-      </div>
+      )}
     </section>
   );
 }
 
 interface PostCardProps {
-  post: {
-    id: number;
-    slug: string;
-    title: string;
-    excerpt: string;
-    category: string;
-    date: string;
-    readTime: string;
-    imageSrc: string;
-  };
+  post: BlogPost;
 }
 
 function PostCard({ post }: PostCardProps) {
@@ -324,7 +289,7 @@ function PostCard({ post }: PostCardProps) {
           {/* Background Image */}
           <div className="absolute inset-0 z-0">
             <Image
-              src={post.imageSrc}
+              src={post.coverImage || 'https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?q=80&w=800&auto=format&fit=crop'}
               alt=""
               fill
               className="object-cover opacity-20 group-hover:opacity-30 transition-opacity duration-300"
@@ -336,9 +301,9 @@ function PostCard({ post }: PostCardProps) {
           {/* Content */}
           <div className="relative z-10 p-4 h-full flex flex-col">
             <div className="flex items-center text-xs text-muted-foreground mb-2">
-              <span className="text-xs font-medium text-primary uppercase tracking-wider">{post.category}</span>
+              <span className="text-xs font-medium text-primary uppercase tracking-wider">{post.category || 'Article'}</span>
               <span className="mx-2 text-foreground/30">•</span>
-              <span className="text-foreground/60">{post.readTime}</span>
+              <span className="text-foreground/60">{post.readTime || '5 min read'}</span>
             </div>
             
             <h3 className="text-sm sm:text-base font-medium text-foreground mb-2 group-hover:text-primary transition-colors duration-300 line-clamp-2">
@@ -346,11 +311,15 @@ function PostCard({ post }: PostCardProps) {
             </h3>
             
             <p className="text-foreground/70 text-xs line-clamp-2 mb-auto">
-              {post.excerpt}
+              {post.excerpt || post.description || 'Read this article to learn more about holistic healing approaches.'}
             </p>
             
             <div className="mt-3 pt-2 border-t border-foreground/10">
-              <span className="text-xs text-foreground/60">{post.date}</span>
+              <span className="text-xs text-foreground/60">{new Date(post.date).toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+              })}</span>
             </div>
           </div>
         </div>

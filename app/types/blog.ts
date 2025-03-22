@@ -8,10 +8,14 @@ export interface BasePost {
   title: string;
   date: string;
   excerpt?: string;
+  description?: string;
   featuredImage?: string;
+  coverImage?: string;
   category?: string;
   tags?: string[];
   featured?: boolean;
+  readTime?: string;
+  id?: number | string;
 }
 
 // Original content post
