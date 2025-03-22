@@ -26,17 +26,19 @@ export default function Navbar({ onMobileMenuToggle, forceDarkMode = false }: Na
     setMobileMenuOpen(newState);
     
     if (newState) {
-      // Store current scroll position
+      // Store current scroll position and prevent body scrolling
       setScrollPosition(window.scrollY);
-      // Add fixed positioning to body
+      // Add fixed positioning to body with proper width and position
       document.body.style.position = 'fixed';
       document.body.style.top = `-${window.scrollY}px`;
       document.body.style.width = '100%';
+      document.body.style.overflow = 'hidden'; // Prevent scrolling
     } else {
-      // Restore scroll position
+      // Restore scroll position and body styles
       document.body.style.position = '';
       document.body.style.top = '';
       document.body.style.width = '';
+      document.body.style.overflow = '';
       window.scrollTo(0, scrollPosition);
     }
     
@@ -51,6 +53,7 @@ export default function Navbar({ onMobileMenuToggle, forceDarkMode = false }: Na
       document.body.style.position = '';
       document.body.style.top = '';
       document.body.style.width = '';
+      document.body.style.overflow = '';
     };
   }, []);
 
@@ -163,27 +166,7 @@ export default function Navbar({ onMobileMenuToggle, forceDarkMode = false }: Na
   const handleIconMouseDown = (index: number) => setPressedIcon(index);
   const handleIconMouseUp = () => setPressedIcon(null);
 
-  // Animation variants
-  const menuVariants = {
-    closed: {
-      opacity: 0,
-      y: -20,
-      transition: {
-        duration: 0.3,
-        ease: "easeInOut"
-      }
-    },
-    open: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.4,
-        ease: "easeOut",
-        delayChildren: 0.2 // Delay children animations
-      }
-    }
-  };
-
+  // Animation variants - Elegant slide down animations
   const overlayVariants = {
     closed: {
       opacity: 0,
@@ -195,20 +178,49 @@ export default function Navbar({ onMobileMenuToggle, forceDarkMode = false }: Na
     open: {
       opacity: 1,
       transition: {
-        duration: 0.2, // Faster transition for the overlay
+        duration: 0.4,
         ease: "easeOut"
+      }
+    }
+  };
+  
+  const menuVariants = {
+    closed: {
+      opacity: 0,
+      y: "-100%",
+      transition: {
+        duration: 0.4,
+        ease: [0.4, 0, 0.2, 1], // Custom easing for natural motion
+        when: "afterChildren"
+      }
+    },
+    open: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: [0.16, 1, 0.3, 1], // Custom spring-like easing
+        when: "beforeChildren",
+        delayChildren: 0.1
       }
     }
   };
 
   const itemVariants = {
-    closed: { opacity: 0, y: 20 },
+    closed: { 
+      opacity: 0, 
+      y: -20,
+      transition: {
+        duration: 0.2,
+        ease: "easeIn"
+      }
+    },
     open: (i: number) => ({
       opacity: 1,
       y: 0,
       transition: {
-        delay: i * 0.05,
-        duration: 0.5,
+        delay: 0.1 + i * 0.07, // Staggered delay
+        duration: 0.4,
         ease: "easeOut"
       }
     })
@@ -324,38 +336,43 @@ export default function Navbar({ onMobileMenuToggle, forceDarkMode = false }: Na
         </div>
       </div>
 
-      {/* Mobile Navigation - Separate from header with AnimatePresence for smooth transitions */}
-      <AnimatePresence>
+      {/* Mobile Navigation - Elegant slide down animation */}
+      <AnimatePresence mode="wait">
         {mobileMenuOpen && (
-          <div className="sm:hidden">
+          <>
             {/* Dark overlay with animation */}
             <motion.div 
               className="fixed inset-0 z-40 bg-black/80 backdrop-blur-sm"
+              key="mobile-menu-overlay"
               initial="closed"
               animate="open"
               exit="closed"
               variants={overlayVariants}
               onClick={toggleMobileMenu}
-            ></motion.div>
+            />
             
-            {/* Menu content with animation */}
+            {/* Menu content with slide-down animation */}
             <motion.div 
-              className={`fixed inset-0 z-50 pt-16 ${
+              className={`fixed inset-0 z-50 pt-16 origin-top ${
                 forceDarkMode ? (isDarkMode ? 'bg-background/95' : 'bg-white/95') : isDarkMode ? 'bg-background/95' : 'bg-white/95'
               }`}
+              key="mobile-menu-content"
               initial="closed"
               animate="open"
               exit="closed"
               variants={menuVariants}
             >
               {/* Close button */}
-              <button
+              <motion.button
                 className="absolute top-4 right-5 p-2 rounded-full bg-primary/10 hover:bg-primary/20 transition-colors duration-300 z-50 cursor-pointer"
                 onClick={toggleMobileMenu}
                 aria-label="Close menu"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.3, duration: 0.3 }}
               >
                 <X className="w-6 h-6 text-primary" />
-              </button>
+              </motion.button>
               
               <nav className="flex flex-col items-center justify-center h-full">
                 {navItems.map((item, index) => (
@@ -385,7 +402,7 @@ export default function Navbar({ onMobileMenuToggle, forceDarkMode = false }: Na
                 ))}
               </nav>
             </motion.div>
-          </div>
+          </>
         )}
       </AnimatePresence>
     </header>
