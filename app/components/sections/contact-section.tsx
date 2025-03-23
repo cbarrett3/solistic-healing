@@ -52,9 +52,21 @@ export default function ContactSection() {
       // Show submitting state
       setIsSubmitting(true);
       
-      // Simulate API call (replace with actual Resend implementation)
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
+      // Send form data to API
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to submit form');
+      }
+
       // Show success
       setSubmitStatus('success');
       
@@ -77,8 +89,9 @@ export default function ContactSection() {
           }
         });
         setErrors(formattedErrors);
+      } else {
+        setSubmitStatus('error');
       }
-      setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);
       
@@ -365,11 +378,11 @@ export default function ContactSection() {
             </div>
           </motion.div>
         </div>
+        
+        {/* Subtle decorative elements */}
+        <div className="absolute top-40 left-20 w-60 h-60 bg-primary/5 rounded-full blur-3xl -z-10"></div>
+        <div className="absolute bottom-40 right-20 w-80 h-80 bg-primary/5 rounded-full blur-3xl -z-10"></div>
       </div>
-      
-      {/* Subtle decorative elements */}
-      <div className="absolute top-40 left-20 w-60 h-60 bg-primary/5 rounded-full blur-3xl -z-10"></div>
-      <div className="absolute bottom-40 right-20 w-80 h-80 bg-primary/5 rounded-full blur-3xl -z-10"></div>
     </section>
   );
 }
