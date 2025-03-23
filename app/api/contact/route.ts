@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
     const { data, error } = await resend.emails.send({
       from: 'Solistic Healing <contact@resend.dev>',
       to: ['connor.steven.barrett@gmail.com'],
-      reply_to: email,
+      replyTo: email,
       subject: `New Contact Submission: ${subject}`,
       html: `
         <div style="max-width: 600px; margin: 0 auto; padding: 20px; font-family: Arial, sans-serif; color: #333;">
