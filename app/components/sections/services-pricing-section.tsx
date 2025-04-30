@@ -122,9 +122,6 @@ const pricingPlans: PricingPlan[] = [
 
 // main component
 export default function ServicesPricingSection() {
-  // state for hovered plan
-  const [hoveredPlan, setHoveredPlan] = useState<string | null>(null);
-  
   // state for selected plan
   const [selectedPlan, setSelectedPlan] = useState<string | null>('kap-session');
   
@@ -273,8 +270,6 @@ export default function ServicesPricingSection() {
             <div 
               key={plan.id} 
               className="group h-full relative"
-              onMouseEnter={() => setHoveredPlan(plan.id)}
-              onMouseLeave={() => setHoveredPlan(null)}
             >
               {/* hover effect container */}
               <div className="absolute inset-0 transition-transform duration-300 group-hover:-translate-y-4 pointer-events-none"></div>

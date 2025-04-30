@@ -1,8 +1,16 @@
-'use client';
+"use client";
 
-import React, { useState, useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Play, Pause, Volume2, VolumeX, ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
+import React, { useState, useRef, useEffect } from "react";
+import { motion } from "framer-motion";
+import {
+  Play,
+  Pause,
+  Volume2,
+  VolumeX,
+  ChevronLeft,
+  ChevronRight,
+  ExternalLink,
+} from "lucide-react";
 
 interface Video {
   id: string;
@@ -14,47 +22,53 @@ interface Video {
 
 const videos: Video[] = [
   {
-    id: 'Rz3mV67T8g0',
-    title: 'Healing Journey Begins',
-    description: 'Discover the first steps in your personal healing journey with Eric.',
+    id: "Rz3mV67T8g0",
+    title: "Healing Journey Begins",
+    description:
+      "Discover the first steps in your personal healing journey with Eric.",
     thumbnailUrl: `https://img.youtube.com/vi/Rz3mV67T8g0/maxresdefault.jpg`,
-    url: 'https://www.youtube.com/watch?v=Rz3mV67T8g0&t=8s'
+    url: "https://www.youtube.com/watch?v=Rz3mV67T8g0&t=8s",
   },
   {
-    id: '2j1q1gmfxEQ',
-    title: 'Mind-Body Connection',
-    description: 'Explore the powerful connection between mental and physical wellness.',
+    id: "2j1q1gmfxEQ",
+    title: "Mind-Body Connection",
+    description:
+      "Explore the powerful connection between mental and physical wellness.",
     thumbnailUrl: `https://img.youtube.com/vi/2j1q1gmfxEQ/maxresdefault.jpg`,
-    url: 'https://www.youtube.com/watch?v=2j1q1gmfxEQ'
+    url: "https://www.youtube.com/watch?v=2j1q1gmfxEQ",
   },
   {
-    id: 'otqrpEVherk',
-    title: 'Meditation Techniques',
-    description: 'Learn effective meditation practices for daily peace and clarity.',
+    id: "otqrpEVherk",
+    title: "Meditation Techniques",
+    description:
+      "Learn effective meditation practices for daily peace and clarity.",
     thumbnailUrl: `https://img.youtube.com/vi/otqrpEVherk/maxresdefault.jpg`,
-    url: 'https://www.youtube.com/watch?v=otqrpEVherk&t=5s'
+    url: "https://www.youtube.com/watch?v=otqrpEVherk&t=5s",
   },
   {
-    id: '_uLNBoyzA8I',
-    title: 'Holistic Wellness',
-    description: 'Understand the principles of holistic healing for complete wellness.',
+    id: "_uLNBoyzA8I",
+    title: "Holistic Wellness",
+    description:
+      "Understand the principles of holistic healing for complete wellness.",
     thumbnailUrl: `https://img.youtube.com/vi/_uLNBoyzA8I/maxresdefault.jpg`,
-    url: 'https://www.youtube.com/watch?v=_uLNBoyzA8I'
+    url: "https://www.youtube.com/watch?v=_uLNBoyzA8I",
   },
   {
-    id: 'F4K51ai1CNY',
-    title: 'Energy Healing',
-    description: 'Discover how energy healing can transform your life and well-being.',
+    id: "F4K51ai1CNY",
+    title: "Energy Healing",
+    description:
+      "Discover how energy healing can transform your life and well-being.",
     thumbnailUrl: `https://img.youtube.com/vi/F4K51ai1CNY/maxresdefault.jpg`,
-    url: 'https://www.youtube.com/watch?v=F4K51ai1CNY'
+    url: "https://www.youtube.com/watch?v=F4K51ai1CNY",
   },
   {
-    id: 'qlj7emwWlSs',
-    title: 'Spiritual Growth',
-    description: 'Embark on a journey of spiritual awakening and personal growth.',
+    id: "qlj7emwWlSs",
+    title: "Spiritual Growth",
+    description:
+      "Embark on a journey of spiritual awakening and personal growth.",
     thumbnailUrl: `https://img.youtube.com/vi/qlj7emwWlSs/maxresdefault.jpg`,
-    url: 'https://www.youtube.com/watch?v=qlj7emwWlSs'
-  }
+    url: "https://www.youtube.com/watch?v=qlj7emwWlSs",
+  },
 ];
 
 export default function MediaShowcase() {
@@ -79,25 +93,25 @@ export default function MediaShowcase() {
 
   const togglePlay = () => {
     setIsPlaying(!isPlaying);
-    
+
     if (videoRef.current && videoRef.current.contentWindow) {
-      const message = isPlaying 
-        ? JSON.stringify({ event: 'command', func: 'pauseVideo' })
-        : JSON.stringify({ event: 'command', func: 'playVideo' });
-      
-      videoRef.current.contentWindow.postMessage(message, '*');
+      const message = isPlaying
+        ? JSON.stringify({ event: "command", func: "pauseVideo" })
+        : JSON.stringify({ event: "command", func: "playVideo" });
+
+      videoRef.current.contentWindow.postMessage(message, "*");
     }
   };
 
   const toggleMute = () => {
     setIsMuted(!isMuted);
-    
+
     if (videoRef.current && videoRef.current.contentWindow) {
       const message = isMuted
-        ? JSON.stringify({ event: 'command', func: 'unMute' })
-        : JSON.stringify({ event: 'command', func: 'mute' });
-      
-      videoRef.current.contentWindow.postMessage(message, '*');
+        ? JSON.stringify({ event: "command", func: "unMute" })
+        : JSON.stringify({ event: "command", func: "mute" });
+
+      videoRef.current.contentWindow.postMessage(message, "*");
     }
   };
 
@@ -107,20 +121,25 @@ export default function MediaShowcase() {
   }, [activeIndex]);
 
   return (
-    <section id="media" className="w-full py-16 md:py-24 bg-gradient-to-b from-background to-background/80" data-section="media">
+    <section
+      id="media"
+      className="w-full py-16 md:py-24 bg-gradient-to-b from-background to-background/80"
+      data-section="media"
+    >
       <div className="container mx-auto px-4 sm:px-6">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-light text-foreground">
             Experience Our <span className="text-primary">Healing Journey</span>
           </h2>
           <p className="mt-3 text-muted-foreground max-w-2xl mx-auto">
-            Watch Eric's transformative videos and discover the power of holistic healing through visual stories
+            Watch Eric&apos;s transformative videos and discover the power of
+            holistic healing through visual stories
           </p>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-8 max-w-7xl mx-auto">
           {/* Main Video Player */}
-          <div 
+          <div
             className="w-full lg:w-2/3 relative rounded-xl overflow-hidden aspect-video bg-black shadow-xl cursor-pointer"
             ref={containerRef}
             onMouseEnter={() => setIsHovering(true)}
@@ -141,20 +160,20 @@ export default function MediaShowcase() {
             </div>
 
             {/* Video Controls Overlay */}
-            <div 
+            <div
               className={`absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent flex flex-col justify-between p-4 sm:p-6 transition-opacity duration-300 ${
-                isHovering || isPlaying ? 'opacity-100' : 'opacity-0'
+                isHovering || isPlaying ? "opacity-100" : "opacity-0"
               }`}
             >
               <div className="flex justify-between items-center">
                 <div className="flex items-center space-x-2">
                   <span className="bg-primary/90 text-primary-foreground px-2 py-1 text-xs rounded-full">
-                    Eric's Videos
+                    Eric&apos;s Videos
                   </span>
                 </div>
-                <a 
-                  href={activeVideo.url} 
-                  target="_blank" 
+                <a
+                  href={activeVideo.url}
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="text-white/80 hover:text-white flex items-center gap-1 text-sm"
                 >
@@ -164,12 +183,16 @@ export default function MediaShowcase() {
               </div>
 
               <div className="space-y-2">
-                <h3 className="text-white text-xl sm:text-2xl font-medium">{activeVideo.title}</h3>
-                <p className="text-white/80 text-sm sm:text-base line-clamp-2">{activeVideo.description}</p>
-                
+                <h3 className="text-white text-xl sm:text-2xl font-medium">
+                  {activeVideo.title}
+                </h3>
+                <p className="text-white/80 text-sm sm:text-base line-clamp-2">
+                  {activeVideo.description}
+                </p>
+
                 <div className="flex justify-between items-center mt-4">
                   <div className="flex items-center space-x-3">
-                    <button 
+                    <button
                       onClick={(e) => {
                         e.stopPropagation();
                         togglePlay();
@@ -179,7 +202,7 @@ export default function MediaShowcase() {
                     >
                       {isPlaying ? <Pause size={20} /> : <Play size={20} />}
                     </button>
-                    <button 
+                    <button
                       onClick={(e) => {
                         e.stopPropagation();
                         toggleMute();
@@ -190,9 +213,9 @@ export default function MediaShowcase() {
                       {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
                     </button>
                   </div>
-                  
+
                   <div className="flex items-center space-x-2">
-                    <button 
+                    <button
                       onClick={(e) => {
                         e.stopPropagation();
                         handlePrev();
@@ -202,7 +225,7 @@ export default function MediaShowcase() {
                     >
                       <ChevronLeft size={20} />
                     </button>
-                    <button 
+                    <button
                       onClick={(e) => {
                         e.stopPropagation();
                         handleNext();
@@ -220,7 +243,11 @@ export default function MediaShowcase() {
             {/* Play/Pause Indicator in Center when not hovering */}
             {!isHovering && (
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <div className={`transition-opacity duration-300 ${isPlaying ? 'opacity-0' : 'opacity-100'}`}>
+                <div
+                  className={`transition-opacity duration-300 ${
+                    isPlaying ? "opacity-0" : "opacity-100"
+                  }`}
+                >
                   <div className="bg-primary/90 text-primary-foreground rounded-full p-4 shadow-lg">
                     <Play size={32} />
                   </div>
@@ -231,32 +258,37 @@ export default function MediaShowcase() {
 
           {/* Video Thumbnails */}
           <div className="w-full lg:w-1/3 flex flex-col">
-            <h3 className="text-xl font-medium text-foreground mb-3 sm:mb-4">More Videos</h3>
-            
+            <h3 className="text-xl font-medium text-foreground mb-3 sm:mb-4">
+              More Videos
+            </h3>
+
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-1 gap-2 sm:gap-3 overflow-y-auto pr-2 custom-scrollbar flex-1">
               {videos.map((video, index) => (
-                <motion.div 
+                <motion.div
                   key={video.id}
                   onClick={() => setActiveIndex(index)}
                   className={`flex items-start gap-2 sm:gap-3 p-2 rounded-lg cursor-pointer transition-all duration-300 ${
-                    activeIndex === index 
-                      ? 'bg-primary/10 border-l-4 border-primary' 
-                      : 'hover:bg-white/10 dark:hover:bg-card/60 hover:shadow-md hover:-translate-y-0.5'
+                    activeIndex === index
+                      ? "bg-primary/10 border-l-4 border-primary"
+                      : "hover:bg-white/10 dark:hover:bg-card/60 hover:shadow-md hover:-translate-y-0.5"
                   }`}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: index * 0.05 }}
                 >
                   <div className="relative w-20 h-14 sm:w-24 sm:h-16 flex-shrink-0 rounded-md overflow-hidden group">
-                    <img 
-                      src={video.thumbnailUrl} 
+                    <img
+                      src={video.thumbnailUrl}
                       alt={video.title}
                       className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                     {activeIndex === index && isPlaying && (
                       <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
                         <span className="animate-pulse bg-primary/90 rounded-full p-1">
-                          <Pause size={14} className="text-primary-foreground" />
+                          <Pause
+                            size={14}
+                            className="text-primary-foreground"
+                          />
                         </span>
                       </div>
                     )}
@@ -269,9 +301,13 @@ export default function MediaShowcase() {
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h4 className={`text-sm font-medium line-clamp-1 transition-colors duration-300 ${
-                      activeIndex === index ? 'text-primary' : 'text-foreground group-hover:text-primary/80'
-                    }`}>
+                    <h4
+                      className={`text-sm font-medium line-clamp-1 transition-colors duration-300 ${
+                        activeIndex === index
+                          ? "text-primary"
+                          : "text-foreground group-hover:text-primary/80"
+                      }`}
+                    >
                       {video.title}
                     </h4>
                     <p className="text-xs text-muted-foreground line-clamp-2 mt-0.5 sm:mt-1">
@@ -290,20 +326,20 @@ export default function MediaShowcase() {
           scrollbar-width: thin;
           scrollbar-color: var(--color-primary) transparent;
         }
-        
+
         .custom-scrollbar::-webkit-scrollbar {
           width: 4px;
         }
-        
+
         .custom-scrollbar::-webkit-scrollbar-track {
           background: transparent;
         }
-        
+
         .custom-scrollbar::-webkit-scrollbar-thumb {
           background-color: var(--color-primary);
           border-radius: 20px;
         }
-        
+
         /* Dark mode adjustments */
         :global(.dark) .custom-scrollbar {
           scrollbar-color: var(--color-primary) rgba(0, 0, 0, 0.2);
